@@ -1,25 +1,42 @@
 import React from 'react';
 import { Pressable, Text, StyleSheet, ViewStyle, StyleProp } from 'react-native';
-import { colors } from '../theme/colors';
+import { colors, radius, glow } from '../theme/colors';
+
+type Variant = 'primary' | 'ghost' | 'success' | 'danger';
 
 interface Props {
   title: string;
   onPress: () => void;
   disabled?: boolean;
-  variant?: 'primary' | 'secondary' | 'danger';
+  variant?: Variant;
   style?: StyleProp<ViewStyle>;
+  /** Компактный вариант — для плотных рядов кнопок. */
+  small?: boolean;
 }
 
-export function PrimaryButton({ title, onPress, disabled, variant = 'primary', style }: Props) {
-  const bg = disabled
-    ? colors.locked
-    : variant === 'primary'
-    ? colors.primary
-    : variant === 'danger'
-    ? colors.red
-    : colors.white;
-  const textColor = variant === 'secondary' && !disabled ? colors.text : colors.white;
-  const borderColor = variant === 'secondary' ? colors.border : 'transparent';
+const FILL: Record<Variant, string> = {
+  primary: colors.primary,
+  ghost: 'transparent',
+  success: colors.success,
+  danger: colors.danger,
+};
+
+const LABEL: Record<Variant, string> = {
+  primary: colors.white,
+  ghost: colors.text,
+  success: colors.bg,
+  danger: colors.white,
+};
+
+export function PrimaryButton({
+  title,
+  onPress,
+  disabled,
+  variant = 'primary',
+  style,
+  small,
+}: Props) {
+  const isGhost = variant === 'ghost';
 
   return (
     <Pressable
@@ -27,25 +44,42 @@ export function PrimaryButton({ title, onPress, disabled, variant = 'primary', s
       disabled={disabled}
       style={({ pressed }) => [
         styles.base,
-        { backgroundColor: bg, borderColor, opacity: pressed ? 0.85 : 1 },
+        small && styles.small,
+        {
+          backgroundColor: disabled ? colors.locked : FILL[variant],
+          borderColor: isGhost ? colors.borderBright : 'transparent',
+          opacity: pressed ? 0.8 : 1,
+          transform: [{ scale: pressed ? 0.985 : 1 }],
+        },
+        // Свечение только у активной основной кнопки — чтобы взгляд сразу
+        // находил единственное «главное» действие на экране.
+        variant === 'primary' && !disabled && glow,
         style,
       ]}
     >
-      <Text style={[styles.text, { color: textColor }]}>{title}</Text>
+      <Text
+        style={[
+          styles.text,
+          small && styles.textSmall,
+          { color: disabled ? colors.textFaint : LABEL[variant] },
+        ]}
+      >
+        {title}
+      </Text>
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   base: {
-    paddingVertical: 14,
-    borderRadius: 16,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: radius.md,
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 2,
+    borderWidth: 1,
   },
-  text: {
-    fontSize: 16,
-    fontWeight: '700',
-  },
+  small: { paddingVertical: 10, paddingHorizontal: 14, borderRadius: radius.sm },
+  text: { fontSize: 15, fontWeight: '700', letterSpacing: 0.3 },
+  textSmall: { fontSize: 13 },
 });

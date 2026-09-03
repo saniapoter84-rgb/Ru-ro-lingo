@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, TextInput, ScrollView } from 'react-native';
-import { colors } from '../theme/colors';
+import { colors, radius, spacing } from '../theme/colors';
 import { Lesson, Word } from '../data';
 import { Exercise, buildExercisesForWords, isAnswerCorrect } from '../logic/exercises';
 import { ProgressBar } from '../components/ProgressBar';
@@ -9,11 +9,13 @@ import { SpeakerButton } from '../components/SpeakerButton';
 import { TappableWords } from '../components/TappableWords';
 import { speakRomanian } from '../logic/speech';
 import { XP_PER_CORRECT, XP_PER_LESSON_BONUS } from '../logic/progress';
+import { Lang, t } from '../i18n/strings';
 
 interface Props {
   lesson: Lesson;
   words: Word[];
   unitWords: Word[];
+  lang: Lang;
   onExit: () => void;
   onAnswer: (wordId: string, correct: boolean) => void;
   onFinishLesson: (lessonId: string) => void;
@@ -21,7 +23,15 @@ interface Props {
 
 type Feedback = 'correct' | 'wrong' | null;
 
-export function LessonScreen({ lesson, words, unitWords, onExit, onAnswer, onFinishLesson }: Props) {
+export function LessonScreen({
+  lesson,
+  words,
+  unitWords,
+  lang,
+  onExit,
+  onAnswer,
+  onFinishLesson,
+}: Props) {
   const totalWords = words.length;
   const [queue, setQueue] = useState<Exercise[]>(() => buildExercisesForWords(words, unitWords));
   const [feedback, setFeedback] = useState<Feedback>(null);
@@ -29,24 +39,21 @@ export function LessonScreen({ lesson, words, unitWords, onExit, onAnswer, onFin
   const [typed, setTyped] = useState('');
   const [sessionCorrect, setSessionCorrect] = useState(0);
   const [sessionAttempts, setSessionAttempts] = useState(0);
-  const [completedWordIds, setCompletedWordIds] = useState<Set<string>>(new Set());
+  const [completedWordIds, setCompletedWordIds] = useState<Set<string>>(() => new Set());
   const [finished, setFinished] = useState(false);
 
   const current = queue[0];
-
   const progressRatio = totalWords === 0 ? 0 : completedWordIds.size / totalWords;
 
   function submitChoice(optionId: string) {
     if (!current || current.kind === 'type_ro' || feedback) return;
-    const correct = optionId === current.correctId;
     setSelectedId(optionId);
-    finalizeAnswer(correct);
+    finalizeAnswer(optionId === current.correctId);
   }
 
   function submitTyped() {
     if (!current || current.kind !== 'type_ro' || feedback) return;
-    const correct = isAnswerCorrect(typed, current.acceptable);
-    finalizeAnswer(correct);
+    finalizeAnswer(isAnswerCorrect(typed, current.acceptable));
   }
 
   function finalizeAnswer(correct: boolean) {
@@ -66,8 +73,7 @@ export function LessonScreen({ lesson, words, unitWords, onExit, onAnswer, onFin
     const wasCorrect = feedback === 'correct';
     const rest = queue.slice(1);
     if (!wasCorrect) {
-      const insertAt = Math.min(3, rest.length);
-      rest.splice(insertAt, 0, { ...queue[0] });
+      rest.splice(Math.min(3, rest.length), 0, { ...queue[0] });
     }
     setQueue(rest);
     setFeedback(null);
@@ -81,19 +87,24 @@ export function LessonScreen({ lesson, words, unitWords, onExit, onAnswer, onFin
   }
 
   if (finished || !current) {
-    const accuracy = sessionAttempts === 0 ? 100 : Math.round((sessionCorrect / sessionAttempts) * 100);
+    const accuracy =
+      sessionAttempts === 0 ? 100 : Math.round((sessionCorrect / sessionAttempts) * 100);
     const xpEarned = sessionCorrect * XP_PER_CORRECT + XP_PER_LESSON_BONUS;
     return (
-      <View style={styles.container}>
-        <ScrollView contentContainerStyle={styles.summaryContent}>
-          <Text style={styles.summaryEmoji}>🎉</Text>
-          <Text style={styles.summaryTitle}>Урок пройден!</Text>
-          <View style={styles.summaryRow}>
-            <SummaryStat label="Точность" value={`${accuracy}%`} />
-            <SummaryStat label="Получено XP" value={`+${xpEarned}`} />
-          </View>
-          <PrimaryButton title="Продолжить" onPress={onExit} style={{ marginTop: 24, width: '100%' }} />
-        </ScrollView>
+      <View style={styles.centered}>
+        <View style={styles.doneGlyph}>
+          <Text style={styles.doneGlyphText}>✓</Text>
+        </View>
+        <Text style={styles.doneTitle}>{t('lesson.finished', lang)}</Text>
+        <View style={styles.doneStats}>
+          <SummaryStat label={t('lesson.accuracy', lang)} value={`${accuracy}%`} />
+          <SummaryStat label={t('lesson.xpEarned', lang)} value={`+${xpEarned}`} accent />
+        </View>
+        <PrimaryButton
+          title={t('common.continue', lang)}
+          onPress={onExit}
+          style={{ marginTop: spacing.xxl, alignSelf: 'stretch' }}
+        />
       </View>
     );
   }
@@ -101,15 +112,15 @@ export function LessonScreen({ lesson, words, unitWords, onExit, onAnswer, onFin
   return (
     <View style={styles.container}>
       <View style={styles.topBar}>
-        <Pressable onPress={onExit} hitSlop={8}>
+        <Pressable onPress={onExit} hitSlop={10}>
           <Text style={styles.close}>✕</Text>
         </Pressable>
-        <View style={{ flex: 1, marginLeft: 12 }}>
-          <ProgressBar ratio={progressRatio} />
+        <View style={{ flex: 1 }}>
+          <ProgressBar ratio={progressRatio} color={colors.accent} />
         </View>
       </View>
 
-      <ScrollView contentContainerStyle={styles.body}>
+      <ScrollView contentContainerStyle={styles.body} keyboardShouldPersistTaps="handled">
         {current.kind === 'type_ro' ? (
           <TypeExerciseView
             key={current.word.id}
@@ -118,6 +129,7 @@ export function LessonScreen({ lesson, words, unitWords, onExit, onAnswer, onFin
             setTyped={setTyped}
             feedback={feedback}
             correctAnswer={current.answer}
+            lang={lang}
           />
         ) : (
           <ChoiceExerciseView
@@ -135,18 +147,39 @@ export function LessonScreen({ lesson, words, unitWords, onExit, onAnswer, onFin
 
       <View style={styles.footer}>
         {feedback ? (
-          <View style={[styles.feedbackBar, feedback === 'correct' ? styles.feedbackOk : styles.feedbackBad]}>
-            <Text style={styles.feedbackText}>
-              {feedback === 'correct' ? 'Верно! 🎉' : `Неверно. Правильно: ${current.kind === 'type_ro' ? current.answer : current.options.find((o) => o.id === current.correctId)?.text}`}
+          <View
+            style={[
+              styles.feedbackBar,
+              feedback === 'correct' ? styles.feedbackOk : styles.feedbackBad,
+            ]}
+          >
+            <Text
+              style={[
+                styles.feedbackText,
+                { color: feedback === 'correct' ? colors.success : colors.danger },
+              ]}
+            >
+              {feedback === 'correct'
+                ? t('lesson.correct', lang)
+                : `${t('lesson.answerIs', lang)} ${
+                    current.kind === 'type_ro'
+                      ? current.answer
+                      : current.options.find((o) => o.id === current.correctId)?.text
+                  }`}
             </Text>
             <PrimaryButton
-              title="Далее"
+              title={t('common.continue', lang)}
               onPress={handleContinue}
               variant={feedback === 'correct' ? 'primary' : 'danger'}
+              style={{ marginTop: spacing.md }}
             />
           </View>
         ) : current.kind === 'type_ro' ? (
-          <PrimaryButton title="Проверить" onPress={submitTyped} disabled={typed.trim().length === 0} />
+          <PrimaryButton
+            title={t('common.check', lang)}
+            onPress={submitTyped}
+            disabled={typed.trim().length === 0}
+          />
         ) : null}
       </View>
     </View>
@@ -173,9 +206,8 @@ function ChoiceExerciseView({
   return (
     <View>
       <Text style={styles.instruction}>
-        {promptLang === 'ru' ? 'Переведи на румынский' : 'Переведи на русский'}
+        {promptLang === 'ru' ? 'RU → RO' : 'RO → RU'}
       </Text>
-      <Text style={styles.tapHint}>Не знаешь слово — тапни по нему</Text>
       <View style={styles.promptRow}>
         <View style={{ flex: 1 }}>
           <TappableWords
@@ -185,9 +217,10 @@ function ChoiceExerciseView({
             textStyle={styles.promptText}
           />
         </View>
-        {promptLang === 'ru' ? null : <SpeakerButton text={prompt} size={34} />}
+        {promptLang === 'ro' ? <SpeakerButton text={prompt} size={34} /> : null}
       </View>
-      <View style={styles.optionsWrap}>
+
+      <View style={styles.options}>
         {options.map((opt) => {
           const isSelected = selectedId === opt.id;
           const isCorrectOption = feedback && opt.id === correctId;
@@ -197,10 +230,11 @@ function ChoiceExerciseView({
               key={opt.id}
               onPress={() => onSelect(opt.id)}
               disabled={!!feedback}
-              style={[
+              style={({ pressed }) => [
                 styles.option,
                 isCorrectOption && styles.optionCorrect,
                 isWrongSelected && styles.optionWrong,
+                pressed && !feedback && styles.optionPressed,
               ]}
             >
               <Text style={styles.optionText}>{opt.text}</Text>
@@ -218,26 +252,32 @@ function TypeExerciseView({
   setTyped,
   feedback,
   correctAnswer,
+  lang,
 }: {
   prompt: string;
   typed: string;
   setTyped: (s: string) => void;
   feedback: Feedback;
   correctAnswer: string;
+  lang: Lang;
 }) {
   return (
     <View>
-      <Text style={styles.instruction}>Напиши перевод на румынском</Text>
-      <Text style={styles.tapHint}>Не знаешь слово — тапни по нему</Text>
-      <View style={{ marginBottom: 16 }}>
-        <TappableWords text={prompt} lang="ru" fallback={correctAnswer} textStyle={styles.promptText} />
+      <Text style={styles.instruction}>RU → RO</Text>
+      <View style={{ marginBottom: spacing.lg }}>
+        <TappableWords
+          text={prompt}
+          lang="ru"
+          fallback={correctAnswer}
+          textStyle={styles.promptText}
+        />
       </View>
       <TextInput
         value={typed}
         onChangeText={setTyped}
         editable={!feedback}
-        placeholder="Введи перевод..."
-        placeholderTextColor={colors.textLight}
+        placeholder={t('lesson.typeHere', lang)}
+        placeholderTextColor={colors.textFaint}
         autoCapitalize="none"
         autoCorrect={false}
         style={[
@@ -246,17 +286,24 @@ function TypeExerciseView({
           feedback === 'wrong' && styles.inputWrong,
         ]}
       />
-      {feedback === 'wrong' ? (
-        <Text style={styles.correctHint}>Правильный ответ: {correctAnswer}</Text>
-      ) : null}
     </View>
   );
 }
 
-function SummaryStat({ label, value }: { label: string; value: string }) {
+function SummaryStat({
+  label,
+  value,
+  accent,
+}: {
+  label: string;
+  value: string;
+  accent?: boolean;
+}) {
   return (
     <View style={styles.summaryStat}>
-      <Text style={styles.summaryStatValue}>{value}</Text>
+      <Text style={[styles.summaryStatValue, accent && { color: colors.primaryBright }]}>
+        {value}
+      </Text>
       <Text style={styles.summaryStatLabel}>{label}</Text>
     </View>
   );
@@ -264,46 +311,89 @@ function SummaryStat({ label, value }: { label: string; value: string }) {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
-  topBar: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 12 },
-  close: { fontSize: 20, color: colors.textLight },
-  body: { padding: 20, flexGrow: 1, justifyContent: 'center' },
-  instruction: { fontSize: 13, fontWeight: '700', color: colors.textLight, marginBottom: 4 },
-  tapHint: { fontSize: 11, color: colors.textLight, marginBottom: 10 },
-  promptRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 12, marginBottom: 24 },
-  promptText: { fontSize: 26, fontWeight: '800', color: colors.text, marginBottom: 8 },
-  optionsWrap: { gap: 10 },
+  topBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
+  },
+  close: { fontSize: 18, color: colors.textFaint },
+  body: { padding: spacing.lg, flexGrow: 1, justifyContent: 'center' },
+  instruction: {
+    fontSize: 11,
+    fontWeight: '800',
+    letterSpacing: 1.4,
+    color: colors.textFaint,
+    marginBottom: spacing.md,
+  },
+  promptRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: spacing.md,
+    marginBottom: spacing.xl,
+  },
+  promptText: { fontSize: 26, fontWeight: '800', color: colors.text, lineHeight: 34 },
+  options: { gap: spacing.sm },
   option: {
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: colors.border,
-    borderRadius: 14,
-    padding: 16,
+    borderRadius: radius.md,
+    padding: spacing.lg,
     backgroundColor: colors.card,
   },
-  optionCorrect: { borderColor: colors.primary, backgroundColor: colors.primary + '22' },
-  optionWrong: { borderColor: colors.red, backgroundColor: colors.red + '22' },
-  optionText: { fontSize: 17, fontWeight: '600', color: colors.text },
+  optionPressed: { backgroundColor: colors.cardHover, borderColor: colors.borderBright },
+  optionCorrect: { borderColor: colors.success, backgroundColor: colors.successDim },
+  optionWrong: { borderColor: colors.danger, backgroundColor: colors.dangerDim },
+  optionText: { fontSize: 16, fontWeight: '600', color: colors.text },
   input: {
-    borderWidth: 2,
-    borderColor: colors.border,
-    borderRadius: 14,
-    padding: 16,
-    fontSize: 18,
-    backgroundColor: colors.card,
+    borderWidth: 1,
+    borderColor: colors.borderBright,
+    borderRadius: radius.md,
+    padding: spacing.lg,
+    fontSize: 17,
+    backgroundColor: colors.bgElevated,
     color: colors.text,
   },
-  inputCorrect: { borderColor: colors.primary, backgroundColor: colors.primary + '22' },
-  inputWrong: { borderColor: colors.red, backgroundColor: colors.red + '22' },
-  correctHint: { marginTop: 10, color: colors.red, fontWeight: '600' },
-  footer: { padding: 16 },
-  feedbackBar: { borderRadius: 16, padding: 16, gap: 12 },
-  feedbackOk: { backgroundColor: colors.primary + '18' },
-  feedbackBad: { backgroundColor: colors.red + '18' },
-  feedbackText: { fontSize: 15, fontWeight: '700', color: colors.text },
-  summaryContent: { flexGrow: 1, alignItems: 'center', justifyContent: 'center', padding: 24 },
-  summaryEmoji: { fontSize: 56, marginBottom: 12 },
-  summaryTitle: { fontSize: 22, fontWeight: '800', color: colors.text, marginBottom: 20 },
-  summaryRow: { flexDirection: 'row', gap: 16 },
+  inputCorrect: { borderColor: colors.success, backgroundColor: colors.successDim },
+  inputWrong: { borderColor: colors.danger, backgroundColor: colors.dangerDim },
+  footer: { padding: spacing.lg },
+  feedbackBar: {
+    borderRadius: radius.md,
+    padding: spacing.lg,
+    borderWidth: 1,
+    backgroundColor: colors.bgElevated,
+  },
+  feedbackOk: { borderColor: colors.success },
+  feedbackBad: { borderColor: colors.danger },
+  feedbackText: { fontSize: 15, fontWeight: '700' },
+
+  centered: {
+    flex: 1,
+    backgroundColor: colors.bg,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: spacing.xl,
+  },
+  doneGlyph: {
+    width: 82,
+    height: 82,
+    borderRadius: 41,
+    borderWidth: 2,
+    borderColor: colors.accent,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.card,
+  },
+  doneGlyphText: { fontSize: 34, color: colors.accent },
+  doneTitle: {
+    fontSize: 22,
+    fontWeight: '800',
+    color: colors.text,
+    marginTop: spacing.xl,
+  },
+  doneStats: { flexDirection: 'row', gap: spacing.xxl, marginTop: spacing.xl },
   summaryStat: { alignItems: 'center' },
-  summaryStatValue: { fontSize: 24, fontWeight: '800', color: colors.primary },
-  summaryStatLabel: { fontSize: 13, color: colors.textLight, marginTop: 4 },
+  summaryStatValue: { fontSize: 22, fontWeight: '800', color: colors.text },
+  summaryStatLabel: { fontSize: 11, color: colors.textFaint, marginTop: 4 },
 });

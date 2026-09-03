@@ -4,7 +4,13 @@ import { colors } from '../theme/colors';
 import { GRAMMAR_TOPICS, GrammarTopic } from '../data/grammar';
 import { SpeakerButton } from '../components/SpeakerButton';
 
-export function GrammarScreen() {
+interface Props {
+  onBack: () => void;
+}
+
+/** Справочник: та же грамматика, что в курсе, но списком и без заданий —
+ * чтобы можно было быстро подсмотреть правило, не проходя урок заново. */
+export function GrammarScreen({ onBack }: Props) {
   const [openId, setOpenId] = useState<string | null>(null);
   const topic = GRAMMAR_TOPICS.find((t) => t.id === openId) ?? null;
 
@@ -15,7 +21,10 @@ export function GrammarScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.topBar}>
-        <Text style={styles.title}>Грамматика</Text>
+        <Pressable onPress={onBack} hitSlop={10}>
+          <Text style={styles.back}>←</Text>
+        </Pressable>
+        <Text style={styles.title}>Справочник</Text>
         <Text style={styles.subtitle}>Короткие объяснения — почему слова выглядят именно так</Text>
       </View>
       <ScrollView contentContainerStyle={styles.scrollContent}>
@@ -76,14 +85,14 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   topBar: { paddingHorizontal: 16, paddingBottom: 12 },
   title: { fontSize: 20, fontWeight: '800', color: colors.text },
-  subtitle: { fontSize: 13, color: colors.textLight, marginTop: 2 },
+  subtitle: { fontSize: 13, color: colors.textDim, marginTop: 2 },
   scrollContent: { paddingHorizontal: 16, paddingBottom: 24 },
   card: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
     backgroundColor: colors.card,
-    borderRadius: 16,
+    borderRadius: 12,
     padding: 14,
     marginBottom: 10,
     borderWidth: 1,
@@ -91,8 +100,8 @@ const styles = StyleSheet.create({
   },
   cardEmoji: { fontSize: 26 },
   cardTitle: { fontSize: 15, fontWeight: '700', color: colors.text },
-  cardSummary: { fontSize: 12, color: colors.textLight, marginTop: 2 },
-  chevron: { fontSize: 22, color: colors.textLight },
+  cardSummary: { fontSize: 12, color: colors.textDim, marginTop: 2 },
+  chevron: { fontSize: 22, color: colors.textDim },
   detailTopBar: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -100,11 +109,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 12,
   },
-  back: { fontSize: 22, color: colors.text },
+  back: { fontSize: 20, color: colors.textDim, marginBottom: 6 },
   detailTitle: { fontSize: 17, fontWeight: '800', color: colors.text, flex: 1 },
   section: {
     backgroundColor: colors.card,
-    borderRadius: 16,
+    borderRadius: 12,
     padding: 16,
     marginBottom: 12,
     borderWidth: 1,
@@ -122,5 +131,5 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   exampleRo: { fontSize: 15, fontWeight: '700', color: colors.text },
-  exampleRu: { fontSize: 13, color: colors.textLight, marginTop: 2 },
+  exampleRu: { fontSize: 13, color: colors.textDim, marginTop: 2 },
 });

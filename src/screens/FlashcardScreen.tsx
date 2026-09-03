@@ -140,7 +140,7 @@ export function FlashcardScreen({ words, onExit, onDone }: Props) {
           <Text style={styles.close}>✕</Text>
         </Pressable>
         <View style={{ flex: 1, marginLeft: 12 }}>
-          <ProgressBar ratio={index / words.length} color={colors.blue} />
+          <ProgressBar ratio={index / words.length} color={colors.accent} />
         </View>
       </View>
 
@@ -218,10 +218,10 @@ export function FlashcardScreen({ words, onExit, onDone }: Props) {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   topBar: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 12 },
-  close: { fontSize: 20, color: colors.textLight },
+  close: { fontSize: 20, color: colors.textDim },
   instruction: {
     textAlign: 'center',
-    color: colors.textLight,
+    color: colors.textDim,
     fontWeight: '600',
     marginBottom: 16,
     paddingHorizontal: 24,
@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     transform: [{ scale: 0.94 }],
   },
-  cardTextDim: { fontSize: 24, fontWeight: '700', color: colors.textLight },
+  cardTextDim: { fontSize: 24, fontWeight: '700', color: colors.textDim },
   pressableFill: { flex: 1 },
   face: {
     position: 'absolute',
@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
   cardText: { fontSize: 32, fontWeight: '800', color: colors.text, textAlign: 'center' },
   cardTextBack: { fontSize: 30, fontWeight: '800', color: colors.white, textAlign: 'center' },
   speakerWrap: { marginTop: 16 },
-  hint: { position: 'absolute', bottom: 20, fontSize: 12, color: colors.textLight },
+  hint: { position: 'absolute', bottom: 20, fontSize: 12, color: colors.textDim },
   hintBack: { marginTop: 10, fontSize: 16, color: colors.white, opacity: 0.85 },
   stamp: {
     position: 'absolute',
@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
   },
   stampLike: { right: 20, borderColor: colors.primary, transform: [{ rotate: '-14deg' }] },
-  stampNope: { left: 20, borderColor: colors.red, transform: [{ rotate: '14deg' }] },
+  stampNope: { left: 20, borderColor: colors.danger, transform: [{ rotate: '14deg' }] },
   stampText: { fontSize: 22, fontWeight: '900', color: colors.text },
   buttonsRow: { flexDirection: 'row', justifyContent: 'center', gap: 28, paddingVertical: 24 },
   roundBtn: {
@@ -294,7 +294,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     elevation: 3,
   },
-  roundBtnNope: { borderWidth: 2, borderColor: colors.red },
+  roundBtnNope: { borderWidth: 2, borderColor: colors.danger },
   roundBtnLike: { borderWidth: 2, borderColor: colors.primary },
   roundBtnText: { fontSize: 26, fontWeight: '800', color: colors.text },
 });
