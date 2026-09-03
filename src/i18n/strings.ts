@@ -27,8 +27,8 @@ const DICT = {
 
   'home.title': { ru: 'Словарь по темам', ro: 'Vocabular pe teme' },
   'home.subtitle': {
-    ru: 'Карточки и упражнения по 38 темам',
-    ro: 'Cartonașe și exerciții pe 38 de teme',
+    ru: 'Карточки и упражнения по 66 темам',
+    ro: 'Cartonașe și exerciții pe 66 de teme',
   },
 
   'review.title': { ru: 'Повторение', ro: 'Repetare' },

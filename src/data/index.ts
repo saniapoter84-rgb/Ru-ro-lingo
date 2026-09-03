@@ -1,9 +1,12 @@
 import { UNITS as CORE_UNITS, Unit, WordEntry } from './units';
 import { EXTRA_UNITS } from './units2';
+import { UNITS_3 } from './units3';
+import { UNITS_4 } from './units4';
+import { UNITS_5 } from './units5';
 
 export type { PartOfSpeech, WordEntry, Unit } from './units';
 
-export const UNITS: Unit[] = [...CORE_UNITS, ...EXTRA_UNITS];
+export const UNITS: Unit[] = [...CORE_UNITS, ...EXTRA_UNITS, ...UNITS_3, ...UNITS_4, ...UNITS_5];
 
 export interface Word extends WordEntry {
   id: string;
