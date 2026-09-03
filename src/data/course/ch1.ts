@@ -10,7 +10,7 @@ export const CHAPTER_1: CourseChapter = {
   subtitle: 'Первые фразы о себе: кто ты, откуда и как дела',
   emoji: '🌱',
   level: 'A0',
-  color: '#58CC02',
+  color: '#A78BFA',
   lessons: [
     {
       id: 'ch1_l1',

@@ -10,7 +10,7 @@ export const CHAPTER_5: CourseChapter = {
   subtitle: 'Ориентироваться в городе и объяснять, где что находится',
   emoji: '🧭',
   level: 'A1',
-  color: '#00CD9C',
+  color: '#34D399',
   lessons: [
     {
       id: 'ch5_l1',

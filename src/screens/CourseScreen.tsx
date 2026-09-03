@@ -42,7 +42,7 @@ export function CourseScreen({ progress, lang, onOpenLesson, onOpenReference }: 
           <Text style={styles.title}>{t('course.title', lang)}</Text>
         </View>
         <Pressable onPress={onOpenReference} style={styles.refButton} hitSlop={8}>
-          <Text style={styles.refIcon}>📖</Text>
+          <Text style={styles.refIcon}>≡</Text>
         </Pressable>
         <Hearts hearts={progress.hearts} />
       </View>
@@ -191,8 +191,14 @@ function LessonRow({
           !unlocked && styles.nodeLocked,
         ]}
       >
-        <Text style={[styles.nodeText, completed && styles.nodeTextDone]}>
-          {!unlocked ? '🔒' : completed ? '✓' : boss ? '★' : index + 1}
+        <Text
+          style={[
+            styles.nodeText,
+            completed && styles.nodeTextDone,
+            !unlocked && styles.nodeTextLocked,
+          ]}
+        >
+          {completed ? '✓' : boss ? '★' : index + 1}
         </Text>
       </View>
 
@@ -247,7 +253,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  refIcon: { fontSize: 15 },
+  refIcon: { fontSize: 17, color: colors.textDim, fontWeight: '700' },
   overallRow: { paddingHorizontal: spacing.lg, paddingBottom: spacing.lg, gap: 6 },
   overallText: { fontSize: 11, color: colors.textFaint, fontWeight: '600' },
   scroll: { paddingHorizontal: spacing.lg },
@@ -312,6 +318,7 @@ const styles = StyleSheet.create({
   nodeLocked: { borderColor: colors.border },
   nodeText: { color: colors.textDim, fontWeight: '800', fontSize: 13 },
   nodeTextDone: { color: colors.bg },
+  nodeTextLocked: { color: colors.textFaint },
 
   lessonTitleRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   lessonTitle: { fontSize: 14, fontWeight: '700', color: colors.text },

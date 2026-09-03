@@ -105,15 +105,27 @@ export function ProfileScreen({ progress, lang, onToggleImmersion, onChangeGoal 
 
         {/* Цифры */}
         <View style={styles.statsGrid}>
-          <StatCard icon="🔥" value={String(stats.streak)} label={t('profile.streak', lang)} />
-          <StatCard icon="⭐" value={String(stats.xp)} label={t('profile.xp', lang)} />
           <StatCard
-            icon="✅"
+            icon="▲"
+            tint={colors.warning}
+            value={String(stats.streak)}
+            label={t('profile.streak', lang)}
+          />
+          <StatCard
+            icon="★"
+            tint={colors.primaryBright}
+            value={String(stats.xp)}
+            label={t('profile.xp', lang)}
+          />
+          <StatCard
+            icon="✓"
+            tint={colors.success}
             value={`${stats.mastered}/${stats.total}`}
             label={t('profile.wordsMastered', lang)}
           />
           <StatCard
             icon="◆"
+            tint={colors.accent}
             value={`${stats.courseDone}/${stats.courseTotal}`}
             label={t('course.title', lang)}
           />
@@ -219,10 +231,20 @@ export function ProfileScreen({ progress, lang, onToggleImmersion, onChangeGoal 
   );
 }
 
-function StatCard({ icon, value, label }: { icon: string; value: string; label: string }) {
+function StatCard({
+  icon,
+  value,
+  label,
+  tint,
+}: {
+  icon: string;
+  value: string;
+  label: string;
+  tint: string;
+}) {
   return (
     <View style={styles.statCard}>
-      <Text style={styles.statIcon}>{icon}</Text>
+      <Text style={[styles.statIcon, { color: tint }]}>{icon}</Text>
       <Text style={styles.statValue}>{value}</Text>
       <Text style={styles.statLabel}>{label}</Text>
     </View>
@@ -315,7 +337,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.md,
     padding: spacing.md,
   },
-  statIcon: { fontSize: 15, marginBottom: 6 },
+  statIcon: { fontSize: 14, marginBottom: 6, fontWeight: '700' },
   statValue: { fontSize: 19, fontWeight: '800', color: colors.text },
   statLabel: { fontSize: 11, color: colors.textFaint, marginTop: 2 },
 
@@ -331,7 +353,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.sm,
   },
   questRowDone: { borderColor: colors.success, backgroundColor: colors.successDim },
-  questEmoji: { fontSize: 18 },
+  questEmoji: { fontSize: 14, color: colors.textDim, fontWeight: '700', width: 18, textAlign: 'center' },
   questLabel: { fontSize: 13, fontWeight: '600', color: colors.text, marginBottom: 6 },
   questLabelDone: { color: colors.textDim },
   questBar: { width: '100%' },

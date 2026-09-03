@@ -10,7 +10,7 @@ export const CHAPTER_3: CourseChapter = {
   subtitle: 'Что у тебя есть и какое оно',
   emoji: '🎒',
   level: 'A1',
-  color: '#CE82FF',
+  color: '#C084FC',
   lessons: [
     {
       id: 'ch3_l1',

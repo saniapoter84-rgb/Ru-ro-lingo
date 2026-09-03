@@ -10,7 +10,7 @@ export const CHAPTER_4: CourseChapter = {
   subtitle: 'Настоящее время: рассказать, что ты делаешь',
   emoji: '🏃',
   level: 'A1',
-  color: '#FF9600',
+  color: '#FBBF24',
   lessons: [
     {
       id: 'ch4_l1',

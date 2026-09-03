@@ -10,7 +10,7 @@ export const CHAPTER_2: CourseChapter = {
   subtitle: 'Артикль, который приклеивается сзади, и множественное число',
   emoji: '🔗',
   level: 'A0',
-  color: '#1CB0F6',
+  color: '#22D3EE',
   lessons: [
     {
       id: 'ch2_l1',

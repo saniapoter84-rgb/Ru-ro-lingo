@@ -30,49 +30,49 @@ interface QuestDef {
 const DEFS: QuestDef[] = [
   {
     kind: 'xp',
-    emoji: '⭐',
+    emoji: '★',
     targets: [50, 80, 120],
     reward: 30,
     label: (n) => `Заработай ${n} XP`,
   },
   {
     kind: 'tasks',
-    emoji: '✅',
+    emoji: '✓',
     targets: [15, 25, 40],
     reward: 25,
     label: (n) => `Реши ${n} заданий`,
   },
   {
     kind: 'lessons',
-    emoji: '📗',
+    emoji: '◆',
     targets: [1, 2, 3],
     reward: 30,
     label: (n) => (n === 1 ? 'Пройди урок курса' : `Пройди ${n} урока курса`),
   },
   {
     kind: 'perfect',
-    emoji: '💎',
+    emoji: '◈',
     targets: [1, 2],
     reward: 40,
     label: (n) => (n === 1 ? 'Пройди урок без ошибок' : `Пройди ${n} урока без ошибок`),
   },
   {
     kind: 'combo',
-    emoji: '🔥',
+    emoji: '▲',
     targets: [5, 8, 12],
     reward: 35,
     label: (n) => `Собери комбо из ${n} подряд`,
   },
   {
     kind: 'dialogue',
-    emoji: '🎧',
+    emoji: '◉',
     targets: [1, 2],
     reward: 35,
     label: (n) => (n === 1 ? 'Разбери одну сцену в погружении' : `Разбери ${n} сцены в погружении`),
   },
   {
     kind: 'words',
-    emoji: '🧠',
+    emoji: '●',
     targets: [10, 20, 30],
     reward: 25,
     label: (n) => `Повтори ${n} слов`,
@@ -87,7 +87,7 @@ export function questLabel(quest: Quest): string {
 }
 
 export function questEmoji(quest: Quest): string {
-  return DEFS_BY_KIND.get(quest.kind)?.emoji ?? '🎯';
+  return DEFS_BY_KIND.get(quest.kind)?.emoji ?? '◆';
 }
 
 export function questReward(quest: Quest): number {

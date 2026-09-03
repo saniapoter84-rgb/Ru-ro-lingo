@@ -10,7 +10,7 @@ export const CHAPTER_6: CourseChapter = {
   subtitle: 'Рассказать, что уже было и что ещё будет',
   emoji: '⏳',
   level: 'A2',
-  color: '#FF4B4B',
+  color: '#FB7185',
   lessons: [
     {
       id: 'ch6_l1',
