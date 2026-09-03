@@ -52,7 +52,7 @@ export function ImmersionScreen({ progress, lang, onToggleImmersion, onOpenDialo
 
         <View style={styles.counterRow}>
           <SectionLabel>
-            {t('immersion.readScene', lang)} · {done}/{DIALOGUES.length}
+            {t('immersion.scenes', lang)} · {done}/{DIALOGUES.length}
           </SectionLabel>
         </View>
 

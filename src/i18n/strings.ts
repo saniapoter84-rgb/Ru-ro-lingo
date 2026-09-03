@@ -84,6 +84,7 @@ const DICT = {
   'immersion.listenFirst': { ru: 'Сначала послушай', ro: 'Ascultă mai întâi' },
   'immersion.replay': { ru: 'Ещё раз', ro: 'Încă o dată' },
   'immersion.readScene': { ru: 'Читать сцену', ro: 'Citește scena' },
+  'immersion.scenes': { ru: 'Сцены', ro: 'Scene' },
   'immersion.questions': { ru: 'Вопросы по сцене', ro: 'Întrebări despre scenă' },
   'immersion.phrases': { ru: 'Фразы на вынос', ro: 'Expresii de reținut' },
   'immersion.tapLine': {
