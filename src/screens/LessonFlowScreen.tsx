@@ -9,6 +9,7 @@ interface Props {
   words: Word[];
   unitWords: Word[];
   lang: Lang;
+  immersion: boolean;
   onExit: () => void;
   onAnswer: (wordId: string, correct: boolean) => void;
   onFinishLesson: (lessonId: string) => void;
@@ -20,6 +21,7 @@ export function LessonFlowScreen({
   words,
   unitWords,
   lang,
+  immersion,
   onExit,
   onAnswer,
   onFinishLesson,
@@ -36,6 +38,7 @@ export function LessonFlowScreen({
       words={words}
       unitWords={unitWords}
       lang={lang}
+      immersion={immersion}
       onExit={onExit}
       onAnswer={onAnswer}
       onFinishLesson={onFinishLesson}

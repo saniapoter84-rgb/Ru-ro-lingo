@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable, TextInput, ScrollView } from 'react-native';
 import { colors, radius, spacing } from '../theme/colors';
 import { Lesson, Word } from '../data';
@@ -16,6 +16,7 @@ interface Props {
   words: Word[];
   unitWords: Word[];
   lang: Lang;
+  immersion: boolean;
   onExit: () => void;
   onAnswer: (wordId: string, correct: boolean) => void;
   onFinishLesson: (lessonId: string) => void;
@@ -28,12 +29,15 @@ export function LessonScreen({
   words,
   unitWords,
   lang,
+  immersion,
   onExit,
   onAnswer,
   onFinishLesson,
 }: Props) {
   const totalWords = words.length;
-  const [queue, setQueue] = useState<Exercise[]>(() => buildExercisesForWords(words, unitWords));
+  const [queue, setQueue] = useState<Exercise[]>(() =>
+    buildExercisesForWords(words, unitWords, immersion)
+  );
   const [feedback, setFeedback] = useState<Feedback>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [typed, setTyped] = useState('');
@@ -121,7 +125,18 @@ export function LessonScreen({
       </View>
 
       <ScrollView contentContainerStyle={styles.body} keyboardShouldPersistTaps="handled">
-        {current.kind === 'type_ro' ? (
+        {current.kind === 'listen_ro' ? (
+          <ListenExerciseView
+            key={current.word.id}
+            audio={current.audio}
+            options={current.options}
+            correctId={current.correctId}
+            selectedId={selectedId}
+            feedback={feedback}
+            onSelect={submitChoice}
+            lang={lang}
+          />
+        ) : current.kind === 'type_ro' ? (
           <TypeExerciseView
             key={current.word.id}
             prompt={current.prompt}
@@ -246,6 +261,63 @@ function ChoiceExerciseView({
   );
 }
 
+function ListenExerciseView({
+  audio,
+  options,
+  correctId,
+  selectedId,
+  feedback,
+  onSelect,
+  lang,
+}: {
+  audio: string;
+  options: { id: string; text: string }[];
+  correctId: string;
+  selectedId: string | null;
+  feedback: Feedback;
+  onSelect: (id: string) => void;
+  lang: Lang;
+}) {
+  // Слово звучит само: смысл задания в том, чтобы узнать его на слух,
+  // а не прочитать глазами.
+  useEffect(() => {
+    speakRomanian(audio);
+  }, [audio]);
+
+  return (
+    <View>
+      <Text style={styles.instruction}>{t('immersion.listenFirst', lang).toUpperCase()}</Text>
+      <View style={styles.listenBox}>
+        <SpeakerButton text={audio} size={72} loud />
+        <Text style={styles.listenHint}>{t('immersion.replay', lang)}</Text>
+      </View>
+      <View style={styles.options}>
+        {options.map((opt) => {
+          const isSelected = selectedId === opt.id;
+          const isCorrectOption = feedback && opt.id === correctId;
+          const isWrongSelected = feedback && isSelected && opt.id !== correctId;
+          return (
+            <Pressable
+              key={opt.id}
+              onPress={() => onSelect(opt.id)}
+              disabled={!!feedback}
+              style={({ pressed }) => [
+                styles.option,
+                isCorrectOption && styles.optionCorrect,
+                isWrongSelected && styles.optionWrong,
+                pressed && !feedback && styles.optionPressed,
+              ]}
+            >
+              <Text style={styles.optionText}>{opt.text}</Text>
+            </Pressable>
+          );
+        })}
+      </View>
+      {feedback ? <Text style={styles.revealedWord}>{audio}</Text> : null}
+    </View>
+  );
+}
+
 function TypeExerciseView({
   prompt,
   typed,
@@ -357,6 +429,15 @@ const styles = StyleSheet.create({
   },
   inputCorrect: { borderColor: colors.success, backgroundColor: colors.successDim },
   inputWrong: { borderColor: colors.danger, backgroundColor: colors.dangerDim },
+  listenBox: { alignItems: 'center', gap: spacing.md, paddingVertical: spacing.xl },
+  listenHint: { color: colors.textFaint, fontSize: 12 },
+  revealedWord: {
+    marginTop: spacing.lg,
+    fontSize: 15,
+    fontWeight: '700',
+    color: colors.primaryBright,
+    textAlign: 'center',
+  },
   footer: { padding: spacing.lg },
   feedbackBar: {
     borderRadius: radius.md,

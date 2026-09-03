@@ -64,6 +64,7 @@ export default function App() {
           words={words}
           unitWords={unitWords}
           lang={lang}
+          immersion={progress.immersion}
           onExit={backToTabs}
           onAnswer={answer}
           onFinishLesson={finishLesson}

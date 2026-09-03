@@ -1,6 +1,6 @@
 import { ALL_WORDS, Word } from '../data';
 
-export type ExerciseKind = 'choice_ro' | 'choice_ru' | 'type_ro';
+export type ExerciseKind = 'choice_ro' | 'choice_ru' | 'type_ro' | 'listen_ro';
 
 export interface ChoiceOption {
   id: string;
@@ -15,6 +15,16 @@ export interface ChoiceExercise {
   correctId: string;
 }
 
+/** Слышишь румынское слово, выбираешь русский перевод. Текста нет вообще. */
+export interface ListenExercise {
+  kind: 'listen_ro';
+  word: Word;
+  /** Что произносим. */
+  audio: string;
+  options: ChoiceOption[];
+  correctId: string;
+}
+
 export interface TypeExercise {
   kind: 'type_ro';
   word: Word;
@@ -23,7 +33,7 @@ export interface TypeExercise {
   acceptable: string[];
 }
 
-export type Exercise = ChoiceExercise | TypeExercise;
+export type Exercise = ChoiceExercise | ListenExercise | TypeExercise;
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -95,6 +105,12 @@ export function isAnswerCorrect(userInput: string, acceptable: string[]): boolea
   return acceptable.some((a) => normalizeForCompare(a) === normalizedInput);
 }
 
+function buildListenExercise(word: Word, unitWords: Word[]): ListenExercise {
+  const distractors = pickDistractors(word, unitWords, 'ru', 3);
+  const options = shuffle([word, ...distractors]).map((w) => ({ id: w.id, text: w.ru }));
+  return { kind: 'listen_ro', word, audio: word.ro, options, correctId: word.id };
+}
+
 function buildTypeExercise(word: Word): TypeExercise {
   return {
     kind: 'type_ro',
@@ -105,12 +121,28 @@ function buildTypeExercise(word: Word): TypeExercise {
   };
 }
 
-/** Строит очередь упражнений для набора слов (обычно — слова одного урока). */
-export function buildExercisesForWords(words: Word[], unitWords: Word[]): Exercise[] {
+/**
+ * Строит очередь упражнений для набора слов (обычно — слова одного урока).
+ *
+ * В режиме погружения смесь смещается в сторону аудирования: слово сначала
+ * слышишь и только потом видишь. Так тренируется распознавание на слух,
+ * которое иначе отстаёт от чтения на месяцы.
+ */
+export function buildExercisesForWords(
+  words: Word[],
+  unitWords: Word[],
+  immersion = false
+): Exercise[] {
   return shuffle(words).map((word) => {
     const roll = Math.random();
-    if (roll < 0.35) return buildChoiceExercise('choice_ro', word, unitWords);
-    if (roll < 0.65) return buildChoiceExercise('choice_ru', word, unitWords);
+    if (immersion) {
+      if (roll < 0.4) return buildListenExercise(word, unitWords);
+      if (roll < 0.7) return buildChoiceExercise('choice_ru', word, unitWords);
+      return buildTypeExercise(word);
+    }
+    if (roll < 0.12) return buildListenExercise(word, unitWords);
+    if (roll < 0.42) return buildChoiceExercise('choice_ro', word, unitWords);
+    if (roll < 0.68) return buildChoiceExercise('choice_ru', word, unitWords);
     return buildTypeExercise(word);
   });
 }
