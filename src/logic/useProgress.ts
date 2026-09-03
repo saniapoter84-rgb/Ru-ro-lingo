@@ -66,19 +66,35 @@ export function useProgress(): ProgressApi {
   }, [state, loaded]);
 
   /**
-   * Любое изменение прогресса проходит через эту обёртку: она начисляет
-   * награды за закрытые задания дня и собирает новые ачивки, чтобы про
-   * них не пришлось помнить на каждом экране.
+   * Любое изменение прогресса проходит через эту обёртку: она заодно
+   * начисляет награды за закрытые задания дня и отмечает новые ачивки,
+   * чтобы про них не пришлось помнить на каждом экране.
+   *
+   * Функция обновления состояния обязана быть чистой, поэтому показ
+   * всплывашки живёт не здесь, а в эффекте ниже — он сравнивает список
+   * ачивок с предыдущим.
    */
   const apply = useCallback((fn: (s: ProgressState) => ProgressState) => {
-    setState((current) => {
-      const { state: settled, unlockedAchievements } = settleRewards(fn(current));
-      if (unlockedAchievements.length > 0) {
-        setPendingAchievements((prev) => [...prev, ...unlockedAchievements]);
-      }
-      return settled;
-    });
+    setState((current) => settleRewards(fn(current)).state);
   }, []);
+
+  const seenAchievements = useRef<string[] | null>(null);
+
+  useEffect(() => {
+    if (!loaded) return;
+    // Первый проход после загрузки: запоминаем уже полученное молча,
+    // иначе при каждом запуске посыпались бы старые ачивки.
+    if (seenAchievements.current === null) {
+      seenAchievements.current = state.achievements;
+      return;
+    }
+    const before = new Set(seenAchievements.current);
+    const fresh = state.achievements.filter((id) => !before.has(id));
+    if (fresh.length > 0) {
+      setPendingAchievements((prev) => [...prev, ...fresh]);
+    }
+    seenAchievements.current = state.achievements;
+  }, [state.achievements, loaded]);
 
   const answer = useCallback(
     (wordId: string, correct: boolean) => apply((s) => recordAnswer(s, wordId, correct)),
@@ -114,7 +130,12 @@ export function useProgress(): ProgressApi {
     [apply]
   );
 
-  const dismissAchievements = useCallback(() => setPendingAchievements([]), []);
+  // Убираем только показанную — если открылось несколько сразу,
+  // следующая покажется вместо неё, а не потеряется.
+  const dismissAchievements = useCallback(
+    () => setPendingAchievements((prev) => prev.slice(1)),
+    []
+  );
 
   const lang: Lang = state.immersion ? 'ro' : 'ru';
 
