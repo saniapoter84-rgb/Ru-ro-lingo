@@ -44,6 +44,9 @@ export function speechTextForStep(step: GrammarStep): string | null {
     case 'transform':
       return step.answer;
     case 'spot':
+      // Часть исправлений — это указание («убрать», «после слова»), а не слово.
+      // Такое озвучивать нечего: получилась бы фраза с русской ремаркой внутри.
+      if (step.fix.startsWith('(')) return null;
       return step.tokens.map((t, i) => (i === step.wrongIndex ? step.fix : t)).join(' ');
     case 'choice':
       return step.prompt.includes('___') ? null : step.prompt;
