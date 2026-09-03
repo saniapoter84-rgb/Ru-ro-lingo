@@ -1,4 +1,4 @@
-import { GrammarLesson, GrammarStep, isScorableStep } from '../data/course';
+import { GrammarStep } from '../data/course';
 import { stripDiacritics } from './exercises';
 
 /** Нормализация для сравнения: без диакритик, без пунктуации, без лишних пробелов. */
@@ -28,11 +28,6 @@ export function shuffle<T>(arr: T[]): T[] {
 export function buildTokenBank(answer: string, extra: string[] = []): string[] {
   const tokens = answer.split(/\s+/).filter(Boolean);
   return shuffle([...tokens, ...extra]);
-}
-
-/** Правая колонка для «сопоставь пары» — перемешанная, чтобы не было халявы. */
-export function shuffledPairTargets(pairs: { ro: string; ru: string }[]): string[] {
-  return shuffle(pairs.map((p) => p.ru));
 }
 
 /**
@@ -77,25 +72,6 @@ export function instructionForStep(step: GrammarStep): string {
     default:
       return '';
   }
-}
-
-export interface LessonPlan {
-  lesson: GrammarLesson;
-  steps: GrammarStep[];
-  /** Сколько шагов из плана дают опыт. */
-  taskCount: number;
-}
-
-/**
- * Порядок шагов внутри урока задан вручную и осмысленно (правило →
- * задания на него), поэтому не перемешиваем — только считаем задания.
- */
-export function planLesson(lesson: GrammarLesson): LessonPlan {
-  return {
-    lesson,
-    steps: lesson.steps,
-    taskCount: lesson.steps.filter(isScorableStep).length,
-  };
 }
 
 // --- Очки ---------------------------------------------------------------

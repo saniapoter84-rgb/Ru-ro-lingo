@@ -1,6 +1,6 @@
 import { MAX_LEVEL, WordProgress, isDue, isMastered, reviewWord } from './srs';
 import { ALL_LESSONS, ALL_WORDS, Lesson, getLessonsForUnit } from '../data';
-import { COURSE, COURSE_LESSONS, getCourseLesson } from '../data/course';
+import { COURSE, COURSE_LESSONS } from '../data/course';
 import { TOTAL_DIALOGUES } from '../data/dialogues';
 import { HeartsState, createHearts, loseHeart, refillHearts, syncHearts } from './hearts';
 import {
@@ -317,7 +317,6 @@ export interface CourseResult {
 }
 
 export function recordCourseResult(state: ProgressState, result: CourseResult): ProgressState {
-  const ref = getCourseLesson(result.lessonId);
   const accuracy = result.total === 0 ? 100 : Math.round((result.correct / result.total) * 100);
   const previous = state.course[result.lessonId];
 
@@ -348,9 +347,6 @@ export function recordCourseResult(state: ProgressState, result: CourseResult): 
   }
   if (result.perfect) {
     next = bump(next, 'perfect');
-  }
-  if (ref?.lesson.boss) {
-    next = { ...next, xp: next.xp };
   }
   return next;
 }

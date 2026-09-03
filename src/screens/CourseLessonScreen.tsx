@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -689,13 +689,11 @@ function MatchView({ step, locked, onSubmit }: StepProps & { step: MatchStep }) 
 
 function ListenView({ step, lang, immersion, locked, onSubmit }: StepProps & { step: ListenStep }) {
   const [picked, setPicked] = useState<number | null>(null);
-  const spoken = useRef(false);
 
-  // Первое проигрывание — сразу, без нажатия: задание всё-таки на слух.
-  if (!spoken.current) {
-    spoken.current = true;
+  // Первое проигрывание — само, без нажатия: задание всё-таки на слух.
+  useEffect(() => {
     speakRomanian(step.ro);
-  }
+  }, [step.ro]);
 
   function choose(i: number) {
     if (locked) return;

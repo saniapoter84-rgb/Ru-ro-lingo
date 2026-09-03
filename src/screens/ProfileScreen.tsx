@@ -11,10 +11,10 @@ import {
   overallStats,
   rankRatio,
   unitProgressRatio,
+  buildAchievementContext,
 } from '../logic/progress';
 import { ACHIEVEMENTS } from '../logic/achievements';
 import { Quest, isQuestDone, questEmoji, questLabel, questReward } from '../logic/quests';
-import { buildAchievementContext } from '../logic/progress';
 import { ProgressBar } from '../components/ProgressBar';
 import { Panel, SectionLabel } from '../components/Panel';
 import { Hearts } from '../components/Hearts';
