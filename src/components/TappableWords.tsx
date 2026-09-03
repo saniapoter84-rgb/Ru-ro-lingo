@@ -1,33 +1,45 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable, StyleSheet, StyleProp, TextStyle } from 'react-native';
-import { colors, radius } from '../theme/colors';
+import { colors, radius, spacing } from '../theme/colors';
 import { lookupWordHint } from '../logic/wordHints';
 
 interface Props {
   text: string;
   lang: 'ru' | 'ro';
-  /** Перевод всей фразы — на случай, если для тапнутого слова нет
-   * отдельной словарной пары (актуально для многословных фраз). */
-  fallback: string;
+  /**
+   * Перевод всей фразы — показывается, если для тапнутого слова нет
+   * отдельной подсказки. В заданиях на ввод НЕ передаётся: там перевод
+   * фразы и есть правильный ответ, показывать его нельзя.
+   */
+  fallback?: string;
   textStyle?: StyleProp<TextStyle>;
 }
 
 interface ActiveHint {
+  index: number;
   word: string;
-  translation: string;
-  exact: boolean;
+  translation: string | null;
 }
 
-/** Текст, где можно тапнуть по любому слову и увидеть его перевод. */
+/** Определяет язык текста по наличию кириллицы. */
+export function detectLang(text: string): 'ru' | 'ro' {
+  return /[А-Яа-яЁё]/.test(text) ? 'ru' : 'ro';
+}
+
+/**
+ * Текст, в котором можно тапнуть по любому слову и увидеть его перевод.
+ * Слова подчёркнуты пунктиром — иначе никто не догадается, что по ним
+ * вообще можно нажимать.
+ */
 export function TappableWords({ text, lang, fallback, textStyle }: Props) {
   const [active, setActive] = useState<ActiveHint | null>(null);
   const parts = text.split(/(\s+)/);
 
-  function onWordPress(piece: string) {
+  function onWordPress(piece: string, index: number) {
     setActive((prev) => {
-      if (prev?.word === piece) return null;
+      if (prev?.index === index) return null;
       const hint = lookupWordHint(piece, lang);
-      return { word: piece, translation: hint ?? fallback, exact: !!hint };
+      return { index, word: piece, translation: hint ?? fallback ?? null };
     });
   }
 
@@ -42,21 +54,36 @@ export function TappableWords({ text, lang, fallback, textStyle }: Props) {
               </Text>
             );
           }
-          const isActive = active?.word === piece;
+          // «___» — это пропуск в задании, а не слово: не подчёркиваем
+          // и не даём по нему тапать.
+          if (/^_+$/.test(piece)) {
+            return (
+              <Text key={i} style={[textStyle, styles.gap]}>
+                {'\u2007\u2007\u2007\u2007'}
+              </Text>
+            );
+          }
+
+          const isActive = active?.index === i;
           return (
-            <Pressable key={i} onPress={() => onWordPress(piece)} hitSlop={4}>
-              <Text style={[textStyle, isActive && styles.wordActive]}>{piece}</Text>
+            <Pressable key={i} onPress={() => onWordPress(piece, i)} hitSlop={4}>
+              <Text style={[textStyle, styles.word, isActive && styles.wordActive]}>{piece}</Text>
             </Pressable>
           );
         })}
       </View>
+
       {active ? (
-        <View style={styles.hintBox}>
-          <Text style={styles.hintText}>
-            {active.exact
-              ? `${active.word} — ${active.translation}`
-              : active.translation}
-          </Text>
+        <View style={[styles.hintBox, !active.translation && styles.hintBoxEmpty]}>
+          {active.translation ? (
+            <Text style={styles.hintText}>
+              <Text style={styles.hintWord}>{active.word}</Text> — {active.translation}
+            </Text>
+          ) : (
+            <Text style={styles.hintEmptyText}>
+              Для этого слова подсказки нет — попробуй соседнее
+            </Text>
+          )}
         </View>
       ) : null}
     </View>
@@ -65,20 +92,32 @@ export function TappableWords({ text, lang, fallback, textStyle }: Props) {
 
 const styles = StyleSheet.create({
   wrap: { flexDirection: 'row', flexWrap: 'wrap' },
-  wordActive: {
+  gap: {
     color: colors.primaryBright,
     textDecorationLine: 'underline',
     textDecorationColor: colors.primary,
   },
+  word: {
+    textDecorationLine: 'underline',
+    textDecorationStyle: 'dotted',
+    textDecorationColor: colors.textFaint,
+  },
+  wordActive: {
+    color: colors.primaryBright,
+    textDecorationColor: colors.primary,
+  },
   hintBox: {
-    marginTop: 10,
+    marginTop: spacing.md,
     backgroundColor: colors.primaryDim,
     borderRadius: radius.sm,
     borderWidth: 1,
-    borderColor: colors.borderBright,
-    paddingVertical: 7,
+    borderColor: colors.primary,
+    paddingVertical: 8,
     paddingHorizontal: 12,
     alignSelf: 'flex-start',
   },
-  hintText: { color: colors.text, fontWeight: '600', fontSize: 13 },
+  hintBoxEmpty: { backgroundColor: colors.glass, borderColor: colors.border },
+  hintText: { color: colors.text, fontSize: 14, lineHeight: 19 },
+  hintWord: { fontWeight: '800', color: colors.primaryBright },
+  hintEmptyText: { color: colors.textFaint, fontSize: 12 },
 });

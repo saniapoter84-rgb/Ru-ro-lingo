@@ -44,6 +44,7 @@ import { ProgressBar } from '../components/ProgressBar';
 import { SpeakerButton } from '../components/SpeakerButton';
 import { ComboBadge } from '../components/ComboBadge';
 import { Panel } from '../components/Panel';
+import { TappableWords, detectLang } from '../components/TappableWords';
 
 interface Props {
   lesson: GrammarLesson;
@@ -310,6 +311,17 @@ function Instruction({ step }: { step: GrammarStep }) {
   return <Text style={styles.instruction}>{instructionForStep(step)}</Text>;
 }
 
+/** Подсказка о том, что по словам можно тапать. Без неё функцию не находят. */
+function TapHint({ lang }: { lang: Lang }) {
+  return (
+    <Text style={styles.tapHint}>
+      {lang === 'ru'
+        ? 'Не знаешь слово — нажми на него'
+        : 'Nu știi un cuvânt? Atinge-l'}
+    </Text>
+  );
+}
+
 // --- Карточка правила ---------------------------------------------------
 
 function RuleView({
@@ -374,7 +386,8 @@ function ChoiceView({ step, lang, immersion, locked, onSubmit }: StepProps & { s
   return (
     <View>
       <Instruction step={step} />
-      <PromptWithGap text={step.prompt} />
+      <TapHint lang={lang} />
+      <PromptWithGap text={step.prompt} fallback={step.ru} />
       <HiddenRu text={step.ru} lang={lang} immersion={immersion} />
       <View style={styles.options}>
         {step.options.map((option, i) => (
@@ -426,18 +439,15 @@ function OptionRow({
   );
 }
 
-/** Задание с пропуском: «___» превращается в подчёркнутую пустоту. */
-function PromptWithGap({ text }: { text: string }) {
-  if (!text.includes('___')) {
-    return <Text style={styles.prompt}>{text}</Text>;
-  }
-  const [before, after] = text.split('___');
+/** Задание с пропуском: «___» рисует сам TappableWords. */
+function PromptWithGap({ text, fallback }: { text: string; fallback?: string }) {
   return (
-    <Text style={styles.prompt}>
-      {before}
-      <Text style={styles.gap}>{'      '}</Text>
-      {after}
-    </Text>
+    <TappableWords
+      text={text}
+      lang={detectLang(text)}
+      fallback={fallback}
+      textStyle={styles.prompt}
+    />
   );
 }
 
@@ -463,7 +473,8 @@ function BuildView({ step, lang, locked, accent, onSubmit }: StepProps & { step:
   return (
     <View>
       <Instruction step={step} />
-      <Text style={styles.prompt}>{step.ru}</Text>
+      <TapHint lang={lang} />
+      <TappableWords text={step.ru} lang="ru" textStyle={styles.prompt} />
 
       <View style={[styles.assembleArea, { borderColor: accent + '55' }]}>
         {used.length === 0 ? (
@@ -517,7 +528,8 @@ function TypeView({ step, lang, immersion, locked, onSubmit }: StepProps & { ste
   return (
     <View>
       <Instruction step={step} />
-      <Text style={styles.prompt}>{step.ru}</Text>
+      <TapHint lang={lang} />
+      <TappableWords text={step.ru} lang="ru" textStyle={styles.prompt} />
       {step.hint ? <Text style={styles.smallHint}>{step.hint}</Text> : null}
       <TextInput
         value={value}
@@ -558,8 +570,9 @@ function TransformView({
   return (
     <View>
       <Instruction step={step} />
+      <TapHint lang={lang} />
       <View style={styles.fromBox}>
-        <Text style={styles.fromText}>{step.from}</Text>
+        <TappableWords text={step.from} lang="ro" textStyle={styles.fromText} />
         <Text style={styles.arrow}>↓</Text>
       </View>
       <HiddenRu text={step.ru} lang={lang} immersion={immersion} />
@@ -718,6 +731,7 @@ function SpotView({ step, lang, immersion, locked, onSubmit }: StepProps & { ste
     <View>
       <Instruction step={step} />
       <Text style={styles.smallHint}>{t('lesson.tapWrong', lang)}</Text>
+
       <View style={styles.chipRow}>
         {step.tokens.map((token, i) => {
           const isWrong = locked && i === step.wrongIndex;
@@ -895,11 +909,8 @@ const styles = StyleSheet.create({
     lineHeight: 34,
     marginBottom: spacing.md,
   },
-  gap: {
-    color: colors.primaryBright,
-    textDecorationLine: 'underline',
-  },
   ruHint: { fontSize: 14, color: colors.textDim, marginBottom: spacing.lg },
+  tapHint: { fontSize: 11, color: colors.textFaint, marginBottom: spacing.md },
   revealChip: {
     alignSelf: 'flex-start',
     borderWidth: 1,

@@ -143,7 +143,6 @@ export function LessonScreen({
             typed={typed}
             setTyped={setTyped}
             feedback={feedback}
-            correctAnswer={current.answer}
             lang={lang}
           />
         ) : (
@@ -223,6 +222,7 @@ function ChoiceExerciseView({
       <Text style={styles.instruction}>
         {promptLang === 'ru' ? 'RU → RO' : 'RO → RU'}
       </Text>
+      <Text style={styles.tapHint}>Не знаешь слово — нажми на него</Text>
       <View style={styles.promptRow}>
         <View style={{ flex: 1 }}>
           <TappableWords
@@ -323,26 +323,20 @@ function TypeExerciseView({
   typed,
   setTyped,
   feedback,
-  correctAnswer,
   lang,
 }: {
   prompt: string;
   typed: string;
   setTyped: (s: string) => void;
   feedback: Feedback;
-  correctAnswer: string;
   lang: Lang;
 }) {
   return (
     <View>
       <Text style={styles.instruction}>RU → RO</Text>
+      <Text style={styles.tapHint}>Не знаешь слово — нажми на него</Text>
       <View style={{ marginBottom: spacing.lg }}>
-        <TappableWords
-          text={prompt}
-          lang="ru"
-          fallback={correctAnswer}
-          textStyle={styles.promptText}
-        />
+        <TappableWords text={prompt} lang="ru" textStyle={styles.promptText} />
       </View>
       <TextInput
         value={typed}
@@ -397,8 +391,9 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     letterSpacing: 1.4,
     color: colors.textFaint,
-    marginBottom: spacing.md,
+    marginBottom: 4,
   },
+  tapHint: { fontSize: 11, color: colors.textFaint, marginBottom: spacing.md },
   promptRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
