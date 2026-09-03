@@ -139,7 +139,7 @@ export const UNITS_5: Unit[] = [
       { ru: 'больше (количество)', ro: 'mai mult', pos: 'phrase' },
       { ru: 'меньше', ro: 'mai puțin', pos: 'phrase' },
       { ru: 'штука', ro: 'bucată', pos: 'noun' },
-      { ru: 'кусок', ro: 'felie', pos: 'noun' },
+      { ru: 'ломтик (хлеба, сыра)', ro: 'felie', pos: 'noun' },
       { ru: 'пачка', ro: 'pachet', pos: 'noun' },
       { ru: 'коробка', ro: 'cutie', pos: 'noun' },
       { ru: 'сумма', ro: 'sumă', pos: 'noun' },
