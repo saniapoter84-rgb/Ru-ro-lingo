@@ -387,7 +387,7 @@ function ChoiceView({ step, lang, immersion, locked, onSubmit }: StepProps & { s
     <View>
       <Instruction step={step} />
       <TapHint lang={lang} />
-      <PromptWithGap text={step.prompt} fallback={step.ru} />
+      <PromptWithGap text={step.prompt} fallback={immersion ? undefined : step.ru} />
       <HiddenRu text={step.ru} lang={lang} immersion={immersion} />
       <View style={styles.options}>
         {step.options.map((option, i) => (
