@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable, StyleSheet, StyleProp, TextStyle } from 'react-native';
 import { colors, radius, spacing } from '../theme/colors';
-import { lookupWordHint } from '../logic/wordHints';
+import { lookupPhraseHint, lookupWordHint } from '../logic/wordHints';
 
 interface Props {
   text: string;
@@ -19,6 +19,8 @@ interface ActiveHint {
   index: number;
   word: string;
   translation: string | null;
+  /** Перевод всей фразы, а не одного слова — подписываем иначе. */
+  whole: boolean;
 }
 
 /** Определяет язык текста по наличию кириллицы. */
@@ -38,8 +40,16 @@ export function TappableWords({ text, lang, fallback, textStyle }: Props) {
   function onWordPress(piece: string, index: number) {
     setActive((prev) => {
       if (prev?.index === index) return null;
+
       const hint = lookupWordHint(piece, lang);
-      return { index, word: piece, translation: hint ?? fallback ?? null };
+      if (hint) return { index, word: piece, translation: hint, whole: false };
+
+      // У слова отдельного значения нет — возможно, вся фраза есть
+      // в словаре целиком («приятного аппетита»).
+      const phrase = lookupPhraseHint(text, lang);
+      if (phrase) return { index, word: text, translation: phrase, whole: true };
+
+      return { index, word: piece, translation: fallback ?? null, whole: !!fallback };
     });
   }
 
@@ -77,6 +87,7 @@ export function TappableWords({ text, lang, fallback, textStyle }: Props) {
         <View style={[styles.hintBox, !active.translation && styles.hintBoxEmpty]}>
           {active.translation ? (
             <Text style={styles.hintText}>
+              {active.whole ? <Text style={styles.hintLabel}>вся фраза: </Text> : null}
               <Text style={styles.hintWord}>{active.word}</Text> — {active.translation}
             </Text>
           ) : (
@@ -119,5 +130,6 @@ const styles = StyleSheet.create({
   hintBoxEmpty: { backgroundColor: colors.glass, borderColor: colors.border },
   hintText: { color: colors.text, fontSize: 14, lineHeight: 19 },
   hintWord: { fontWeight: '800', color: colors.primaryBright },
+  hintLabel: { color: colors.textFaint, fontSize: 12 },
   hintEmptyText: { color: colors.textFaint, fontSize: 12 },
 });

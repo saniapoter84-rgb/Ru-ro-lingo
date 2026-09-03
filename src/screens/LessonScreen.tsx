@@ -225,12 +225,7 @@ function ChoiceExerciseView({
       <Text style={styles.tapHint}>Не знаешь слово — нажми на него</Text>
       <View style={styles.promptRow}>
         <View style={{ flex: 1 }}>
-          <TappableWords
-            text={prompt}
-            lang={promptLang}
-            fallback={options.find((o) => o.id === correctId)?.text ?? ''}
-            textStyle={styles.promptText}
-          />
+          <TappableWords text={prompt} lang={promptLang} textStyle={styles.promptText} />
         </View>
         {promptLang === 'ro' ? <SpeakerButton text={prompt} size={34} /> : null}
       </View>

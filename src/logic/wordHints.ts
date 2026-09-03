@@ -10,7 +10,7 @@ const LETTERS = 'a-zA-ZĂÂÎȘȚăâîșțА-Яа-яЁё';
 const TRIM_RE = new RegExp(`^[^${LETTERS}-]+|[^${LETTERS}-]+$`, 'g');
 
 export function normalizeToken(raw: string): string {
-  return raw.replace(TRIM_RE, '').toLowerCase().trim();
+  return raw.replace(TRIM_RE, '').toLowerCase().replace(/ё/g, 'е').trim();
 }
 
 /**
@@ -215,21 +215,95 @@ const RU_FORMS: Record<string, string> = {
   всё: 'tot / totul', все: 'toți / toate', много: 'mult', мало: 'puțin',
 };
 
+/**
+ * Ключи, под которыми словарная запись попадает в индекс.
+ *
+ * В словаре полно записей с уточнением в скобках («счёт (в банке)») и с
+ * вариантами через слэш («идти / ехать»). Раньше такие считались
+ * многословными и выбрасывались целиком — из-за этого подсказка молчала
+ * на вполне обычных словах.
+ */
+function indexKeysFor(text: string): string[] {
+  const withoutParens = text.replace(/\([^)]*\)/g, ' ');
+  const keys: string[] = [];
+  for (const part of withoutParens.split('/')) {
+    const key = normalizeToken(part);
+    // Многословный остаток («в банке») ключом быть не может.
+    if (key && !/\s/.test(key)) keys.push(key);
+  }
+  return keys;
+}
+
 function buildSingleWordIndex(field: 'ru' | 'ro'): Map<string, string> {
   const other: 'ru' | 'ro' = field === 'ru' ? 'ro' : 'ru';
   const map = new Map<string, string>();
+
   for (const w of ALL_WORDS) {
-    const text = w[field].trim();
-    if (!text || /\s/.test(text)) continue; // только однословные словарные записи
-    const key = normalizeToken(text);
-    if (!key || map.has(key)) continue;
-    map.set(key, w[other]);
+    const translation = w[other];
+    for (const key of indexKeysFor(w[field])) {
+      if (!map.has(key)) map.set(key, translation);
+    }
+    // Альтернативные румынские написания тоже должны находиться.
+    if (field === 'ro' && w.alt) {
+      for (const alt of w.alt) {
+        for (const key of indexKeysFor(alt)) {
+          if (!map.has(key)) map.set(key, translation);
+        }
+      }
+    }
   }
   return map;
 }
 
 const RU_WORD_TO_RO = buildSingleWordIndex('ru');
 const RO_WORD_TO_RU = buildSingleWordIndex('ro');
+
+/** Ключи списков форм приводим к тому же виду, что и запросы. */
+function normalizeFormMap(forms: Record<string, string>): Map<string, string> {
+  const map = new Map<string, string>();
+  for (const [key, value] of Object.entries(forms)) {
+    const normalized = normalizeToken(key);
+    if (normalized && !map.has(normalized)) map.set(normalized, value);
+  }
+  return map;
+}
+
+const RO_FORM_MAP = normalizeFormMap(RO_FORMS);
+const RU_FORM_MAP = normalizeFormMap(RU_FORMS);
+
+/** Нормализация целой фразы: регистр, ё, скобки, знаки препинания. */
+export function normalizePhrase(raw: string): string {
+  return raw
+    .toLowerCase()
+    .replace(/ё/g, 'е')
+    .replace(/\([^)]*\)/g, ' ')
+    .replace(new RegExp(`[^${LETTERS} -]`, 'g'), ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function buildPhraseIndex(field: 'ru' | 'ro'): Map<string, string> {
+  const other: 'ru' | 'ro' = field === 'ru' ? 'ro' : 'ru';
+  const map = new Map<string, string>();
+  for (const w of ALL_WORDS) {
+    const key = normalizePhrase(w[field]);
+    if (key && !map.has(key)) map.set(key, w[other]);
+  }
+  return map;
+}
+
+const RU_PHRASE_TO_RO = buildPhraseIndex('ru');
+const RO_PHRASE_TO_RU = buildPhraseIndex('ro');
+
+/**
+ * Перевод фразы целиком. Нужен для устойчивых выражений вроде «приятного
+ * аппетита»: отдельного значения у слова «аппетита» нет, а у фразы есть.
+ */
+export function lookupPhraseHint(text: string, lang: 'ru' | 'ro'): string | undefined {
+  const key = normalizePhrase(text);
+  if (!key || !key.includes(' ')) return undefined; // однословное — не фраза
+  return (lang === 'ru' ? RU_PHRASE_TO_RO : RO_PHRASE_TO_RU).get(key);
+}
 
 /**
  * Пробует свести румынское слово к словарной форме: отсекает приклеенный
@@ -284,11 +358,11 @@ export function lookupWordHint(token: string, lang: 'ru' | 'ro'): string | undef
   if (!key) return undefined;
 
   const index = lang === 'ru' ? RU_WORD_TO_RO : RO_WORD_TO_RU;
-  const forms = lang === 'ru' ? RU_FORMS : RO_FORMS;
+  const forms = lang === 'ru' ? RU_FORM_MAP : RO_FORM_MAP;
 
   // Частотные формы важнее словаря: «are» как форма глагола полезнее,
   // чем случайное совпадение с существительным.
-  const form = forms[key];
+  const form = forms.get(key);
   if (form) return form;
 
   const exact = index.get(key);

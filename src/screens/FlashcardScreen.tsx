@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -42,6 +42,23 @@ export function FlashcardScreen({ words, onExit, onDone }: Props) {
   const current = words[index];
   const next = words[index + 1];
 
+  // Пока карточка улетает, второй свайп принимать нельзя: иначе два
+  // завершения подряд перепрыгивают через конец списка.
+  const swiping = useRef(false);
+  const finished = useRef(false);
+
+  const finish = useCallback(() => {
+    if (finished.current) return;
+    finished.current = true;
+    onDone({ knownIds: known.current, unknownIds: unknown.current });
+  }, [onDone]);
+
+  // Страховка: если индекс всё-таки ушёл за конец (например, из-за
+  // прерванной анимации), завершаем этап, а не показываем пустой экран.
+  useEffect(() => {
+    if (words.length === 0 || index >= words.length) finish();
+  }, [index, words.length, finish]);
+
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => false,
@@ -62,27 +79,41 @@ export function FlashcardScreen({ words, onExit, onDone }: Props) {
   ).current;
 
   function forceSwipe(direction: 'left' | 'right') {
+    if (swiping.current) return;
+    swiping.current = true;
     const x = direction === 'right' ? SCREEN_WIDTH * 1.5 : -SCREEN_WIDTH * 1.5;
     Animated.timing(position, {
       toValue: { x, y: 0 },
       duration: SWIPE_OUT_DURATION,
       useNativeDriver: false,
-    }).start(() => onSwipeComplete(direction));
+    }).start(({ finished: completed }) => {
+      // Прерванная анимация тоже зовёт колбэк — такой вызов не считается.
+      if (!completed) {
+        swiping.current = false;
+        return;
+      }
+      onSwipeComplete(direction);
+    });
   }
 
   function onSwipeComplete(direction: 'left' | 'right') {
     const word = words[index];
-    if (direction === 'right') known.current.push(word.id);
-    else unknown.current.push(word.id);
+    if (word) {
+      if (direction === 'right') known.current.push(word.id);
+      else unknown.current.push(word.id);
+    }
 
     position.setValue({ x: 0, y: 0 });
     flipAnim.setValue(0);
     setFlipped(false);
+    swiping.current = false;
 
     if (index + 1 >= words.length) {
-      onDone({ knownIds: known.current, unknownIds: unknown.current });
+      finish();
     } else {
-      setIndex((i) => i + 1);
+      // Присваиваем значение, а не увеличиваем: повторный вызов тогда
+      // приводит к тому же индексу, а не к прыжку через карточку.
+      setIndex(index + 1);
     }
   }
 
