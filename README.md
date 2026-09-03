@@ -72,6 +72,14 @@ cd android && ./gradlew assembleRelease
 
 Ключ подписи задаётся в `android/gradle.properties` (`RURO_UPLOAD_STORE_FILE` и рядом). Без них соберётся debug-вариант.
 
+По умолчанию APK получается ~70 МБ, потому что внутрь кладутся библиотеки сразу под четыре архитектуры. Для установки на конкретный телефон хватит одной — так файл ужимается втрое:
+
+```bash
+./gradlew assembleRelease -PreactNativeArchitectures=arm64-v8a -Pexpo.useLegacyPackaging=true
+```
+
+`arm64-v8a` подходит практически любому телефону начиная примерно с 2015 года; для совсем старых нужен `armeabi-v7a`.
+
 ## Структура
 
 ```
