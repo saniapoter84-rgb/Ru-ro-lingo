@@ -2,18 +2,31 @@ import React from 'react';
 import { View, Text, ScrollView, StyleSheet, Pressable } from 'react-native';
 import { colors, radius, spacing } from '../theme/colors';
 import { UNITS, getLessonsForUnit, Lesson } from '../data';
-import { ProgressState, isLessonUnlocked, unitProgressRatio } from '../logic/progress';
+import {
+  ProgressState,
+  getDueWordIds,
+  isLessonUnlocked,
+  unitProgressRatio,
+} from '../logic/progress';
 import { ProgressBar } from '../components/ProgressBar';
 import { Hearts } from '../components/Hearts';
 import { Lang, t } from '../i18n/strings';
+import { PrimaryButton } from '../components/PrimaryButton';
+import { Panel } from '../components/Panel';
 
 interface Props {
   progress: ProgressState;
   lang: Lang;
   onOpenLesson: (lesson: Lesson) => void;
+  onStartReview: (wordIds: string[]) => void;
 }
 
-export function HomeScreen({ progress, lang, onOpenLesson }: Props) {
+/** Сколько слов берём в одну сессию повторения — чтобы она не пугала объёмом. */
+const REVIEW_BATCH = 15;
+
+export function HomeScreen({ progress, lang, onOpenLesson, onStartReview }: Props) {
+  const dueIds = getDueWordIds(progress);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -25,6 +38,26 @@ export function HomeScreen({ progress, lang, onOpenLesson }: Props) {
       </View>
 
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+        <Panel active={dueIds.length > 0} style={styles.reviewCard}>
+          <View style={styles.reviewHeader}>
+            <Text style={styles.reviewCount}>{dueIds.length}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.reviewTitle}>{t('review.title', lang)}</Text>
+              <Text style={styles.reviewHint}>
+                {dueIds.length > 0 ? t('review.due', lang) : t('review.none', lang)}
+              </Text>
+            </View>
+          </View>
+          {dueIds.length > 0 ? (
+            <PrimaryButton
+              title={t('review.start', lang)}
+              small
+              onPress={() => onStartReview(dueIds.slice(0, REVIEW_BATCH))}
+              style={{ marginTop: spacing.md }}
+            />
+          ) : null}
+        </Panel>
+
         {UNITS.map((unit) => {
           const lessons = getLessonsForUnit(unit.id);
           const ratio = unitProgressRatio(progress, unit.id);
@@ -94,6 +127,17 @@ const styles = StyleSheet.create({
   subtitle: { fontSize: 12, color: colors.textDim, marginTop: 3 },
   scroll: { paddingHorizontal: spacing.lg },
 
+  reviewCard: { marginBottom: spacing.lg },
+  reviewHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
+  reviewCount: {
+    fontSize: 28,
+    fontWeight: '800',
+    color: colors.primaryBright,
+    fontVariant: ['tabular-nums'],
+    minWidth: 42,
+  },
+  reviewTitle: { fontSize: 14, fontWeight: '700', color: colors.text },
+  reviewHint: { fontSize: 11, color: colors.textDim, marginTop: 3, lineHeight: 15 },
   unitCard: {
     backgroundColor: colors.card,
     borderRadius: radius.md,

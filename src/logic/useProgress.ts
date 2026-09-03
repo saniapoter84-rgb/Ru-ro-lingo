@@ -4,6 +4,7 @@ import {
   CourseResult,
   ProgressState,
   completeLesson,
+  completeReview,
   createInitialProgress,
   markTimeOfDay,
   recordAnswer,
@@ -28,6 +29,7 @@ export interface ProgressApi {
   dismissAchievements: () => void;
   answer: (wordId: string, correct: boolean) => void;
   finishLesson: (lessonId: string) => void;
+  finishReview: () => void;
   finishCourseLesson: (result: CourseResult) => void;
   finishDialogue: (id: string, score: number, total: number, xp: number) => void;
   loseHeart: () => void;
@@ -106,6 +108,8 @@ export function useProgress(): ProgressApi {
     [apply]
   );
 
+  const finishReview = useCallback(() => apply(completeReview), [apply]);
+
   const finishCourseLesson = useCallback(
     (result: CourseResult) => apply((s) => recordCourseResult(s, result)),
     [apply]
@@ -148,6 +152,7 @@ export function useProgress(): ProgressApi {
       dismissAchievements,
       answer,
       finishLesson,
+      finishReview,
       finishCourseLesson,
       finishDialogue,
       loseHeart,
@@ -163,6 +168,7 @@ export function useProgress(): ProgressApi {
       dismissAchievements,
       answer,
       finishLesson,
+      finishReview,
       finishCourseLesson,
       finishDialogue,
       loseHeart,

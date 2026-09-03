@@ -31,6 +31,14 @@ const DICT = {
     ro: 'Cartonașe și exerciții pe 38 de teme',
   },
 
+  'review.title': { ru: 'Повторение', ro: 'Repetare' },
+  'review.due': { ru: 'слов ждут повторения', ro: 'cuvinte așteaptă repetarea' },
+  'review.none': {
+    ru: 'Всё повторено. Возвращайся завтра — SRS подберёт новую порцию.',
+    ro: 'Totul repetat. Revino mâine — SRS pregătește o porție nouă.',
+  },
+  'review.start': { ru: 'Повторить сейчас', ro: 'Repetă acum' },
+
   'course.title': { ru: 'Тропа', ro: 'Traseul' },
   'course.subtitle': {
     ru: 'Грамматика с нуля — шаг за шагом',

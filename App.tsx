@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Platform, StatusBar as RNStatusBar } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { colors } from './src/theme/colors';
-import { Lesson, ALL_WORDS, getWordsForLesson } from './src/data';
+import { Lesson, ALL_WORDS, getWordById, getWordsForLesson } from './src/data';
 import { CourseChapter, GrammarLesson } from './src/data/course';
 import { Dialogue } from './src/data/dialogues';
 import { useProgress } from './src/logic/useProgress';
@@ -21,6 +21,7 @@ import { AchievementToast } from './src/components/AchievementToast';
 type Screen =
   | { name: 'tabs' }
   | { name: 'wordLesson'; lesson: Lesson }
+  | { name: 'review'; wordIds: string[] }
   | { name: 'courseLesson'; lesson: GrammarLesson; chapter: CourseChapter }
   | { name: 'dialogue'; dialogue: Dialogue }
   | { name: 'reference' };
@@ -36,6 +37,7 @@ export default function App() {
     dismissAchievements,
     answer,
     finishLesson,
+    finishReview,
     finishCourseLesson,
     finishDialogue,
     loseHeart,
@@ -68,6 +70,33 @@ export default function App() {
           onExit={backToTabs}
           onAnswer={answer}
           onFinishLesson={finishLesson}
+        />
+      </Shell>
+    );
+  }
+
+  if (screen.name === 'review') {
+    // Повторение — та же механика урока, но набор слов собирает SRS,
+    // а не тема. Синтетический «урок» нужен только чтобы переиспользовать экран.
+    const words = screen.wordIds.map(getWordById).filter((w): w is NonNullable<typeof w> => !!w);
+    const reviewLesson: Lesson = {
+      id: 'srs_review',
+      unitId: 'srs_review',
+      index: 0,
+      title: 'Повторение',
+      wordIds: screen.wordIds,
+    };
+    return (
+      <Shell>
+        <LessonFlowScreen
+          lesson={reviewLesson}
+          words={words}
+          unitWords={ALL_WORDS}
+          lang={lang}
+          immersion={progress.immersion}
+          onExit={backToTabs}
+          onAnswer={answer}
+          onFinishLesson={finishReview}
         />
       </Shell>
     );
@@ -130,6 +159,7 @@ export default function App() {
         progress={progress}
         lang={lang}
         onOpenLesson={(lesson) => setScreen({ name: 'wordLesson', lesson })}
+        onStartReview={(wordIds) => setScreen({ name: 'review', wordIds })}
       />
     );
   } else if (tab === 'immersion') {

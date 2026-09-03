@@ -254,6 +254,25 @@ export function getDueWordIdsForLesson(
   return lesson.wordIds.filter((id) => isDue(state.words[id], now));
 }
 
+/**
+ * Слова, которые SRS считает созревшими для повторения. Берём только уже
+ * встречавшиеся: новые слова осваиваются через уроки, а не через повторение.
+ */
+export function getDueWordIds(state: ProgressState, now: number = Date.now()): string[] {
+  return ALL_WORDS.filter((w) => {
+    const p = state.words[w.id];
+    return !!p && p.seenCount > 0 && isDue(p, now);
+  })
+    // Сначала самые «просроченные» — они ближе всего к тому, чтобы забыться.
+    .sort((a, b) => (state.words[a.id]!.dueAt ?? 0) - (state.words[b.id]!.dueAt ?? 0))
+    .map((w) => w.id);
+}
+
+/** Повторение не привязано к уроку, поэтому в completedLessonIds не пишем. */
+export function completeReview(state: ProgressState): ProgressState {
+  return addXp(state, XP_PER_LESSON_BONUS);
+}
+
 const UNIT_ORDER = Array.from(new Set(ALL_LESSONS.map((l) => l.unitId)));
 
 export function isLessonUnlocked(state: ProgressState, lesson: Lesson): boolean {
