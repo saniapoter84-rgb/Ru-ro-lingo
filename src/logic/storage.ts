@@ -25,6 +25,7 @@ function migrate(raw: unknown): ProgressState {
     dialogues: parsed.dialogues ?? base.dialogues,
     quests: parsed.quests ?? createQuestState(today),
     achievements: parsed.achievements ?? [],
+    placement: parsed.placement ?? null,
     dailyGoal: parsed.dailyGoal ?? base.dailyGoal,
     immersion: parsed.immersion ?? false,
     // Стрик мог существовать в v1 — тогда он и есть «самый длинный».

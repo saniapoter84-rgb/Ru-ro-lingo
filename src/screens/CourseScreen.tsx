@@ -10,6 +10,8 @@ import {
   nextCourseLessonId,
 } from '../logic/progress';
 import { ProgressBar } from '../components/ProgressBar';
+import { PrimaryButton } from '../components/PrimaryButton';
+import { Panel } from '../components/Panel';
 import { Lang, t } from '../i18n/strings';
 
 interface Props {
@@ -18,9 +20,16 @@ interface Props {
   onOpenLesson: (lesson: GrammarLesson, chapter: CourseChapter) => void;
   /** Справочник — та же грамматика, но списком, без заданий. */
   onOpenReference: () => void;
+  onOpenPlacement: () => void;
 }
 
-export function CourseScreen({ progress, lang, onOpenLesson, onOpenReference }: Props) {
+export function CourseScreen({
+  progress,
+  lang,
+  onOpenLesson,
+  onOpenReference,
+  onOpenPlacement,
+}: Props) {
   const nextId = useMemo(() => nextCourseLessonId(progress), [progress]);
   const scrollRef = useRef<ScrollView>(null);
 
@@ -57,6 +66,22 @@ export function CourseScreen({ progress, lang, onOpenLesson, onOpenReference }: 
         contentContainerStyle={styles.scroll}
         showsVerticalScrollIndicator={false}
       >
+        {progress.placement === null ? (
+          <Panel style={styles.testCard}>
+            <Text style={styles.testTitle}>Уже что-то знаешь?</Text>
+            <Text style={styles.testText}>
+              Пройди тест на уровень — он отметит главы, которые ты и так знаешь, и не
+              заставит проходить их заново.
+            </Text>
+            <PrimaryButton
+              title="Пройти тест"
+              small
+              onPress={onOpenPlacement}
+              style={{ marginTop: spacing.md, alignSelf: 'flex-start' }}
+            />
+          </Panel>
+        ) : null}
+
         {COURSE.map((chapter, chapterIndex) => (
           <ChapterBlock
             key={chapter.id}
@@ -135,6 +160,7 @@ function ChapterBlock({
               unlocked={unlocked}
               completed={!!entry?.completed}
               perfect={!!entry?.perfect}
+              viaTest={!!entry?.viaTest}
               isNext={nextId === lesson.id}
               lang={lang}
               onPress={() => onOpenLesson(lesson, chapter)}
@@ -153,6 +179,7 @@ function LessonRow({
   unlocked,
   completed,
   perfect,
+  viaTest,
   isNext,
   lang,
   onPress,
@@ -163,6 +190,7 @@ function LessonRow({
   unlocked: boolean;
   completed: boolean;
   perfect: boolean;
+  viaTest: boolean;
   isNext: boolean;
   lang: Lang;
   onPress: () => void;
@@ -218,6 +246,7 @@ function LessonRow({
             {t('course.boss', lang).toUpperCase()}
           </Text>
         ) : null}
+        {viaTest ? <Text style={styles.testTag}>ТЕСТ</Text> : null}
         <Text style={styles.taskCount}>{countTasks(lesson)}</Text>
       </View>
     </Pressable>
@@ -325,5 +354,9 @@ const styles = StyleSheet.create({
   textLocked: { color: colors.textFaint },
   lessonMeta: { alignItems: 'flex-end', gap: 2 },
   bossTag: { fontSize: 9, fontWeight: '800', letterSpacing: 0.8 },
+  testTag: { fontSize: 8, fontWeight: '800', letterSpacing: 0.8, color: colors.textFaint },
+  testCard: { marginBottom: spacing.xl },
+  testTitle: { fontSize: 15, fontWeight: '800', color: colors.text },
+  testText: { fontSize: 12, color: colors.textDim, marginTop: 6, lineHeight: 17 },
   taskCount: { fontSize: 11, color: colors.textFaint, fontVariant: ['tabular-nums'] },
 });

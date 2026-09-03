@@ -18,6 +18,16 @@ export interface CourseLessonProgress {
   perfect: boolean;
   bestAccuracy: number;
   timesPlayed: number;
+  /** Зачтён тестом на уровень, а не пройден руками. Урок открыт и его
+   * можно пройти по-настоящему в любой момент. */
+  viaTest?: boolean;
+}
+
+/** Результат теста на определение уровня. */
+export interface PlacementResult {
+  /** Сколько глав тест признал уже известными. */
+  chapters: number;
+  date: string;
 }
 
 export interface DialogueProgress {
@@ -37,6 +47,9 @@ export interface ProgressState {
 
   quests: QuestState;
   achievements: string[];
+
+  /** null — тест ни разу не проходили. */
+  placement: PlacementResult | null;
 
   /** Опыт, набранный сегодня, и дневная цель — кольцо на профиле. */
   dailyXp: number;
@@ -79,6 +92,7 @@ export function createInitialProgress(): ProgressState {
     dialogues: {},
     quests: createQuestState(toLocalDateString(new Date())),
     achievements: [],
+    placement: null,
     dailyXp: 0,
     dailyGoal: DEFAULT_DAILY_GOAL,
     immersion: false,
@@ -363,6 +377,39 @@ export function recordCourseResult(state: ProgressState, result: CourseResult): 
     next = bump(next, 'perfect');
   }
   return next;
+}
+
+/**
+ * Отмечает главы, которые тест признал известными. Уже пройденные вручную
+ * уроки не трогаем: у них честная статистика, и затирать её результатом
+ * теста нельзя. Опыт за такие уроки НЕ начисляется — иначе получилось бы,
+ * что тест накручивает прогресс.
+ */
+export function applyPlacement(
+  state: ProgressState,
+  knownChapters: number,
+  now: Date = new Date()
+): ProgressState {
+  const course = { ...state.course };
+
+  for (const chapter of COURSE.slice(0, knownChapters)) {
+    for (const lesson of chapter.lessons) {
+      if (course[lesson.id]?.completed) continue;
+      course[lesson.id] = {
+        completed: true,
+        perfect: false,
+        bestAccuracy: 0,
+        timesPlayed: 0,
+        viaTest: true,
+      };
+    }
+  }
+
+  return {
+    ...state,
+    course,
+    placement: { chapters: knownChapters, date: toLocalDateString(now) },
+  };
 }
 
 // --- Погружение ---------------------------------------------------------

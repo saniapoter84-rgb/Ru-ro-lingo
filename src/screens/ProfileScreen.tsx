@@ -16,6 +16,7 @@ import {
 import { ACHIEVEMENTS } from '../logic/achievements';
 import { Quest, isQuestDone, questEmoji, questLabel, questReward } from '../logic/quests';
 import { ProgressBar } from '../components/ProgressBar';
+import { PrimaryButton } from '../components/PrimaryButton';
 import { Panel, SectionLabel } from '../components/Panel';
 import { Lang, t } from '../i18n/strings';
 
@@ -24,11 +25,18 @@ interface Props {
   lang: Lang;
   onToggleImmersion: () => void;
   onChangeGoal: (goal: number) => void;
+  onOpenPlacement: () => void;
 }
 
 const GOALS = [30, 50, 100, 200];
 
-export function ProfileScreen({ progress, lang, onToggleImmersion, onChangeGoal }: Props) {
+export function ProfileScreen({
+  progress,
+  lang,
+  onToggleImmersion,
+  onChangeGoal,
+  onOpenPlacement,
+}: Props) {
   const stats = overallStats(progress);
   const rank = getRank(progress.xp);
   const nextRank = getNextRank(progress.xp);
@@ -221,6 +229,22 @@ export function ProfileScreen({ progress, lang, onToggleImmersion, onChangeGoal 
               thumbColor={colors.white}
             />
           </View>
+        </Panel>
+
+        <Panel style={{ marginTop: spacing.sm }}>
+          <Text style={styles.settingTitle}>Тест на уровень</Text>
+          <Text style={styles.settingHint}>
+            {progress.placement
+              ? `Пройден ${progress.placement.date}: зачтено глав — ${progress.placement.chapters}. Можно пройти заново, уже сделанное вручную не пострадает.`
+              : 'Проверит текущий уровень и отметит главы, которые ты уже знаешь.'}
+          </Text>
+          <PrimaryButton
+            title={progress.placement ? 'Пройти заново' : 'Пройти тест'}
+            small
+            variant="ghost"
+            onPress={onOpenPlacement}
+            style={{ marginTop: spacing.md, alignSelf: 'flex-start' }}
+          />
         </Panel>
 
         <View style={{ height: spacing.xxl }} />

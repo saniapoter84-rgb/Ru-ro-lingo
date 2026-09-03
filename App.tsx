@@ -13,6 +13,7 @@ import { ImmersionScreen } from './src/screens/ImmersionScreen';
 import { DialogueScreen } from './src/screens/DialogueScreen';
 import { ProfileScreen } from './src/screens/ProfileScreen';
 import { GrammarScreen } from './src/screens/GrammarScreen';
+import { PlacementTestScreen } from './src/screens/PlacementTestScreen';
 import { LessonFlowScreen } from './src/screens/LessonFlowScreen';
 import { TabBar, TabKey } from './src/components/TabBar';
 import { AchievementToast } from './src/components/AchievementToast';
@@ -23,7 +24,8 @@ type Screen =
   | { name: 'review'; wordIds: string[] }
   | { name: 'courseLesson'; lesson: GrammarLesson; chapter: CourseChapter }
   | { name: 'dialogue'; dialogue: Dialogue }
-  | { name: 'reference' };
+  | { name: 'reference' }
+  | { name: 'placement' };
 
 const topInset = Platform.OS === 'android' ? RNStatusBar.currentHeight ?? 24 : 52;
 
@@ -37,6 +39,7 @@ export default function App() {
     answer,
     finishLesson,
     finishReview,
+    finishPlacement,
     finishCourseLesson,
     finishDialogue,
     toggleImmersion,
@@ -129,6 +132,14 @@ export default function App() {
     );
   }
 
+  if (screen.name === 'placement') {
+    return (
+      <Shell>
+        <PlacementTestScreen onFinish={finishPlacement} onExit={backToTabs} />
+      </Shell>
+    );
+  }
+
   if (screen.name === 'reference') {
     return (
       <Shell>
@@ -147,6 +158,7 @@ export default function App() {
         lang={lang}
         onOpenLesson={(lesson, chapter) => setScreen({ name: 'courseLesson', lesson, chapter })}
         onOpenReference={() => setScreen({ name: 'reference' })}
+        onOpenPlacement={() => setScreen({ name: 'placement' })}
       />
     );
   } else if (tab === 'words') {
@@ -174,6 +186,7 @@ export default function App() {
         lang={lang}
         onToggleImmersion={toggleImmersion}
         onChangeGoal={changeDailyGoal}
+        onOpenPlacement={() => setScreen({ name: 'placement' })}
       />
     );
   }
