@@ -10,7 +10,6 @@ import {
   nextCourseLessonId,
 } from '../logic/progress';
 import { ProgressBar } from '../components/ProgressBar';
-import { Hearts } from '../components/Hearts';
 import { Lang, t } from '../i18n/strings';
 
 interface Props {
@@ -44,7 +43,6 @@ export function CourseScreen({ progress, lang, onOpenLesson, onOpenReference }: 
         <Pressable onPress={onOpenReference} style={styles.refButton} hitSlop={8}>
           <Text style={styles.refIcon}>≡</Text>
         </Pressable>
-        <Hearts hearts={progress.hearts} />
       </View>
 
       <View style={styles.overallRow}>

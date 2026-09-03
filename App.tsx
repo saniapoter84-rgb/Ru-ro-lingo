@@ -6,7 +6,6 @@ import { Lesson, ALL_WORDS, getWordById, getWordsForLesson } from './src/data';
 import { CourseChapter, GrammarLesson } from './src/data/course';
 import { Dialogue } from './src/data/dialogues';
 import { useProgress } from './src/logic/useProgress';
-import { syncHearts } from './src/logic/hearts';
 import { HomeScreen } from './src/screens/HomeScreen';
 import { CourseScreen } from './src/screens/CourseScreen';
 import { CourseLessonScreen } from './src/screens/CourseLessonScreen';
@@ -40,7 +39,6 @@ export default function App() {
     finishReview,
     finishCourseLesson,
     finishDialogue,
-    loseHeart,
     toggleImmersion,
     changeDailyGoal,
   } = useProgress();
@@ -110,8 +108,6 @@ export default function App() {
           chapter={screen.chapter}
           lang={lang}
           immersion={progress.immersion}
-          availableHearts={syncHearts(progress.hearts).count}
-          onLoseHeart={loseHeart}
           onFinish={finishCourseLesson}
           onExit={backToTabs}
         />

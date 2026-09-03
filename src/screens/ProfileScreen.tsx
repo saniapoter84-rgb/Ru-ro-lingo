@@ -17,7 +17,6 @@ import { ACHIEVEMENTS } from '../logic/achievements';
 import { Quest, isQuestDone, questEmoji, questLabel, questReward } from '../logic/quests';
 import { ProgressBar } from '../components/ProgressBar';
 import { Panel, SectionLabel } from '../components/Panel';
-import { Hearts } from '../components/Hearts';
 import { Lang, t } from '../i18n/strings';
 
 interface Props {
@@ -41,7 +40,6 @@ export function ProfileScreen({ progress, lang, onToggleImmersion, onChangeGoal 
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>{t('profile.title', lang)}</Text>
-        <Hearts hearts={progress.hearts} />
       </View>
 
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>

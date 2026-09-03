@@ -9,7 +9,6 @@ import {
   unitProgressRatio,
 } from '../logic/progress';
 import { ProgressBar } from '../components/ProgressBar';
-import { Hearts } from '../components/Hearts';
 import { Lang, t } from '../i18n/strings';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { Panel } from '../components/Panel';
@@ -34,7 +33,6 @@ export function HomeScreen({ progress, lang, onOpenLesson, onStartReview }: Prop
           <Text style={styles.title}>{t('home.title', lang)}</Text>
           <Text style={styles.subtitle}>{t('home.subtitle', lang)}</Text>
         </View>
-        <Hearts hearts={progress.hearts} showTimer={false} />
       </View>
 
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>

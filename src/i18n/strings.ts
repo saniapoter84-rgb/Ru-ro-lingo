@@ -71,11 +71,6 @@ const DICT = {
   'lesson.accuracy': { ru: 'Точность', ro: 'Precizie' },
   'lesson.xpEarned': { ru: 'Опыт', ro: 'Experiență' },
   'lesson.bestCombo': { ru: 'Лучшее комбо', ro: 'Cel mai bun combo' },
-  'lesson.outOfHearts': { ru: 'Сердца закончились', ro: 'Nu mai ai inimi' },
-  'lesson.outOfHeartsBody': {
-    ru: 'Они восстановятся сами. А пока можно повторить урок заново — это бесплатно.',
-    ro: 'Se refac singure. Între timp poți relua lecția — e gratis.',
-  },
   'lesson.newAchievement': { ru: 'Новая ачивка!', ro: 'Realizare nouă!' },
 
   'immersion.title': { ru: 'Погружение', ro: 'Imersiune' },

@@ -69,7 +69,7 @@ export const ACHIEVEMENTS: Achievement[] = [
   {
     id: 'flawless',
     title: 'Без единой',
-    description: 'Пройти урок, не потеряв ни одного сердца',
+    description: 'Пройти урок без единой ошибки',
     emoji: '💎',
     check: (c) => c.perfectLessons >= 1,
     progress: (c) => ratio(c.perfectLessons, 1),

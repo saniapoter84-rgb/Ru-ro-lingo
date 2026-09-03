@@ -37,13 +37,11 @@ import {
   XP_PERFECT_BONUS,
 } from '../logic/courseEngine';
 import { CourseResult } from '../logic/progress';
-import { BOSS_HEARTS } from '../logic/hearts';
 import { speakRomanian } from '../logic/speech';
 import { Lang, t } from '../i18n/strings';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { ProgressBar } from '../components/ProgressBar';
 import { SpeakerButton } from '../components/SpeakerButton';
-import { HeartDots } from '../components/Hearts';
 import { ComboBadge } from '../components/ComboBadge';
 import { Panel } from '../components/Panel';
 
@@ -52,13 +50,11 @@ interface Props {
   chapter: CourseChapter;
   lang: Lang;
   immersion: boolean;
-  availableHearts: number;
-  onLoseHeart: () => void;
   onFinish: (result: CourseResult) => void;
   onExit: () => void;
 }
 
-type Phase = 'question' | 'feedback' | 'finished' | 'dead';
+type Phase = 'question' | 'feedback' | 'finished';
 
 function tap(style: Haptics.ImpactFeedbackStyle = Haptics.ImpactFeedbackStyle.Light) {
   if (Platform.OS === 'web') return;
@@ -70,8 +66,6 @@ export function CourseLessonScreen({
   chapter,
   lang,
   immersion,
-  availableHearts,
-  onLoseHeart,
   onFinish,
   onExit,
 }: Props) {
@@ -92,10 +86,6 @@ export function CourseLessonScreen({
   const [xpEarned, setXpEarned] = useState(0);
   const [solved, setSolved] = useState<Set<number>>(() => new Set());
   const [mistakes, setMistakes] = useState(0);
-
-  const startingLives = boss ? Math.min(availableHearts, BOSS_HEARTS) : availableHearts;
-  const [lives, setLives] = useState(Math.max(1, startingLives));
-  const maxLives = Math.max(1, startingLives);
 
   const currentIndex = queue[0];
   const step = currentIndex === undefined ? undefined : steps[currentIndex];
@@ -155,22 +145,15 @@ export function CourseLessonScreen({
         runShake();
         setCombo(0);
         setMistakes((n) => n + 1);
-        setLives((n) => n - 1);
-        onLoseHeart();
       }
       setPhase('feedback');
     },
-    [phase, currentIndex, combo, boss, solved, steps, onLoseHeart, runShake]
+    [phase, currentIndex, combo, boss, solved, steps, runShake]
   );
 
   /** Переход к следующему шагу — после карточки правила или после разбора. */
   const advance = useCallback(() => {
     if (currentIndex === undefined) return;
-
-    if (!wasCorrect && lives <= 0) {
-      setPhase('dead');
-      return;
-    }
 
     const rest = queue.slice(1);
     // Неверно решённое задание вернётся ближе к концу урока.
@@ -185,7 +168,6 @@ export function CourseLessonScreen({
   }, [
     currentIndex,
     wasCorrect,
-    lives,
     queue,
     xpEarned,
     correctCount,
@@ -221,10 +203,6 @@ export function CourseLessonScreen({
     );
   }
 
-  if (phase === 'dead') {
-    return <OutOfHeartsScreen lang={lang} onExit={onExit} />;
-  }
-
   if (!step) return null;
 
   const progressRatio = taskTotal === 0 ? 1 : solved.size / taskTotal;
@@ -239,7 +217,9 @@ export function CourseLessonScreen({
         <View style={{ flex: 1 }}>
           <ProgressBar ratio={progressRatio} color={chapter.color} />
         </View>
-        <HeartDots count={Math.max(0, lives)} max={maxLives} />
+        <Text style={styles.stepCount}>
+          {solved.size}/{taskTotal}
+        </Text>
       </View>
 
       <View style={styles.comboRow}>
@@ -877,21 +857,6 @@ function ResultStat({ label, value, accent }: { label: string; value: string; ac
   );
 }
 
-function OutOfHeartsScreen({ lang, onExit }: { lang: Lang; onExit: () => void }) {
-  return (
-    <View style={styles.centered}>
-      <Text style={styles.deadHeart}>♥</Text>
-      <Text style={styles.resultTitle}>{t('lesson.outOfHearts', lang)}</Text>
-      <Text style={styles.deadBody}>{t('lesson.outOfHeartsBody', lang)}</Text>
-      <PrimaryButton
-        title={t('common.continue', lang)}
-        onPress={onExit}
-        style={{ marginTop: spacing.xxl, alignSelf: 'stretch' }}
-      />
-    </View>
-  );
-}
-
 // --- Стили --------------------------------------------------------------
 
 const styles = StyleSheet.create({
@@ -904,6 +869,14 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.md,
   },
   close: { fontSize: 18, color: colors.textFaint },
+  stepCount: {
+    fontSize: 12,
+    color: colors.textFaint,
+    fontWeight: '700',
+    fontVariant: ['tabular-nums'],
+    minWidth: 38,
+    textAlign: 'right',
+  },
   comboRow: { paddingHorizontal: spacing.lg, minHeight: 24 },
   body: { padding: spacing.lg, paddingBottom: spacing.xxl, flexGrow: 1, justifyContent: 'center' },
 
@@ -1098,12 +1071,4 @@ const styles = StyleSheet.create({
   resultStat: { alignItems: 'center' },
   resultStatValue: { fontSize: 22, fontWeight: '800', color: colors.text },
   resultStatLabel: { fontSize: 11, color: colors.textFaint, marginTop: 4 },
-  deadHeart: { fontSize: 56, color: colors.danger, marginBottom: spacing.lg },
-  deadBody: {
-    fontSize: 14,
-    color: colors.textDim,
-    textAlign: 'center',
-    marginTop: spacing.md,
-    lineHeight: 21,
-  },
 });

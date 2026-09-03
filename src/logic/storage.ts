@@ -1,6 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ProgressState, createInitialProgress, toLocalDateString } from './progress';
-import { createHearts } from './hearts';
 import { createQuestState } from './quests';
 
 const LEGACY_KEY = '@ru_ro_lingo/progress_v1';
@@ -24,7 +23,6 @@ function migrate(raw: unknown): ProgressState {
     completedLessonIds: parsed.completedLessonIds ?? base.completedLessonIds,
     course: parsed.course ?? base.course,
     dialogues: parsed.dialogues ?? base.dialogues,
-    hearts: parsed.hearts ?? createHearts(),
     quests: parsed.quests ?? createQuestState(today),
     achievements: parsed.achievements ?? [],
     dailyGoal: parsed.dailyGoal ?? base.dailyGoal,

@@ -2,7 +2,6 @@ import { MAX_LEVEL, WordProgress, isDue, isMastered, reviewWord } from './srs';
 import { ALL_LESSONS, ALL_WORDS, Lesson, getLessonsForUnit } from '../data';
 import { COURSE, COURSE_LESSONS } from '../data/course';
 import { TOTAL_DIALOGUES } from '../data/dialogues';
-import { HeartsState, createHearts, loseHeart, refillHearts, syncHearts } from './hearts';
 import {
   QuestKind,
   QuestState,
@@ -36,7 +35,6 @@ export interface ProgressState {
   course: Record<string, CourseLessonProgress>;
   dialogues: Record<string, DialogueProgress>;
 
-  hearts: HeartsState;
   quests: QuestState;
   achievements: string[];
 
@@ -79,7 +77,6 @@ export function createInitialProgress(): ProgressState {
     completedLessonIds: [],
     course: {},
     dialogues: {},
-    hearts: createHearts(),
     quests: createQuestState(toLocalDateString(new Date())),
     achievements: [],
     dailyXp: 0,
@@ -147,11 +144,10 @@ export function rankRatio(xp: number): number {
 export function syncDaily(state: ProgressState, now: Date = new Date()): ProgressState {
   const today = toLocalDateString(now);
   const nowMs = now.getTime();
-  const hearts = syncHearts(state.hearts, nowMs);
 
   if (state.lastActiveDate === today) {
     const quests = ensureQuestsForDate(state.quests, today, state.daysActive);
-    return { ...state, hearts, quests };
+    return { ...state, quests };
   }
 
   const yesterday = toLocalDateString(new Date(nowMs - 24 * 60 * 60 * 1000));
@@ -160,7 +156,6 @@ export function syncDaily(state: ProgressState, now: Date = new Date()): Progres
 
   return {
     ...state,
-    hearts,
     streak,
     longestStreak: Math.max(state.longestStreak, streak),
     lastActiveDate: today,
@@ -405,16 +400,6 @@ export function setImmersion(state: ProgressState, on: boolean): ProgressState {
 
 export function setDailyGoal(state: ProgressState, goal: number): ProgressState {
   return { ...state, dailyGoal: Math.max(10, goal) };
-}
-
-// --- Сердца -------------------------------------------------------------
-
-export function spendHeart(state: ProgressState, now: number = Date.now()): ProgressState {
-  return { ...state, hearts: loseHeart(state.hearts, now) };
-}
-
-export function restoreHearts(state: ProgressState): ProgressState {
-  return { ...state, hearts: refillHearts() };
 }
 
 // --- Сводки -------------------------------------------------------------

@@ -10,11 +10,9 @@ import {
   recordAnswer,
   recordCourseResult,
   recordDialogueResult,
-  restoreHearts,
   setDailyGoal,
   setImmersion,
   settleRewards,
-  spendHeart,
   syncDaily,
 } from './progress';
 import { Lang } from '../i18n/strings';
@@ -32,8 +30,6 @@ export interface ProgressApi {
   finishReview: () => void;
   finishCourseLesson: (result: CourseResult) => void;
   finishDialogue: (id: string, score: number, total: number, xp: number) => void;
-  loseHeart: () => void;
-  refillHearts: () => void;
   toggleImmersion: () => void;
   changeDailyGoal: (goal: number) => void;
 }
@@ -121,9 +117,6 @@ export function useProgress(): ProgressApi {
     [apply]
   );
 
-  const loseHeart = useCallback(() => apply(spendHeart), [apply]);
-  const refillHearts = useCallback(() => apply(restoreHearts), [apply]);
-
   const toggleImmersion = useCallback(
     () => apply((s) => setImmersion(s, !s.immersion)),
     [apply]
@@ -155,8 +148,6 @@ export function useProgress(): ProgressApi {
       finishReview,
       finishCourseLesson,
       finishDialogue,
-      loseHeart,
-      refillHearts,
       toggleImmersion,
       changeDailyGoal,
     }),
@@ -171,8 +162,6 @@ export function useProgress(): ProgressApi {
       finishReview,
       finishCourseLesson,
       finishDialogue,
-      loseHeart,
-      refillHearts,
       toggleImmersion,
       changeDailyGoal,
     ]
