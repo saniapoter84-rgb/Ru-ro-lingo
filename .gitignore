@@ -39,3 +39,6 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# Собранные APK — в репозиторий не кладём
+*.apk
