@@ -2,7 +2,7 @@
   "expo": {
     "name": "RuRo Lingo",
     "slug": "ru-ro-lingo",
-    "version": "2.4.0",
+    "version": "2.4.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
@@ -18,7 +18,7 @@
     },
     "android": {
       "package": "com.yunogasai.rurolingo",
-      "versionCode": 7,
+      "versionCode": 8,
       "adaptiveIcon": {
         "backgroundColor": "#0B0B10",
         "foregroundImage": "./assets/android-icon-foreground.png",

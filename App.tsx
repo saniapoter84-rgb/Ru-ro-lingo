@@ -13,6 +13,7 @@ import { CourseChapter, GrammarLesson, getCourseLesson } from './src/data/course
 import { Dialogue, DIALOGUES } from './src/data/dialogues';
 import { NextAction } from './src/logic/today';
 import { useProgress } from './src/logic/useProgress';
+import { useFullscreen } from './src/logic/useFullscreen';
 import { HomeScreen } from './src/screens/HomeScreen';
 import { CourseScreen } from './src/screens/CourseScreen';
 import { CourseLessonScreen } from './src/screens/CourseLessonScreen';
@@ -51,9 +52,14 @@ export default function App() {
     finishCourseLesson,
     finishDialogue,
     toggleImmersion,
+    toggleFullscreen,
     changeDailyGoal,
     beginPlan,
   } = useProgress();
+
+  // Полный экран включается один раз на всё приложение и переустанавливается
+  // сам, когда Android возвращает панели после сворачивания.
+  useFullscreen(progress.fullscreen);
 
   const [screen, setScreen] = useState<Screen>({ name: 'tabs' });
   const [tab, setTab] = useState<TabKey>('course');
@@ -103,7 +109,7 @@ export default function App() {
     const words = getWordsForLesson(screen.lesson);
     const unitWords = ALL_WORDS.filter((w) => w.unitId === screen.lesson.unitId);
     return (
-      <Shell>
+      <Shell fullscreen={progress.fullscreen}>
         <LessonFlowScreen
           lesson={screen.lesson}
           words={words}
@@ -130,7 +136,7 @@ export default function App() {
       wordIds: screen.wordIds,
     };
     return (
-      <Shell>
+      <Shell fullscreen={progress.fullscreen}>
         <LessonFlowScreen
           lesson={reviewLesson}
           words={words}
@@ -147,7 +153,7 @@ export default function App() {
 
   if (screen.name === 'courseLesson') {
     return (
-      <Shell>
+      <Shell fullscreen={progress.fullscreen}>
         <CourseLessonScreen
           lesson={screen.lesson}
           chapter={screen.chapter}
@@ -162,7 +168,7 @@ export default function App() {
 
   if (screen.name === 'dialogue') {
     return (
-      <Shell>
+      <Shell fullscreen={progress.fullscreen}>
         <DialogueScreen
           dialogue={screen.dialogue}
           lang={lang}
@@ -176,7 +182,7 @@ export default function App() {
 
   if (screen.name === 'placement') {
     return (
-      <Shell>
+      <Shell fullscreen={progress.fullscreen}>
         <PlacementTestScreen onFinish={finishPlacement} onExit={backToTabs} />
       </Shell>
     );
@@ -184,7 +190,7 @@ export default function App() {
 
   if (screen.name === 'reference') {
     return (
-      <Shell>
+      <Shell fullscreen={progress.fullscreen}>
         <GrammarScreen onBack={backToTabs} />
       </Shell>
     );
@@ -225,6 +231,7 @@ export default function App() {
         progress={progress}
         lang={lang}
         onToggleImmersion={toggleImmersion}
+        onToggleFullscreen={toggleFullscreen}
         onOpenDialogue={(dialogue) => setScreen({ name: 'dialogue', dialogue })}
       />
     );
@@ -234,6 +241,7 @@ export default function App() {
         progress={progress}
         lang={lang}
         onToggleImmersion={toggleImmersion}
+        onToggleFullscreen={toggleFullscreen}
         onChangeGoal={changeDailyGoal}
         onOpenPlacement={() => setScreen({ name: 'placement' })}
       />
@@ -241,19 +249,31 @@ export default function App() {
   }
 
   return (
-    <Shell>
+    <Shell fullscreen={progress.fullscreen}>
       <AchievementToast ids={pendingAchievements} lang={lang} onDismiss={dismissAchievements} />
       <View style={{ flex: 1 }}>{content}</View>
-      <TabBar active={tab} onChange={setTab} lang={lang} />
+      <TabBar active={tab} onChange={setTab} lang={lang} fullscreen={progress.fullscreen} />
     </Shell>
   );
 }
 
-/** Общая обёртка: тёмный фон, отступ под системную строку, светлый статус-бар. */
-function Shell({ children }: { children: React.ReactNode }) {
+/**
+ * Общая обёртка: тёмный фон, отступ под системную строку, светлый статус-бар.
+ *
+ * Отступ сверху сохраняется и в полноэкранном режиме: приложение рисует
+ * от края до края, и без него содержимое уезжало бы под вырез камеры. Часы
+ * и иконки при этом всё равно исчезают — ради чего режим и нужен.
+ */
+function Shell({
+  children,
+  fullscreen,
+}: {
+  children: React.ReactNode;
+  fullscreen: boolean;
+}) {
   return (
     <View style={[styles.container, { paddingTop: topInset }]}>
-      <StatusBar style="light" />
+      <StatusBar style="light" hidden={fullscreen} />
       {children}
     </View>
   );

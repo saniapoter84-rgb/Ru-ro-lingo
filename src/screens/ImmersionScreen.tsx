@@ -10,10 +10,17 @@ interface Props {
   progress: ProgressState;
   lang: Lang;
   onToggleImmersion: () => void;
+  onToggleFullscreen: () => void;
   onOpenDialogue: (dialogue: Dialogue) => void;
 }
 
-export function ImmersionScreen({ progress, lang, onToggleImmersion, onOpenDialogue }: Props) {
+export function ImmersionScreen({
+  progress,
+  lang,
+  onToggleImmersion,
+  onToggleFullscreen,
+  onOpenDialogue,
+}: Props) {
   const done = Object.values(progress.dialogues).filter((d) => d.completed).length;
 
   return (
@@ -48,6 +55,28 @@ export function ImmersionScreen({ progress, lang, onToggleImmersion, onOpenDialo
               </Text>
             </View>
           ) : null}
+        </Panel>
+
+        {/* Второй вид погружения — уже не языковой, а экранный. Два разных
+            переключателя стоят рядом, потому что ищут их в одном месте. */}
+        <Panel active={progress.fullscreen} style={styles.toggleCard}>
+          <View style={styles.toggleRow}>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.toggleTitle}>
+                {progress.fullscreen ? 'Полный экран включён' : 'Полный экран выключен'}
+              </Text>
+              <Text style={styles.toggleHint}>
+                Скрывает часы, иконки и панель навигации Android — на экране остаётся
+                только приложение. Свайп от края всё так же показывает их.
+              </Text>
+            </View>
+            <Switch
+              value={progress.fullscreen}
+              onValueChange={onToggleFullscreen}
+              trackColor={{ false: colors.border, true: colors.primary }}
+              thumbColor={colors.white}
+            />
+          </View>
         </Panel>
 
         <View style={styles.counterRow}>

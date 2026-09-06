@@ -18,11 +18,13 @@ interface Props {
   active: TabKey;
   onChange: (tab: TabKey) => void;
   lang: Lang;
+  /** В полноэкранном режиме под панелью нет системной навигации. */
+  fullscreen?: boolean;
 }
 
-export function TabBar({ active, onChange, lang }: Props) {
+export function TabBar({ active, onChange, lang, fullscreen }: Props) {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, fullscreen && styles.containerFullscreen]}>
       {TABS.map((tab) => {
         const isActive = tab.key === active;
         return (
@@ -57,6 +59,8 @@ const styles = StyleSheet.create({
     paddingBottom: spacing.md,
     paddingHorizontal: spacing.sm,
   },
+  // Без системной панели снизу вкладки упирались бы в самый край экрана.
+  containerFullscreen: { paddingBottom: spacing.xl },
   tabOuter: { flex: 1 },
   tab: { alignItems: 'center', gap: 4 },
   iconWrap: {

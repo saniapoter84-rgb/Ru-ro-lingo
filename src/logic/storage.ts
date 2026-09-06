@@ -29,6 +29,8 @@ function migrate(raw: unknown): ProgressState {
     planStart: parsed.planStart ?? null,
     dailyGoal: parsed.dailyGoal ?? base.dailyGoal,
     immersion: parsed.immersion ?? false,
+    // Полный экран включён по умолчанию, в том числе у старых сохранений.
+    fullscreen: parsed.fullscreen ?? true,
     // Стрик мог существовать в v1 — тогда он и есть «самый длинный».
     longestStreak: parsed.longestStreak ?? parsed.streak ?? 0,
     // История дней появилась позже стрика: у старых сохранений её нет,

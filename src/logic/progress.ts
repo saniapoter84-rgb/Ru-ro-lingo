@@ -71,6 +71,9 @@ export interface ProgressState {
   /** Режим погружения: интерфейс на румынском, переводы спрятаны. */
   immersion: boolean;
 
+  /** Полный экран: скрыты системные часы и панель навигации Android. */
+  fullscreen: boolean;
+
   totalCorrect: number;
   bestCombo: number;
   longestStreak: number;
@@ -111,6 +114,7 @@ export function createInitialProgress(): ProgressState {
     dailyXp: 0,
     dailyGoal: DEFAULT_DAILY_GOAL,
     immersion: false,
+    fullscreen: true,
     totalCorrect: 0,
     bestCombo: 0,
     longestStreak: 0,
@@ -467,6 +471,10 @@ export function recordDialogueResult(
 
 export function setImmersion(state: ProgressState, on: boolean): ProgressState {
   return { ...state, immersion: on };
+}
+
+export function setFullscreen(state: ProgressState, on: boolean): ProgressState {
+  return { ...state, fullscreen: on };
 }
 
 export function setDailyGoal(state: ProgressState, goal: number): ProgressState {

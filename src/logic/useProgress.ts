@@ -12,6 +12,7 @@ import {
   recordCourseResult,
   recordDialogueResult,
   setDailyGoal,
+  setFullscreen,
   setImmersion,
   startPlan,
   settleRewards,
@@ -34,6 +35,7 @@ export interface ProgressApi {
   finishCourseLesson: (result: CourseResult) => void;
   finishDialogue: (id: string, score: number, total: number, xp: number) => void;
   toggleImmersion: () => void;
+  toggleFullscreen: () => void;
   changeDailyGoal: (goal: number) => void;
   /** Запустить план или сдвинуть его на сегодня. */
   beginPlan: () => void;
@@ -132,6 +134,11 @@ export function useProgress(): ProgressApi {
     [apply]
   );
 
+  const toggleFullscreen = useCallback(
+    () => apply((s) => setFullscreen(s, !s.fullscreen)),
+    [apply]
+  );
+
   const changeDailyGoal = useCallback(
     (goal: number) => apply((s) => setDailyGoal(s, goal)),
     [apply]
@@ -162,6 +169,7 @@ export function useProgress(): ProgressApi {
       finishCourseLesson,
       finishDialogue,
       toggleImmersion,
+      toggleFullscreen,
       changeDailyGoal,
       beginPlan,
     }),
@@ -178,6 +186,7 @@ export function useProgress(): ProgressApi {
       finishCourseLesson,
       finishDialogue,
       toggleImmersion,
+      toggleFullscreen,
       changeDailyGoal,
       beginPlan,
     ]

@@ -28,6 +28,7 @@ interface Props {
   progress: ProgressState;
   lang: Lang;
   onToggleImmersion: () => void;
+  onToggleFullscreen: () => void;
   onChangeGoal: (goal: number) => void;
   onOpenPlacement: () => void;
 }
@@ -46,6 +47,7 @@ export function ProfileScreen({
   progress,
   lang,
   onToggleImmersion,
+  onToggleFullscreen,
   onChangeGoal,
   onOpenPlacement,
 }: Props) {
@@ -290,6 +292,24 @@ export function ProfileScreen({
             <Switch
               value={progress.immersion}
               onValueChange={onToggleImmersion}
+              trackColor={{ false: colors.border, true: colors.primary }}
+              thumbColor={colors.white}
+            />
+          </View>
+        </Panel>
+
+        <Panel style={{ marginTop: spacing.sm }}>
+          <View style={styles.settingRow}>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.settingTitle}>На весь экран</Text>
+              <Text style={styles.settingHint}>
+                Прячет системные часы, иконки и панель навигации Android. Ничего не
+                блокируется: свайп от края экрана показывает их как обычно.
+              </Text>
+            </View>
+            <Switch
+              value={progress.fullscreen}
+              onValueChange={onToggleFullscreen}
               trackColor={{ false: colors.border, true: colors.primary }}
               thumbColor={colors.white}
             />
