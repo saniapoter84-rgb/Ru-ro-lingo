@@ -117,7 +117,7 @@ export interface CourseChapter {
   title: string;
   subtitle: string;
   emoji: string;
-  level: 'A0' | 'A1' | 'A2';
+  level: 'A0' | 'A1' | 'A2' | 'B1';
   /** Цвет главы — им красится её ветка на карте курса. */
   color: string;
   lessons: GrammarLesson[];

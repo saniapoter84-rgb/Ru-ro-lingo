@@ -6,6 +6,8 @@ export interface AchievementContext {
   xp: number;
   streak: number;
   longestStreak: number;
+  /** Всего дней с языком — счётчик, который не может уменьшиться. */
+  daysActive: number;
   totalCorrect: number;
   bestCombo: number;
   masteredWords: number;
@@ -109,18 +111,18 @@ export const ACHIEVEMENTS: Achievement[] = [
   {
     id: 'streak_30',
     title: 'Месяц',
-    description: 'Тридцать дней подряд',
+    description: 'Тридцать дней с языком — не обязательно подряд',
     emoji: '🗓️',
-    check: (c) => c.longestStreak >= 30,
-    progress: (c) => ratio(c.longestStreak, 30),
+    check: (c) => c.daysActive >= 30,
+    progress: (c) => ratio(c.daysActive, 30),
   },
   {
     id: 'streak_100',
     title: 'Сто дней',
-    description: 'Сто дней подряд — это уже не привычка, это характер',
+    description: 'Сто дней с языком. Считается всё, даже с перерывами',
     emoji: '💯',
-    check: (c) => c.longestStreak >= 100,
-    progress: (c) => ratio(c.longestStreak, 100),
+    check: (c) => c.daysActive >= 100,
+    progress: (c) => ratio(c.daysActive, 100),
   },
   {
     id: 'words_100',

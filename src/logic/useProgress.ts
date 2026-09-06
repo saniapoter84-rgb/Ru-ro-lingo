@@ -13,6 +13,7 @@ import {
   recordDialogueResult,
   setDailyGoal,
   setImmersion,
+  startPlan,
   settleRewards,
   syncDaily,
 } from './progress';
@@ -34,6 +35,8 @@ export interface ProgressApi {
   finishDialogue: (id: string, score: number, total: number, xp: number) => void;
   toggleImmersion: () => void;
   changeDailyGoal: (goal: number) => void;
+  /** Запустить план или сдвинуть его на сегодня. */
+  beginPlan: () => void;
 }
 
 export function useProgress(): ProgressApi {
@@ -134,6 +137,8 @@ export function useProgress(): ProgressApi {
     [apply]
   );
 
+  const beginPlan = useCallback(() => apply((s) => startPlan(s)), [apply]);
+
   // Убираем только показанную — если открылось несколько сразу,
   // следующая покажется вместо неё, а не потеряется.
   const dismissAchievements = useCallback(
@@ -158,6 +163,7 @@ export function useProgress(): ProgressApi {
       finishDialogue,
       toggleImmersion,
       changeDailyGoal,
+      beginPlan,
     }),
     [
       state,
@@ -173,6 +179,7 @@ export function useProgress(): ProgressApi {
       finishDialogue,
       toggleImmersion,
       changeDailyGoal,
+      beginPlan,
     ]
   );
 }

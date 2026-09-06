@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, Text, ScrollView, StyleSheet, Pressable } from 'react-native';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { Press } from '../components/Press';
+import { Reveal } from '../components/Reveal';
 import { colors, radius, spacing } from '../theme/colors';
 import { UNITS, getLessonsForUnit, Lesson } from '../data';
 import {
@@ -56,11 +58,11 @@ export function HomeScreen({ progress, lang, onOpenLesson, onStartReview }: Prop
           ) : null}
         </Panel>
 
-        {UNITS.map((unit) => {
+        {UNITS.map((unit, unitIndex) => {
           const lessons = getLessonsForUnit(unit.id);
           const ratio = unitProgressRatio(progress, unit.id);
           return (
-            <View key={unit.id} style={styles.unitCard}>
+            <Reveal key={unit.id} delay={Math.min(unitIndex, 8) * 25} style={styles.unitCard}>
               <View style={styles.unitHeader}>
                 <View style={styles.unitEmojiBox}>
                   <Text style={styles.unitEmoji}>{unit.emoji}</Text>
@@ -79,15 +81,16 @@ export function HomeScreen({ progress, lang, onOpenLesson, onStartReview }: Prop
                   const unlocked = isLessonUnlocked(progress, lesson);
                   const completed = progress.completedLessonIds.includes(lesson.id);
                   return (
-                    <Pressable
+                    <Press
                       key={lesson.id}
                       disabled={!unlocked}
                       onPress={() => onOpenLesson(lesson)}
-                      style={({ pressed }) => [
+                      feedback={unlocked ? 'select' : null}
+                      scaleTo={0.9}
+                      style={[
                         styles.node,
                         completed && styles.nodeCompleted,
                         !unlocked && styles.nodeLocked,
-                        pressed && unlocked && styles.nodePressed,
                       ]}
                     >
                       <Text
@@ -99,11 +102,11 @@ export function HomeScreen({ progress, lang, onOpenLesson, onStartReview }: Prop
                       >
                         {completed ? '✓' : i + 1}
                       </Text>
-                    </Pressable>
+                    </Press>
                   );
                 })}
               </View>
-            </View>
+            </Reveal>
           );
         })}
         <View style={{ height: spacing.xxl }} />

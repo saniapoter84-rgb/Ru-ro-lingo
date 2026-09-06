@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ScrollView, StyleSheet, Pressable, Switch } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, Switch } from 'react-native';
 import { colors, radius, spacing } from '../theme/colors';
 import { UNITS } from '../data';
 import { COURSE } from '../data/course';
@@ -15,9 +15,13 @@ import {
 } from '../logic/progress';
 import { ACHIEVEMENTS } from '../logic/achievements';
 import { Quest, isQuestDone, questEmoji, questLabel, questReward } from '../logic/quests';
+import { rhythmSummary } from '../logic/rhythm';
+import { PLAN_LENGTH_WEEKS, dailyLoad, formatDate, planStatus } from '../logic/plan';
 import { ProgressBar } from '../components/ProgressBar';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { Panel, SectionLabel } from '../components/Panel';
+import { Press } from '../components/Press';
+import { RhythmStrip } from '../components/RhythmStrip';
 import { Lang, t } from '../i18n/strings';
 
 interface Props {
@@ -29,6 +33,14 @@ interface Props {
 }
 
 const GOALS = [30, 50, 100, 200];
+
+function pluralDays(n: number): string {
+  const mod10 = n % 10;
+  const mod100 = n % 100;
+  if (mod10 === 1 && mod100 !== 11) return 'день';
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return 'дня';
+  return 'дней';
+}
 
 export function ProfileScreen({
   progress,
@@ -43,6 +55,9 @@ export function ProfileScreen({
   const ctx = buildAchievementContext(progress);
   const unlocked = new Set(progress.achievements);
   const goalRatio = stats.dailyGoal === 0 ? 0 : stats.dailyXp / stats.dailyGoal;
+  const rhythm = rhythmSummary(progress);
+  const plan = planStatus(progress);
+  const load = dailyLoad(progress, plan);
 
   return (
     <View style={styles.container}>
@@ -72,6 +87,48 @@ export function ProfileScreen({
           ) : null}
         </Panel>
 
+        {/* Ритм: история занятий, которую нельзя потерять */}
+        <Panel style={styles.rhythmCard}>
+          <View style={styles.rhythmHead}>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.rhythmValue}>
+                {rhythm.totalDays}
+                <Text style={styles.rhythmUnit}> {pluralDays(rhythm.totalDays)} с языком</Text>
+              </Text>
+              <Text style={styles.rhythmHint}>
+                Этот счётчик только растёт. Пропущенный день ничего не отнимает — он просто
+                остаётся незакрашенным.
+              </Text>
+            </View>
+          </View>
+          <View style={{ marginTop: spacing.md }}>
+            <RhythmStrip days={rhythm.days} color={colors.primary} />
+          </View>
+          <View style={styles.rhythmFooter}>
+            <Text style={styles.rhythmFoot}>сейчас подряд — {rhythm.run}</Text>
+            <Text style={styles.rhythmFoot}>лучший отрезок — {rhythm.best}</Text>
+          </View>
+        </Panel>
+
+        {/* План */}
+        {plan.started ? (
+          <Panel style={styles.goalCard}>
+            <View style={styles.goalHeader}>
+              <Text style={styles.goalTitle}>
+                План до B1 · неделя {plan.currentWeek} из {PLAN_LENGTH_WEEKS}
+              </Text>
+              <Text style={styles.goalValue}>{Math.round(plan.overallRatio * 100)}%</Text>
+            </View>
+            <ProgressBar ratio={plan.overallRatio} height={6} />
+            <Text style={styles.settingHint}>
+              Дедлайн — {plan.deadline ? formatDate(plan.deadline) : '—'}. При нынешнем темпе
+              выйдешь на B1{' '}
+              {plan.projectedFinish ? formatDate(plan.projectedFinish) : 'пока непонятно когда'}.
+              Норма рабочего дня — {load.minutes} мин, свободных дней в неделе — два.
+            </Text>
+          </Panel>
+        ) : null}
+
         {/* Цель дня */}
         <Panel style={styles.goalCard}>
           <View style={styles.goalHeader}>
@@ -91,9 +148,10 @@ export function ProfileScreen({
           ) : null}
           <View style={styles.goalPicker}>
             {GOALS.map((goal) => (
-              <Pressable
+              <Press
                 key={goal}
                 onPress={() => onChangeGoal(goal)}
+                feedback="select"
                 style={[styles.goalChip, stats.dailyGoal === goal && styles.goalChipActive]}
               >
                 <Text
@@ -104,7 +162,7 @@ export function ProfileScreen({
                 >
                   {goal}
                 </Text>
-              </Pressable>
+              </Press>
             ))}
           </View>
         </Panel>
@@ -114,8 +172,8 @@ export function ProfileScreen({
           <StatCard
             icon="▲"
             tint={colors.warning}
-            value={String(stats.streak)}
-            label={t('profile.streak', lang)}
+            value={String(rhythm.totalDays)}
+            label={t('profile.daysWithLanguage', lang)}
           />
           <StatCard
             icon="★"
@@ -313,6 +371,13 @@ const styles = StyleSheet.create({
   scroll: { paddingHorizontal: spacing.lg },
 
   rankCard: { marginBottom: spacing.md },
+  rhythmCard: { marginBottom: spacing.md },
+  rhythmHead: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
+  rhythmValue: { fontSize: 20, fontWeight: '800', color: colors.text },
+  rhythmUnit: { fontSize: 12, fontWeight: '600', color: colors.textDim },
+  rhythmHint: { fontSize: 11, color: colors.textFaint, marginTop: 4, lineHeight: 16 },
+  rhythmFooter: { flexDirection: 'row', gap: spacing.lg, marginTop: spacing.md },
+  rhythmFoot: { fontSize: 10, color: colors.textFaint, fontWeight: '600' },
   rankRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
   rankEmoji: { fontSize: 30 },
   rankLabel: {

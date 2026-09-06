@@ -37,7 +37,7 @@ export const UNITS_3: Unit[] = [
     title: 'Деньги и банк',
     emoji: '💳',
     words: [
-      { ru: 'лей (валюта)', ro: 'leu', pos: 'noun', note: 'мн. ч. — lei' },
+      { ru: 'лей (валюта)', ro: 'leu', alt: ['lei'], pos: 'noun', note: 'мн. ч. — lei' },
       { ru: 'евро', ro: 'euro', pos: 'noun' },
       { ru: 'карта (банковская)', ro: 'card', pos: 'noun' },
       { ru: 'счёт (в банке)', ro: 'cont', pos: 'noun' },

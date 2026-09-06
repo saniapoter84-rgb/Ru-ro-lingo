@@ -26,10 +26,15 @@ function migrate(raw: unknown): ProgressState {
     quests: parsed.quests ?? createQuestState(today),
     achievements: parsed.achievements ?? [],
     placement: parsed.placement ?? null,
+    planStart: parsed.planStart ?? null,
     dailyGoal: parsed.dailyGoal ?? base.dailyGoal,
     immersion: parsed.immersion ?? false,
     // Стрик мог существовать в v1 — тогда он и есть «самый длинный».
     longestStreak: parsed.longestStreak ?? parsed.streak ?? 0,
+    // История дней появилась позже стрика: у старых сохранений её нет,
+    // и единственный день, про который мы точно знаем, — последний.
+    activeDates:
+      parsed.activeDates ?? (parsed.lastActiveDate ? [parsed.lastActiveDate] : []),
   };
 }
 

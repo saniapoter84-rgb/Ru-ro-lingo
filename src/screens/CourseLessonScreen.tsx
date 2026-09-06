@@ -1,16 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  ScrollView,
-  TextInput,
-  Animated,
-  Platform,
-} from 'react-native';
-import * as Haptics from 'expo-haptics';
+import { View, Text, StyleSheet, ScrollView, TextInput, Animated } from 'react-native';
 import { colors, radius, spacing, softShadow } from '../theme/colors';
+import { haptic } from '../logic/haptics';
+import { Press } from '../components/Press';
+import { Reveal } from '../components/Reveal';
+import { CountUp } from '../components/CountUp';
 import {
   BuildStep,
   ChoiceStep,
@@ -56,11 +50,6 @@ interface Props {
 }
 
 type Phase = 'question' | 'feedback' | 'finished';
-
-function tap(style: Haptics.ImpactFeedbackStyle = Haptics.ImpactFeedbackStyle.Light) {
-  if (Platform.OS === 'web') return;
-  Haptics.impactAsync(style).catch(() => {});
-}
 
 export function CourseLessonScreen({
   lesson,
@@ -130,7 +119,7 @@ export function CourseLessonScreen({
       setWasCorrect(correct);
 
       if (correct) {
-        tap(Haptics.ImpactFeedbackStyle.Light);
+        haptic('ok');
         const nextCombo = combo + 1;
         setCombo(nextCombo);
         setBestCombo((b) => Math.max(b, nextCombo));
@@ -142,7 +131,7 @@ export function CourseLessonScreen({
         const speech = speechTextForStep(steps[currentIndex]);
         if (speech) speakRomanian(speech);
       } else {
-        tap(Haptics.ImpactFeedbackStyle.Heavy);
+        haptic('miss');
         runShake();
         setCombo(0);
         setMistakes((n) => n + 1);
@@ -212,9 +201,9 @@ export function CourseLessonScreen({
   return (
     <View style={styles.container}>
       <View style={styles.topBar}>
-        <Pressable onPress={onExit} hitSlop={10}>
+        <Press onPress={onExit} feedback="select" hitSlop={10}>
           <Text style={styles.close}>✕</Text>
-        </Pressable>
+        </Press>
         <View style={{ flex: 1 }}>
           <ProgressBar ratio={progressRatio} color={chapter.color} />
         </View>
@@ -233,16 +222,18 @@ export function CourseLessonScreen({
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          <StepView
-            key={`${currentIndex}-${queue.length}`}
-            step={step}
-            lang={lang}
-            immersion={immersion}
-            locked={phase === 'feedback'}
-            accent={chapter.color}
-            onSubmit={submit}
-            onContinueRule={skipRule}
-          />
+          <Reveal key={`${currentIndex}-${queue.length}`} offset={14}>
+            <StepView
+              step={step}
+              lang={lang}
+              immersion={immersion}
+              locked={phase === 'feedback'}
+              accent={chapter.color}
+              showTapHint={attempts < 3}
+              onSubmit={submit}
+              onContinueRule={skipRule}
+            />
+          </Reveal>
         </ScrollView>
       </Animated.View>
 
@@ -266,6 +257,8 @@ interface StepProps {
   immersion: boolean;
   locked: boolean;
   accent: string;
+  /** Подсказку «тапни по слову» показываем только в начале урока. */
+  showTapHint: boolean;
   onSubmit: (correct: boolean) => void;
   onContinueRule: () => void;
 }
@@ -301,9 +294,9 @@ function HiddenRu({ text, lang, immersion }: { text?: string; lang: Lang; immers
   if (!immersion) return <Text style={styles.ruHint}>{text}</Text>;
   if (shown) return <Text style={styles.ruHint}>{text}</Text>;
   return (
-    <Pressable onPress={() => setShown(true)} style={styles.revealChip} hitSlop={6}>
+    <Press onPress={() => setShown(true)} style={styles.revealChip} feedback="select" hitSlop={6}>
       <Text style={styles.revealText}>{t('lesson.showRu', lang)}</Text>
-    </Pressable>
+    </Press>
   );
 }
 
@@ -311,13 +304,15 @@ function Instruction({ step }: { step: GrammarStep }) {
   return <Text style={styles.instruction}>{instructionForStep(step)}</Text>;
 }
 
-/** Подсказка о том, что по словам можно тапать. Без неё функцию не находят. */
-function TapHint({ lang }: { lang: Lang }) {
+/**
+ * Подсказка о том, что по словам можно тапать. Без неё функцию не находят,
+ * но и на каждом задании она не нужна: к третьему разу это уже шум.
+ */
+function TapHint({ lang, show }: { lang: Lang; show: boolean }) {
+  if (!show) return null;
   return (
     <Text style={styles.tapHint}>
-      {lang === 'ru'
-        ? 'Не знаешь слово — нажми на него'
-        : 'Nu știi un cuvânt? Atinge-l'}
+      {lang === 'ru' ? 'Не знаешь слово — нажми на него' : 'Nu știi un cuvânt? Atinge-l'}
     </Text>
   );
 }
@@ -374,7 +369,14 @@ function RuleView({
 
 // --- Выбор варианта -----------------------------------------------------
 
-function ChoiceView({ step, lang, immersion, locked, onSubmit }: StepProps & { step: ChoiceStep }) {
+function ChoiceView({
+  step,
+  lang,
+  immersion,
+  locked,
+  showTapHint,
+  onSubmit,
+}: StepProps & { step: ChoiceStep }) {
   const [picked, setPicked] = useState<number | null>(null);
 
   function choose(i: number) {
@@ -386,7 +388,7 @@ function ChoiceView({ step, lang, immersion, locked, onSubmit }: StepProps & { s
   return (
     <View>
       <Instruction step={step} />
-      <TapHint lang={lang} />
+      <TapHint lang={lang} show={showTapHint} />
       <PromptWithGap text={step.prompt} fallback={immersion ? undefined : step.ru} />
       <HiddenRu text={step.ru} lang={lang} immersion={immersion} />
       <View style={styles.options}>
@@ -425,17 +427,18 @@ function OptionRow({
   onPress: () => void;
 }) {
   return (
-    <Pressable
+    <Press
       onPress={onPress}
-      style={({ pressed }) => [
+      feedback={null}
+      scaleTo={0.98}
+      style={[
         styles.option,
         state === 'correct' && styles.optionCorrect,
         state === 'wrong' && styles.optionWrong,
-        pressed && state === 'idle' && styles.optionPressed,
       ]}
     >
       <Text style={styles.optionText}>{text}</Text>
-    </Pressable>
+    </Press>
   );
 }
 
@@ -453,7 +456,14 @@ function PromptWithGap({ text, fallback }: { text: string; fallback?: string }) 
 
 // --- Собери фразу -------------------------------------------------------
 
-function BuildView({ step, lang, locked, accent, onSubmit }: StepProps & { step: BuildStep }) {
+function BuildView({
+  step,
+  lang,
+  locked,
+  accent,
+  showTapHint,
+  onSubmit,
+}: StepProps & { step: BuildStep }) {
   const bank = useMemo(() => buildTokenBank(step.answer, step.bank), [step]);
   const [used, setUsed] = useState<number[]>([]);
 
@@ -461,7 +471,7 @@ function BuildView({ step, lang, locked, accent, onSubmit }: StepProps & { step:
 
   function pick(i: number) {
     if (locked || used.includes(i)) return;
-    tap();
+    haptic('tap');
     setUsed((u) => [...u, i]);
   }
 
@@ -473,7 +483,7 @@ function BuildView({ step, lang, locked, accent, onSubmit }: StepProps & { step:
   return (
     <View>
       <Instruction step={step} />
-      <TapHint lang={lang} />
+      <TapHint lang={lang} show={showTapHint} />
       <TappableWords text={step.ru} lang="ru" textStyle={styles.prompt} />
 
       <View style={[styles.assembleArea, { borderColor: accent + '55' }]}>
@@ -482,13 +492,15 @@ function BuildView({ step, lang, locked, accent, onSubmit }: StepProps & { step:
         ) : (
           <View style={styles.chipRow}>
             {used.map((tokenIndex, position) => (
-              <Pressable
+              <Press
                 key={`${tokenIndex}-${position}`}
                 onPress={() => unpick(position)}
                 style={[styles.chip, styles.chipUsed]}
+                feedback="tap"
+                scaleTo={0.94}
               >
                 <Text style={styles.chipText}>{bank[tokenIndex]}</Text>
-              </Pressable>
+              </Press>
             ))}
           </View>
         )}
@@ -501,9 +513,9 @@ function BuildView({ step, lang, locked, accent, onSubmit }: StepProps & { step:
               <Text style={styles.chipGhostText}>{token}</Text>
             </View>
           ) : (
-            <Pressable key={i} onPress={() => pick(i)} style={styles.chip}>
+            <Press key={i} onPress={() => pick(i)} style={styles.chip} feedback={null} scaleTo={0.94}>
               <Text style={styles.chipText}>{token}</Text>
-            </Pressable>
+            </Press>
           )
         )}
       </View>
@@ -522,13 +534,20 @@ function BuildView({ step, lang, locked, accent, onSubmit }: StepProps & { step:
 
 // --- Ввод текста --------------------------------------------------------
 
-function TypeView({ step, lang, immersion, locked, onSubmit }: StepProps & { step: TypeStep }) {
+function TypeView({
+  step,
+  lang,
+  immersion,
+  locked,
+  showTapHint,
+  onSubmit,
+}: StepProps & { step: TypeStep }) {
   const [value, setValue] = useState('');
 
   return (
     <View>
       <Instruction step={step} />
-      <TapHint lang={lang} />
+      <TapHint lang={lang} show={showTapHint} />
       <TappableWords text={step.ru} lang="ru" textStyle={styles.prompt} />
       {step.hint ? <Text style={styles.smallHint}>{step.hint}</Text> : null}
       <TextInput
@@ -563,6 +582,7 @@ function TransformView({
   lang,
   immersion,
   locked,
+  showTapHint,
   onSubmit,
 }: StepProps & { step: TransformStep }) {
   const [value, setValue] = useState('');
@@ -570,7 +590,7 @@ function TransformView({
   return (
     <View>
       <Instruction step={step} />
-      <TapHint lang={lang} />
+      <TapHint lang={lang} show={showTapHint} />
       <View style={styles.fromBox}>
         <TappableWords text={step.from} lang="ro" textStyle={styles.fromText} />
         <Text style={styles.arrow}>↓</Text>
@@ -611,7 +631,7 @@ function MatchView({ step, locked, onSubmit }: StepProps & { step: MatchStep }) 
     if (locked || selectedLeft === null) return;
     const expected = step.pairs[selectedLeft].ru;
     if (right[rightIndex] === expected) {
-      tap();
+      haptic('tap');
       const next = new Set(matched).add(selectedLeft);
       setMatched(next);
       setSelectedLeft(null);
@@ -622,7 +642,7 @@ function MatchView({ step, locked, onSubmit }: StepProps & { step: MatchStep }) 
       setFailed(true);
       setFlash(rightIndex);
       setTimeout(() => setFlash(null), 400);
-      tap(Haptics.ImpactFeedbackStyle.Medium);
+      haptic('miss');
     }
   }
 
@@ -638,10 +658,12 @@ function MatchView({ step, locked, onSubmit }: StepProps & { step: MatchStep }) 
           {step.pairs.map((pair, i) => {
             const done = matched.has(i);
             return (
-              <Pressable
+              <Press
                 key={i}
                 disabled={done || locked}
                 onPress={() => setSelectedLeft(i)}
+                feedback="select"
+                scaleTo={0.97}
                 style={[
                   styles.matchCell,
                   selectedLeft === i && styles.matchCellActive,
@@ -649,7 +671,7 @@ function MatchView({ step, locked, onSubmit }: StepProps & { step: MatchStep }) 
                 ]}
               >
                 <Text style={[styles.matchText, done && styles.matchTextDone]}>{pair.ro}</Text>
-              </Pressable>
+              </Press>
             );
           })}
         </View>
@@ -658,10 +680,12 @@ function MatchView({ step, locked, onSubmit }: StepProps & { step: MatchStep }) 
           {right.map((label, i) => {
             const done = matchedRight.has(label);
             return (
-              <Pressable
+              <Press
                 key={i}
                 disabled={done || locked}
                 onPress={() => pickRight(i)}
+                feedback={null}
+                scaleTo={0.97}
                 style={[
                   styles.matchCell,
                   done && styles.matchCellDone,
@@ -669,7 +693,7 @@ function MatchView({ step, locked, onSubmit }: StepProps & { step: MatchStep }) 
                 ]}
               >
                 <Text style={[styles.matchText, done && styles.matchTextDone]}>{label}</Text>
-              </Pressable>
+              </Press>
             );
           })}
         </View>
@@ -737,9 +761,11 @@ function SpotView({ step, lang, immersion, locked, onSubmit }: StepProps & { ste
           const isWrong = locked && i === step.wrongIndex;
           const isBadPick = locked && picked === i && i !== step.wrongIndex;
           return (
-            <Pressable
+            <Press
               key={i}
               onPress={() => choose(i)}
+              feedback={null}
+              scaleTo={0.94}
               style={[
                 styles.chip,
                 styles.tokenChip,
@@ -748,7 +774,7 @@ function SpotView({ step, lang, immersion, locked, onSubmit }: StepProps & { ste
               ]}
             >
               <Text style={styles.chipText}>{token}</Text>
-            </Pressable>
+            </Press>
           );
         })}
       </View>
@@ -779,8 +805,29 @@ function FeedbackBar({
   const explain = 'explain' in step ? step.explain : undefined;
   const answer = correctAnswerText(step);
 
+  // Разбор выезжает снизу: так понятно, что это ответ на твоё действие,
+  // а не подменившийся экран.
+  const slide = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    slide.setValue(0);
+    Animated.spring(slide, {
+      toValue: 1,
+      speed: 20,
+      bounciness: 4,
+      useNativeDriver: true,
+    }).start();
+  }, [slide, step, correct]);
+
+  const translateY = slide.interpolate({ inputRange: [0, 1], outputRange: [90, 0] });
+
   return (
-    <View style={[styles.feedback, correct ? styles.feedbackOk : styles.feedbackBad]}>
+    <Animated.View
+      style={[
+        styles.feedback,
+        correct ? styles.feedbackOk : styles.feedbackBad,
+        { transform: [{ translateY }], opacity: slide },
+      ]}
+    >
       <Text style={[styles.feedbackTitle, { color: correct ? colors.success : colors.danger }]}>
         {correct ? t('lesson.correct', lang) : t('lesson.wrong', lang)}
       </Text>
@@ -796,7 +843,7 @@ function FeedbackBar({
         onPress={onContinue}
         style={{ marginTop: spacing.md }}
       />
-    </View>
+    </Animated.View>
   );
 }
 
@@ -837,25 +884,44 @@ function ResultScreen({
   boss: boolean;
   onExit: () => void;
 }) {
+  useEffect(() => {
+    haptic('done');
+  }, []);
+
   return (
     <View style={styles.centered}>
-      <View style={[styles.resultGlyph, { borderColor: chapterColor }]}>
-        <Text style={styles.resultGlyphText}>{boss ? '👑' : '✓'}</Text>
-      </View>
-      <Text style={styles.resultTitle}>{t('lesson.finished', lang)}</Text>
-      {perfect ? <Text style={styles.resultPerfect}>{t('lesson.perfect', lang)}</Text> : null}
+      <Reveal offset={16}>
+        <View style={styles.resultTop}>
+          <View style={[styles.resultGlyph, { borderColor: chapterColor }]}>
+            <Text style={styles.resultGlyphText}>{boss ? '👑' : '✓'}</Text>
+          </View>
+          <Text style={styles.resultTitle}>{t('lesson.finished', lang)}</Text>
+          {perfect ? <Text style={styles.resultPerfect}>{t('lesson.perfect', lang)}</Text> : null}
+        </View>
+      </Reveal>
 
-      <View style={styles.resultStats}>
-        <ResultStat label={t('lesson.accuracy', lang)} value={`${accuracy}%`} />
-        <ResultStat label={t('lesson.xpEarned', lang)} value={`+${xp}`} accent />
-        <ResultStat label={t('lesson.bestCombo', lang)} value={String(bestCombo)} />
-      </View>
+      <Reveal delay={160}>
+        <View style={styles.resultStats}>
+          <ResultStat label={t('lesson.accuracy', lang)} value={`${accuracy}%`} />
+          <View style={styles.resultStat}>
+            <CountUp
+              value={xp}
+              prefix="+"
+              style={[styles.resultStatValue, { color: colors.primaryBright }]}
+            />
+            <Text style={styles.resultStatLabel}>{t('lesson.xpEarned', lang)}</Text>
+          </View>
+          <ResultStat label={t('lesson.bestCombo', lang)} value={String(bestCombo)} />
+        </View>
+      </Reveal>
 
-      <PrimaryButton
-        title={t('common.continue', lang)}
-        onPress={onExit}
-        style={{ marginTop: spacing.xxl, alignSelf: 'stretch' }}
-      />
+      <Reveal delay={320} style={{ alignSelf: 'stretch' }}>
+        <PrimaryButton
+          title={t('common.continue', lang)}
+          onPress={onExit}
+          style={{ marginTop: spacing.xxl, alignSelf: 'stretch' }}
+        />
+      </Reveal>
     </View>
   );
 }
@@ -892,7 +958,12 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   comboRow: { paddingHorizontal: spacing.lg, minHeight: 24 },
-  body: { padding: spacing.lg, paddingBottom: spacing.xxl, flexGrow: 1, justifyContent: 'center' },
+  body: {
+    padding: spacing.lg,
+    paddingTop: spacing.xl,
+    paddingBottom: spacing.xxl,
+    flexGrow: 1,
+  },
 
   instruction: {
     fontSize: 11,
@@ -1076,6 +1147,7 @@ const styles = StyleSheet.create({
     ...softShadow,
   },
   resultGlyphText: { fontSize: 38, color: colors.text },
+  resultTop: { alignItems: 'center' },
   resultTitle: { fontSize: 24, fontWeight: '800', color: colors.text, textAlign: 'center' },
   resultPerfect: { fontSize: 14, color: colors.success, marginTop: 6, fontWeight: '600' },
   resultStats: { flexDirection: 'row', gap: spacing.xl, marginTop: spacing.xxl },

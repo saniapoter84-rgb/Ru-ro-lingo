@@ -5,11 +5,13 @@ import { CHAPTER_4 } from './ch4';
 import { CHAPTER_5 } from './ch5';
 import { CHAPTER_6 } from './ch6';
 import { CHAPTER_7 } from './ch7';
+import { CHAPTER_8 } from './ch8';
+import { CHAPTER_9 } from './ch9';
 import { CourseChapter, GrammarLesson, isScorableStep } from './types';
 
 export * from './types';
 
-/** «Тропа» — путь от нуля до уровня A2, семь глав. */
+/** «Тропа» — путь от нуля до уровня B1, девять глав. */
 export const COURSE: CourseChapter[] = [
   CHAPTER_1,
   CHAPTER_2,
@@ -18,6 +20,8 @@ export const COURSE: CourseChapter[] = [
   CHAPTER_5,
   CHAPTER_6,
   CHAPTER_7,
+  CHAPTER_8,
+  CHAPTER_9,
 ];
 
 export interface CourseLessonRef {

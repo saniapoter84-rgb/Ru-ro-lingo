@@ -2,9 +2,16 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Platform, StatusBar as RNStatusBar } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { colors } from './src/theme/colors';
-import { Lesson, ALL_WORDS, getWordById, getWordsForLesson } from './src/data';
-import { CourseChapter, GrammarLesson } from './src/data/course';
-import { Dialogue } from './src/data/dialogues';
+import {
+  Lesson,
+  ALL_WORDS,
+  ALL_LESSONS,
+  getWordById,
+  getWordsForLesson,
+} from './src/data';
+import { CourseChapter, GrammarLesson, getCourseLesson } from './src/data/course';
+import { Dialogue, DIALOGUES } from './src/data/dialogues';
+import { NextAction } from './src/logic/today';
 import { useProgress } from './src/logic/useProgress';
 import { HomeScreen } from './src/screens/HomeScreen';
 import { CourseScreen } from './src/screens/CourseScreen';
@@ -14,6 +21,7 @@ import { DialogueScreen } from './src/screens/DialogueScreen';
 import { ProfileScreen } from './src/screens/ProfileScreen';
 import { GrammarScreen } from './src/screens/GrammarScreen';
 import { PlacementTestScreen } from './src/screens/PlacementTestScreen';
+import { ReadingScreen } from './src/screens/ReadingScreen';
 import { LessonFlowScreen } from './src/screens/LessonFlowScreen';
 import { TabBar, TabKey } from './src/components/TabBar';
 import { AchievementToast } from './src/components/AchievementToast';
@@ -44,16 +52,50 @@ export default function App() {
     finishDialogue,
     toggleImmersion,
     changeDailyGoal,
+    beginPlan,
   } = useProgress();
 
   const [screen, setScreen] = useState<Screen>({ name: 'tabs' });
   const [tab, setTab] = useState<TabKey>('course');
+  /** Какой текст открыть на вкладке «Текст» — задаётся переходом извне. */
+  const [readingTextId, setReadingTextId] = useState<string | null>(null);
 
   if (!loaded) {
     return <View style={styles.container} />;
   }
 
   const backToTabs = () => setScreen({ name: 'tabs' });
+
+  /** Первый непройденный урок темы — чтобы тема открывалась «с того места». */
+  function openUnit(unitId: string) {
+    const lessons = ALL_LESSONS.filter((l) => l.unitId === unitId);
+    const next = lessons.find((l) => !progress.completedLessonIds.includes(l.id)) ?? lessons[0];
+    if (next) setScreen({ name: 'wordLesson', lesson: next });
+  }
+
+  function openText(textId: string) {
+    setReadingTextId(textId);
+    setTab('reading');
+  }
+
+  function openDialogueById(id: string) {
+    const dialogue = DIALOGUES.find((d) => d.id === id);
+    if (dialogue) setScreen({ name: 'dialogue', dialogue });
+  }
+
+  /** Единственная кнопка «Продолжить» ведёт туда, куда решила логика дня. */
+  function runAction(action: NextAction) {
+    if (action.kind === 'review' && action.wordIds) {
+      setScreen({ name: 'review', wordIds: action.wordIds });
+    } else if (action.kind === 'lesson' && action.lessonId) {
+      const ref = getCourseLesson(action.lessonId);
+      if (ref) setScreen({ name: 'courseLesson', lesson: ref.lesson, chapter: ref.chapter });
+    } else if (action.kind === 'dialogue' && action.dialogueId) {
+      openDialogueById(action.dialogueId);
+    } else if (action.kind === 'reading' && action.textId) {
+      openText(action.textId);
+    }
+  }
 
   // --- Полноэкранные режимы (без нижней панели) ---
 
@@ -159,6 +201,11 @@ export default function App() {
         onOpenLesson={(lesson, chapter) => setScreen({ name: 'courseLesson', lesson, chapter })}
         onOpenReference={() => setScreen({ name: 'reference' })}
         onOpenPlacement={() => setScreen({ name: 'placement' })}
+        onStartPlan={beginPlan}
+        onOpenUnit={openUnit}
+        onOpenText={openText}
+        onOpenDialogue={openDialogueById}
+        onRunAction={runAction}
       />
     );
   } else if (tab === 'words') {
@@ -170,6 +217,8 @@ export default function App() {
         onStartReview={(wordIds) => setScreen({ name: 'review', wordIds })}
       />
     );
+  } else if (tab === 'reading') {
+    content = <ReadingScreen progress={progress} initialTextId={readingTextId} />;
   } else if (tab === 'immersion') {
     content = (
       <ImmersionScreen

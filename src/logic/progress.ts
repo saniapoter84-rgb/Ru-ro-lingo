@@ -40,6 +40,13 @@ export interface ProgressState {
   xp: number;
   streak: number;
   lastActiveDate: string | null; // 'YYYY-MM-DD'
+  /**
+   * Дни, в которые вообще открывали приложение, — 'YYYY-MM-DD', по
+   * возрастанию. Это принципиально другой счётчик, чем стрик: он только
+   * растёт и не может «сгореть», поэтому пропущенный день здесь ничего
+   * не отнимает, а просто остаётся незакрашенной клеткой.
+   */
+  activeDates: string[];
   completedLessonIds: string[];
 
   course: Record<string, CourseLessonProgress>;
@@ -50,6 +57,12 @@ export interface ProgressState {
 
   /** null — тест ни разу не проходили. */
   placement: PlacementResult | null;
+
+  /**
+   * День, с которого отсчитывается восьминедельный план до B1.
+   * null — план ещё не запускали.
+   */
+  planStart: string | null;
 
   /** Опыт, набранный сегодня, и дневная цель — кольцо на профиле. */
   dailyXp: number;
@@ -87,12 +100,14 @@ export function createInitialProgress(): ProgressState {
     xp: 0,
     streak: 0,
     lastActiveDate: null,
+    activeDates: [],
     completedLessonIds: [],
     course: {},
     dialogues: {},
     quests: createQuestState(toLocalDateString(new Date())),
     achievements: [],
     placement: null,
+    planStart: null,
     dailyXp: 0,
     dailyGoal: DEFAULT_DAILY_GOAL,
     immersion: false,
@@ -150,10 +165,18 @@ export function rankRatio(xp: number): number {
 
 // --- Ежедневная синхронизация ------------------------------------------
 
+/** Сколько дней истории держим — ровно столько, сколько рисуем на экране. */
+export const RHYTHM_WINDOW = 119;
+
+function appendActiveDate(dates: string[], today: string): string[] {
+  if (dates[dates.length - 1] === today) return dates;
+  const next = dates.includes(today) ? dates : [...dates, today];
+  return next.length > RHYTHM_WINDOW ? next.slice(next.length - RHYTHM_WINDOW) : next;
+}
+
 /**
- * Вызывается один раз при старте сессии: обновляет стрик, подтягивает
- * восстановившиеся сердца, при необходимости выдаёт новые задания дня
- * и обнуляет дневной счётчик опыта.
+ * Вызывается один раз при старте сессии: обновляет счётчики дня, при
+ * необходимости выдаёт новые задания дня и обнуляет дневной опыт.
  */
 export function syncDaily(state: ProgressState, now: Date = new Date()): ProgressState {
   const today = toLocalDateString(now);
@@ -173,6 +196,7 @@ export function syncDaily(state: ProgressState, now: Date = new Date()): Progres
     streak,
     longestStreak: Math.max(state.longestStreak, streak),
     lastActiveDate: today,
+    activeDates: appendActiveDate(state.activeDates, today),
     daysActive,
     dailyXp: 0,
     quests: ensureQuestsForDate(undefined, today, daysActive),
@@ -449,6 +473,22 @@ export function setDailyGoal(state: ProgressState, goal: number): ProgressState 
   return { ...state, dailyGoal: Math.max(10, goal) };
 }
 
+// --- План -------------------------------------------------------------
+
+/**
+ * Запускает или сдвигает план на сегодня. Прогресс при сдвиге не теряется:
+ * двигается только точка отсчёта, чтобы недели снова совпали с календарём.
+ * Это принципиально: отставание должно лечиться одной кнопкой, а не
+ * ощущением, что всё пропало.
+ */
+export function startPlan(state: ProgressState, now: Date = new Date()): ProgressState {
+  return { ...state, planStart: toLocalDateString(now) };
+}
+
+export function stopPlan(state: ProgressState): ProgressState {
+  return { ...state, planStart: null };
+}
+
 // --- Сводки -------------------------------------------------------------
 
 export function buildAchievementContext(state: ProgressState): AchievementContext {
@@ -466,6 +506,7 @@ export function buildAchievementContext(state: ProgressState): AchievementContex
     xp: state.xp,
     streak: state.streak,
     longestStreak: state.longestStreak,
+    daysActive: state.daysActive,
     totalCorrect: state.totalCorrect,
     bestCombo: state.bestCombo,
     masteredWords,

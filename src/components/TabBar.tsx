@@ -1,13 +1,15 @@
 import React from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import { Press } from './Press';
 import { colors, radius, spacing } from '../theme/colors';
 import { Lang, StringKey, t } from '../i18n/strings';
 
-export type TabKey = 'course' | 'words' | 'immersion' | 'profile';
+export type TabKey = 'course' | 'words' | 'reading' | 'immersion' | 'profile';
 
 const TABS: { key: TabKey; labelKey: StringKey; icon: string }[] = [
   { key: 'course', labelKey: 'tab.course', icon: '◆' },
   { key: 'words', labelKey: 'tab.learn', icon: '▣' },
+  { key: 'reading', labelKey: 'tab.reading', icon: '▤' },
   { key: 'immersion', labelKey: 'tab.immersion', icon: '◉' },
   { key: 'profile', labelKey: 'tab.profile', icon: '◈' },
 ];
@@ -24,18 +26,21 @@ export function TabBar({ active, onChange, lang }: Props) {
       {TABS.map((tab) => {
         const isActive = tab.key === active;
         return (
-          <Pressable
+          <Press
             key={tab.key}
-            style={({ pressed }) => [styles.tab, pressed && { opacity: 0.6 }]}
+            outerStyle={styles.tabOuter}
+            style={styles.tab}
+            scaleTo={0.9}
+            feedback="select"
             onPress={() => onChange(tab.key)}
           >
             <View style={[styles.iconWrap, isActive && styles.iconWrapActive]}>
               <Text style={[styles.icon, isActive && styles.iconActive]}>{tab.icon}</Text>
             </View>
-            <Text style={[styles.label, isActive && styles.labelActive]}>
+            <Text style={[styles.label, isActive && styles.labelActive]} numberOfLines={1}>
               {t(tab.labelKey, lang)}
             </Text>
-          </Pressable>
+          </Press>
         );
       })}
     </View>
@@ -52,10 +57,11 @@ const styles = StyleSheet.create({
     paddingBottom: spacing.md,
     paddingHorizontal: spacing.sm,
   },
-  tab: { flex: 1, alignItems: 'center', gap: 4 },
+  tabOuter: { flex: 1 },
+  tab: { alignItems: 'center', gap: 4 },
   iconWrap: {
-    width: 42,
-    height: 28,
+    width: 38,
+    height: 26,
     borderRadius: radius.sm,
     alignItems: 'center',
     justifyContent: 'center',
@@ -63,6 +69,6 @@ const styles = StyleSheet.create({
   iconWrapActive: { backgroundColor: colors.primaryDim },
   icon: { fontSize: 15, color: colors.textFaint },
   iconActive: { color: colors.primaryBright },
-  label: { fontSize: 10, color: colors.textFaint, fontWeight: '600', letterSpacing: 0.2 },
+  label: { fontSize: 9, color: colors.textFaint, fontWeight: '600', letterSpacing: 0.1 },
   labelActive: { color: colors.text },
 });

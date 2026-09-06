@@ -189,7 +189,7 @@ export const UNITS: Unit[] = [
       { ru: 'курица', ro: 'pui', pos: 'noun' },
       { ru: 'овощи', ro: 'legume', pos: 'noun' },
       { ru: 'фрукты', ro: 'fructe', pos: 'noun' },
-      { ru: 'яблоко', ro: 'măr', pos: 'noun' },
+      { ru: 'яблоко', ro: 'măr', alt: ['mere'], pos: 'noun', note: 'мн. ч. — mere' },
       { ru: 'банан', ro: 'banană', pos: 'noun' },
       { ru: 'апельсин', ro: 'portocală', pos: 'noun' },
       { ru: 'виноград', ro: 'struguri', pos: 'noun' },

@@ -12,6 +12,7 @@ type Entry = { ru: string; ro: string };
 const DICT = {
   'tab.learn': { ru: 'Слова', ro: 'Cuvinte' },
   'tab.course': { ru: 'Тропа', ro: 'Traseu' },
+  'tab.reading': { ru: 'Текст', ro: 'Text' },
   'tab.immersion': { ru: 'Погружение', ro: 'Imersiune' },
   'tab.profile': { ru: 'Профиль', ro: 'Profil' },
 
@@ -27,8 +28,8 @@ const DICT = {
 
   'home.title': { ru: 'Словарь по темам', ro: 'Vocabular pe teme' },
   'home.subtitle': {
-    ru: 'Карточки и упражнения по 66 темам',
-    ro: 'Cartonașe și exerciții pe 66 de teme',
+    ru: 'Карточки и упражнения по 70 темам',
+    ro: 'Cartonașe și exerciții pe 70 de teme',
   },
 
   'review.title': { ru: 'Повторение', ro: 'Repetare' },
@@ -100,6 +101,7 @@ const DICT = {
 
   'profile.title': { ru: 'Профиль', ro: 'Profil' },
   'profile.streak': { ru: 'Дней подряд', ro: 'Zile la rând' },
+  'profile.daysWithLanguage': { ru: 'Дней с языком', ro: 'Zile cu limba' },
   'profile.xp': { ru: 'Всего XP', ro: 'Total XP' },
   'profile.wordsMastered': { ru: 'Слов освоено', ro: 'Cuvinte învățate' },
   'profile.learning': { ru: 'Учу сейчас', ro: 'În curs' },
