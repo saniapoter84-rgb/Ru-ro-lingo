@@ -59,9 +59,9 @@ export function RhythmStrip({ days, color = colors.primary, compact }: Props) {
 const styles = StyleSheet.create({
   grid: { gap: 5 },
   row: { flexDirection: 'row', gap: 5 },
-  cellWrap: { flex: 1, maxWidth: 26 },
+  cellWrap: { flex: 1 },
   cell: {
-    height: 20,
+    height: 18,
     borderRadius: radius.sm - 2,
     borderWidth: 1,
     borderColor: colors.border,

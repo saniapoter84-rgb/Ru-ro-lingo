@@ -837,9 +837,12 @@ function FeedbackBar({
         </Text>
       ) : null}
       {explain ? <Text style={styles.feedbackExplain}>{explain}</Text> : null}
+      {/* Кнопка «дальше» всегда одна и та же: красной её делать незачем.
+          Красным отмечен сам неверный вариант — этого достаточно, чтобы
+          понять, что произошло, и незачем ещё и подсвечивать тревогой
+          выход из ситуации. */}
       <PrimaryButton
         title={t('common.continue', lang)}
-        variant={correct ? 'primary' : 'danger'}
         onPress={onContinue}
         style={{ marginTop: spacing.md }}
       />

@@ -16,7 +16,7 @@ import {
 import { ACHIEVEMENTS } from '../logic/achievements';
 import { Quest, isQuestDone, questEmoji, questLabel, questReward } from '../logic/quests';
 import { rhythmSummary } from '../logic/rhythm';
-import { PLAN_LENGTH_WEEKS, dailyLoad, formatDate, planStatus } from '../logic/plan';
+import { PLAN_LENGTH_WEEKS, dailyLoad, dayGoalXp, formatDate, planStatus } from '../logic/plan';
 import { ProgressBar } from '../components/ProgressBar';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { Panel, SectionLabel } from '../components/Panel';
@@ -121,9 +121,10 @@ export function ProfileScreen({
             </View>
             <ProgressBar ratio={plan.overallRatio} height={6} />
             <Text style={styles.settingHint}>
-              Дедлайн — {plan.deadline ? formatDate(plan.deadline) : '—'}. При нынешнем темпе
-              выйдешь на B1{' '}
-              {plan.projectedFinish ? formatDate(plan.projectedFinish) : 'пока непонятно когда'}.
+              Дедлайн — {plan.deadline ? formatDate(plan.deadline) : '—'}.{' '}
+              {plan.projectedFinish
+                ? `При нынешнем темпе выйдешь на B1 ${formatDate(plan.projectedFinish)}.`
+                : 'Прогноз появится, как только наберётся темп за пару дней.'}{' '}
               Норма рабочего дня — {load.minutes} мин, свободных дней в неделе — два.
             </Text>
           </Panel>
@@ -145,6 +146,12 @@ export function ProfileScreen({
           />
           {goalRatio >= 1 ? (
             <Text style={styles.goalDone}>✓ {t('profile.goalDone', lang)}</Text>
+          ) : null}
+          {plan.started ? (
+            <Text style={styles.goalPlanHint}>
+              По плану на сегодня — {dayGoalXp(load)} XP. Личная цель ниже нужна для дней,
+              когда столько не выйдет: она про «хоть что-то», а не про норму.
+            </Text>
           ) : null}
           <View style={styles.goalPicker}>
             {GOALS.map((goal) => (
@@ -402,6 +409,7 @@ const styles = StyleSheet.create({
   goalValue: { fontSize: 17, fontWeight: '800', color: colors.text },
   goalMax: { fontSize: 13, color: colors.textFaint, fontWeight: '600' },
   goalDone: { fontSize: 11, color: colors.success, fontWeight: '700', marginTop: spacing.sm },
+  goalPlanHint: { fontSize: 11, color: colors.textFaint, lineHeight: 16, marginTop: spacing.md },
   goalPicker: { flexDirection: 'row', gap: spacing.sm, marginTop: spacing.md },
   goalChip: {
     borderWidth: 1,
