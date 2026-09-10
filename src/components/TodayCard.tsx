@@ -14,6 +14,8 @@ const KIND_MARK: Record<NextAction['kind'], string> = {
   review: '↻',
   dialogue: '◉',
   reading: '▤',
+  drill: '⦿',
+  recall: '↺',
 };
 
 /**

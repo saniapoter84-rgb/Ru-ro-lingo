@@ -11,6 +11,7 @@ import {
   recordAnswer,
   recordCourseResult,
   recordDialogueResult,
+  recordDrillResult,
   setDailyGoal,
   setFullscreen,
   setImmersion,
@@ -33,6 +34,8 @@ export interface ProgressApi {
   finishReview: () => void;
   finishPlacement: (knownChapters: number) => void;
   finishCourseLesson: (result: CourseResult) => void;
+  /** Итог блока практики: тема уходит на следующий интервал повторения. */
+  finishDrill: (packIds: string[], result: CourseResult) => void;
   finishDialogue: (id: string, score: number, total: number, xp: number) => void;
   toggleImmersion: () => void;
   toggleFullscreen: () => void;
@@ -123,6 +126,26 @@ export function useProgress(): ProgressApi {
     [apply]
   );
 
+  const finishDrill = useCallback(
+    (packIds: string[], result: CourseResult) =>
+      apply((s) => {
+        // Опыт начисляем один раз за весь блок, а интервал двигаем каждой
+        // теме, которая в него попала.
+        let next = s;
+        packIds.forEach((id, index) => {
+          next = recordDrillResult(
+            next,
+            id,
+            result.correct,
+            result.total,
+            index === 0 ? result.xpEarned : 0
+          );
+        });
+        return next;
+      }),
+    [apply]
+  );
+
   const finishDialogue = useCallback(
     (id: string, score: number, total: number, xp: number) =>
       apply((s) => recordDialogueResult(s, id, score, total, xp)),
@@ -167,6 +190,7 @@ export function useProgress(): ProgressApi {
       finishReview,
       finishPlacement,
       finishCourseLesson,
+      finishDrill,
       finishDialogue,
       toggleImmersion,
       toggleFullscreen,
@@ -184,6 +208,7 @@ export function useProgress(): ProgressApi {
       finishReview,
       finishPlacement,
       finishCourseLesson,
+      finishDrill,
       finishDialogue,
       toggleImmersion,
       toggleFullscreen,

@@ -1,0 +1,68 @@
+import { DrillPack } from './types';
+
+export const DRILLS_CH5: DrillPack[] = [
+  {
+    id: 'ch5_l1',
+    title: 'Предлоги места',
+    rows: [
+      { sentence: 'Merg ___ magazin.', ro: 'la', ru: 'Иду в магазин.', traps: ['în', 'pe', 'de'] },
+      { sentence: 'Sunt ___ casă.', ro: 'în', ru: 'Я в доме.', traps: ['la', 'pe', 'cu'] },
+      { sentence: 'Cartea e ___ masă.', ro: 'pe', ru: 'Книга на столе.', traps: ['în', 'la', 'sub'] },
+      { sentence: 'Pisica e ___ masă.', ro: 'sub', ru: 'Кошка под столом.', traps: ['pe', 'în', 'lângă'] },
+      { sentence: 'Merg ___ mașina.', ro: 'cu', ru: 'Я еду на машине.', traps: ['la', 'în', 'pe'] },
+      { sentence: 'Vin ___ România.', ro: 'din', ru: 'Я приехал из Румынии.', traps: ['de la', 'la', 'în'] },
+      { sentence: 'Farmacia e ___ bancă.', ro: 'lângă', ru: 'Аптека рядом с банком.', traps: ['pe', 'sub', 'din'] },
+      { sentence: 'Stau ___ tine.', ro: 'la', ru: 'Я остановился у тебя.', traps: ['în', 'pe', 'cu'] },
+      { sentence: 'Cadoul e ___ tine.', ro: 'pentru', ru: 'Подарок для тебя.', traps: ['la', 'cu', 'din'] },
+      { sentence: 'Vorbesc ___ telefon.', ro: 'la', ru: 'Я говорю по телефону.', traps: ['pe', 'în', 'cu'] },
+    ],
+  },
+  {
+    id: 'ch5_l2',
+    title: 'Артикль после предлога',
+    rows: [
+      { sentence: 'Merg la ___.', ro: 'magazin', ru: 'Иду в магазин.', traps: ['magazinul', 'magazine', 'magazinele'], note: 'После предлога слово «раздевается» — артикль пропадает.' },
+      { sentence: 'Sunt la ___.', ro: 'școală', ru: 'Я в школе.', traps: ['școala', 'școli', 'școlile'] },
+      { sentence: 'Merg la ___ mea.', ro: 'școala', ru: 'Иду в свою школу.', traps: ['școală', 'școli', 'școlile'], note: 'Появилось уточнение — артикль вернулся.' },
+      { sentence: 'Merg cu ___.', ro: 'mașina', ru: 'Еду на машине.', traps: ['mașină', 'mașini', 'mașinile'], note: 'Исключение: после «cu» о транспорте артикль остаётся.' },
+      { sentence: 'Stau în ___.', ro: 'casă', ru: 'Я дома.', traps: ['casa', 'case', 'casele'] },
+      { sentence: 'Stau în ___ lui.', ro: 'casa', ru: 'Я в его доме.', traps: ['casă', 'case', 'casele'] },
+      { sentence: 'Merg la ___.', ro: 'muncă', ru: 'Иду на работу.', traps: ['munca', 'munci', 'muncile'] },
+      { sentence: 'Merg cu ___.', ro: 'autobuzul', ru: 'Еду на автобусе.', traps: ['autobuz', 'autobuze', 'autobuzele'] },
+      { sentence: 'Sunt la ___.', ro: 'birou', ru: 'Я в офисе.', traps: ['biroul', 'birouri', 'birourile'] },
+      { sentence: 'Plec la ___.', ro: 'mare', ru: 'Уезжаю на море.', traps: ['marea', 'mări', 'mările'] },
+    ],
+  },
+  {
+    id: 'ch5_l3',
+    title: 'Вопросительные слова',
+    rows: [
+      { sentence: '___ costă?', ro: 'Cât', ru: 'Сколько стоит?', traps: ['Câtă', 'Câți', 'Câte'] },
+      { sentence: '___ ani ai?', ro: 'Câți', ru: 'Сколько тебе лет?', traps: ['Cât', 'Câtă', 'Câte'], note: '«cât» согласуется с тем, что считают.' },
+      { sentence: '___ fete sunt?', ro: 'Câte', ru: 'Сколько там девочек?', traps: ['Cât', 'Câți', 'Câtă'] },
+      { sentence: '___ apă vrei?', ro: 'Câtă', ru: 'Сколько воды ты хочешь?', traps: ['Cât', 'Câți', 'Câte'] },
+      { sentence: '___ mergi?', ro: 'Unde', ru: 'Куда ты идёшь?', traps: ['Ce', 'Cine', 'Cum'] },
+      { sentence: '___ vii?', ro: 'Când', ru: 'Когда ты придёшь?', traps: ['Unde', 'Cum', 'Ce'] },
+      { sentence: '___ te simți?', ro: 'Cum', ru: 'Как ты себя чувствуешь?', traps: ['Ce', 'Cine', 'Când'] },
+      { sentence: '___ nu răspunzi?', ro: 'De ce', ru: 'Почему ты не отвечаешь?', traps: ['Ce', 'Cum', 'Cine'] },
+      { sentence: '___ carte citești?', ro: 'Ce', ru: 'Какую книгу ты читаешь?', traps: ['Cine', 'Cum', 'Unde'] },
+      { sentence: '___ vine cu tine?', ro: 'Cine', ru: 'Кто идёт с тобой?', traps: ['Ce', 'Cum', 'Unde'] },
+    ],
+  },
+  {
+    id: 'ch5_l4',
+    title: 'Это и то',
+    rows: [
+      { sentence: 'Cartea ___ e bună.', ro: 'asta', ru: 'Эта книга хорошая.', traps: ['ăsta', 'astea', 'ăștia'] },
+      { sentence: 'Telefonul ___ e nou.', ro: 'ăsta', ru: 'Этот телефон новый.', traps: ['asta', 'astea', 'ăștia'] },
+      { sentence: 'Cărțile ___ sunt vechi.', ro: 'astea', ru: 'Эти книги старые.', traps: ['asta', 'ăsta', 'ăștia'] },
+      { sentence: 'Băieții ___ sunt frați.', ro: 'ăștia', ru: 'Эти мальчики — братья.', traps: ['ăsta', 'asta', 'astea'] },
+      { sentence: '___ e prietenul meu.', ro: 'Acesta', ru: 'Это мой друг.', traps: ['Aceasta', 'Aceștia', 'Acestea'] },
+      { sentence: '___ e sora mea.', ro: 'Aceasta', ru: 'Это моя сестра.', traps: ['Acesta', 'Aceștia', 'Acestea'] },
+      { sentence: 'Vino ___!', ro: 'aici', ru: 'Иди сюда!', traps: ['acolo', 'acasă', 'afară'] },
+      { sentence: 'Stai ___.', ro: 'acolo', ru: 'Стой там.', traps: ['aici', 'acasă', 'afară'] },
+      { sentence: 'Casa ___ e mare.', ro: 'aceea', ru: 'Тот дом большой.', traps: ['acela', 'acelea', 'aceia'] },
+      { sentence: 'Omul ___ e vecinul meu.', ro: 'acela', ru: 'Тот человек — мой сосед.', traps: ['aceea', 'acelea', 'aceia'] },
+    ],
+  },
+];

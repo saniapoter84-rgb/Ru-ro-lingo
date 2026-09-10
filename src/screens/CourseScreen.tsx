@@ -6,9 +6,12 @@ import { UNITS, getUnitById } from '../data';
 import { LIVE_TEXTS } from '../data/texts';
 import { DIALOGUES } from '../data/dialogues';
 import { PLANNED_UNIT_IDS, PlanWeek } from '../data/plan';
+import { getDrillPack } from '../data/drills';
+import { DRILL_FULL } from '../logic/drills';
 import {
   ProgressState,
   isCourseLessonUnlocked,
+  isRuleTrained,
   nextCourseLessonId,
 } from '../logic/progress';
 import {
@@ -43,6 +46,7 @@ interface Props {
   onOpenUnit: (unitId: string) => void;
   onOpenText: (textId: string) => void;
   onOpenDialogue: (dialogueId: string) => void;
+  onOpenDrill: (packIds: string[], count: number, short: boolean) => void;
   onRunAction: (action: NextAction) => void;
 }
 
@@ -65,6 +69,7 @@ export function CourseScreen({
   onOpenUnit,
   onOpenText,
   onOpenDialogue,
+  onOpenDrill,
   onRunAction,
 }: Props) {
   const status = useMemo(() => planStatus(progress), [progress]);
@@ -158,6 +163,7 @@ export function CourseScreen({
               onOpenUnit={onOpenUnit}
               onOpenText={onOpenText}
               onOpenDialogue={onOpenDialogue}
+              onOpenDrill={onOpenDrill}
             />
           </Reveal>
         ))}
@@ -356,6 +362,7 @@ function WeekCard({
   onOpenUnit,
   onOpenText,
   onOpenDialogue,
+  onOpenDrill,
 }: {
   status: WeekStatus;
   expanded: boolean;
@@ -370,6 +377,7 @@ function WeekCard({
   onOpenUnit: (unitId: string) => void;
   onOpenText: (textId: string) => void;
   onOpenDialogue: (dialogueId: string) => void;
+  onOpenDrill: (packIds: string[], count: number, short: boolean) => void;
 }) {
   const week = status.week;
   const tint = LEVEL_COLOR[week.level];
@@ -434,18 +442,26 @@ function WeekCard({
           <Text style={styles.blockLabel}>ГРАММАТИКА</Text>
           {chapters.map((chapter) =>
             chapter.lessons.map((lesson, i) => (
-              <LessonRow
-                key={lesson.id}
-                lesson={lesson}
-                index={i}
-                chapter={chapter}
-                tint={tint}
-                unlocked={isCourseLessonUnlocked(progress, lesson.id)}
-                entry={progress.course[lesson.id]}
-                isNext={nextId === lesson.id}
-                lang={lang}
-                onPress={() => onOpenLesson(lesson, chapter)}
-              />
+              <View key={lesson.id}>
+                <LessonRow
+                  lesson={lesson}
+                  index={i}
+                  chapter={chapter}
+                  tint={tint}
+                  unlocked={isCourseLessonUnlocked(progress, lesson.id)}
+                  entry={progress.course[lesson.id]}
+                  isNext={nextId === lesson.id}
+                  lang={lang}
+                  onPress={() => onOpenLesson(lesson, chapter)}
+                />
+                <DrillRow
+                  lessonId={lesson.id}
+                  tint={tint}
+                  available={!!progress.course[lesson.id]?.completed}
+                  trained={isRuleTrained(progress, lesson.id)}
+                  onPress={() => onOpenDrill([lesson.id], DRILL_FULL, false)}
+                />
+              </View>
             ))
           )}
 
@@ -518,6 +534,43 @@ function WeekCard({
         </View>
       ) : null}
     </View>
+  );
+}
+
+/**
+ * Практика по теории урока. Отдельной строкой, а не внутри урока: двадцать
+ * заданий поверх объяснения — это уже другой заход, и делать их сразу
+ * подряд мало кто станет.
+ */
+function DrillRow({
+  lessonId,
+  tint,
+  available,
+  trained,
+  onPress,
+}: {
+  lessonId: string;
+  tint: string;
+  available: boolean;
+  trained: boolean;
+  onPress: () => void;
+}) {
+  const pack = getDrillPack(lessonId);
+  if (!pack || !available) return null;
+
+  return (
+    <Press
+      onPress={onPress}
+      feedback="select"
+      scaleTo={0.99}
+      style={[styles.drillRow, !trained && { borderColor: tint }]}
+    >
+      <Text style={[styles.drillMark, { color: trained ? colors.textFaint : tint }]}>⦿</Text>
+      <Text style={styles.drillText}>
+        {trained ? 'Практика пройдена' : `Практика · ${DRILL_FULL} повторов`}
+      </Text>
+      <Text style={styles.drillArrow}>›</Text>
+    </Press>
   );
 }
 
@@ -833,6 +886,24 @@ const styles = StyleSheet.create({
   bossTag: { fontSize: 9, fontWeight: '800', letterSpacing: 0.8 },
   testTag: { fontSize: 8, fontWeight: '800', letterSpacing: 0.8, color: colors.textFaint },
   taskCount: { fontSize: 11, color: colors.textFaint, fontVariant: ['tabular-nums'] },
+
+  drillRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    marginTop: -spacing.xs,
+    marginBottom: spacing.sm,
+    marginLeft: spacing.xl,
+    paddingHorizontal: spacing.md,
+    paddingVertical: 7,
+    borderRadius: radius.sm,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.bg,
+  },
+  drillMark: { fontSize: 10 },
+  drillText: { flex: 1, fontSize: 11, color: colors.textDim, fontWeight: '600' },
+  drillArrow: { fontSize: 13, color: colors.textFaint },
 
   chipWrap: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm },
   unitChip: {

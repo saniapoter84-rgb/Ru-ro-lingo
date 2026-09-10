@@ -22,6 +22,7 @@ function migrate(raw: unknown): ProgressState {
     words: parsed.words ?? base.words,
     completedLessonIds: parsed.completedLessonIds ?? base.completedLessonIds,
     course: parsed.course ?? base.course,
+    rules: parsed.rules ?? base.rules,
     dialogues: parsed.dialogues ?? base.dialogues,
     quests: parsed.quests ?? createQuestState(today),
     achievements: parsed.achievements ?? [],

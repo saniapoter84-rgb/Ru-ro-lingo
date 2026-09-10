@@ -10,6 +10,8 @@ import {
   getWordsForLesson,
 } from './src/data';
 import { CourseChapter, GrammarLesson, getCourseLesson } from './src/data/course';
+import { getDrillPack } from './src/data/drills';
+import { drillLesson } from './src/logic/drills';
 import { Dialogue, DIALOGUES } from './src/data/dialogues';
 import { NextAction } from './src/logic/today';
 import { useProgress } from './src/logic/useProgress';
@@ -34,7 +36,8 @@ type Screen =
   | { name: 'courseLesson'; lesson: GrammarLesson; chapter: CourseChapter }
   | { name: 'dialogue'; dialogue: Dialogue }
   | { name: 'reference' }
-  | { name: 'placement' };
+  | { name: 'placement' }
+  | { name: 'drill'; lesson: GrammarLesson; chapter: CourseChapter; packIds: string[] };
 
 const topInset = Platform.OS === 'android' ? RNStatusBar.currentHeight ?? 24 : 52;
 
@@ -50,6 +53,7 @@ export default function App() {
     finishReview,
     finishPlacement,
     finishCourseLesson,
+    finishDrill,
     finishDialogue,
     toggleImmersion,
     toggleFullscreen,
@@ -89,6 +93,37 @@ export default function App() {
     if (dialogue) setScreen({ name: 'dialogue', dialogue });
   }
 
+  /**
+   * Сборка блока практики. Задания генерируются из пачек, а проигрывает их
+   * тот же экран, что и обычный урок, — со всеми комбо, разбором и
+   * возвратом неверных ответов в конец очереди.
+   */
+  function openDrill(packIds: string[], count: number, short: boolean) {
+    const packs = packIds.map(getDrillPack).filter((p): p is NonNullable<typeof p> => !!p);
+    if (packs.length === 0) return;
+
+    const ref = getCourseLesson(packs[0].id);
+    const chapter: CourseChapter = ref?.chapter ?? {
+      id: 'drill',
+      title: 'Практика',
+      subtitle: '',
+      emoji: '⦿',
+      level: 'A1',
+      color: colors.primary,
+      lessons: [],
+    };
+
+    const lesson = drillLesson(packs, count, {
+      title: short ? 'Напоминание' : packs[0].title,
+      subtitle: short ? 'Короткий возврат к пройденному' : 'Закрепление теории',
+      emoji: short ? '↺' : '⦿',
+      // Соль от даты: набор стабилен внутри дня, но не повторяется
+      // слово в слово при каждом возврате к теме.
+      salt: new Date().toDateString(),
+    });
+    setScreen({ name: 'drill', lesson, chapter, packIds: packs.map((p) => p.id) });
+  }
+
   /** Единственная кнопка «Продолжить» ведёт туда, куда решила логика дня. */
   function runAction(action: NextAction) {
     if (action.kind === 'review' && action.wordIds) {
@@ -100,6 +135,8 @@ export default function App() {
       openDialogueById(action.dialogueId);
     } else if (action.kind === 'reading' && action.textId) {
       openText(action.textId);
+    } else if ((action.kind === 'drill' || action.kind === 'recall') && action.packIds) {
+      openDrill(action.packIds, action.taskCount ?? 20, action.kind === 'recall');
     }
   }
 
@@ -180,6 +217,22 @@ export default function App() {
     );
   }
 
+  if (screen.name === 'drill') {
+    const packIds = screen.packIds;
+    return (
+      <Shell fullscreen={progress.fullscreen}>
+        <CourseLessonScreen
+          lesson={screen.lesson}
+          chapter={screen.chapter}
+          lang={lang}
+          immersion={progress.immersion}
+          onFinish={(result) => finishDrill(packIds, result)}
+          onExit={backToTabs}
+        />
+      </Shell>
+    );
+  }
+
   if (screen.name === 'placement') {
     return (
       <Shell fullscreen={progress.fullscreen}>
@@ -211,6 +264,7 @@ export default function App() {
         onOpenUnit={openUnit}
         onOpenText={openText}
         onOpenDialogue={openDialogueById}
+        onOpenDrill={openDrill}
         onRunAction={runAction}
       />
     );

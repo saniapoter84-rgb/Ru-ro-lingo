@@ -1,8 +1,16 @@
 import { COURSE_LESSONS, CourseChapter, GrammarLesson, getCourseLesson } from '../data/course';
 import { DIALOGUES } from '../data/dialogues';
 import { LIVE_TEXTS } from '../data/texts';
-import { ProgressState, getDueWordIds, nextCourseLessonId } from './progress';
+import { DRILL_PACK_IDS, getDrillPack } from '../data/drills';
+import {
+  ProgressState,
+  getDueRuleIds,
+  getDueWordIds,
+  isRuleTrained,
+  nextCourseLessonId,
+} from './progress';
 import { comprehensionSummary } from './comprehension';
+import { DRILL_FULL, DRILL_SHORT } from './drills';
 
 /**
  * Что делать прямо сейчас.
@@ -14,7 +22,7 @@ import { comprehensionSummary } from './comprehension';
  * будет. Обещание вместо угрозы: «откроешь вот это», а не «иначе потеряешь».
  */
 
-export type NextActionKind = 'review' | 'lesson' | 'dialogue' | 'reading';
+export type NextActionKind = 'review' | 'lesson' | 'dialogue' | 'reading' | 'drill' | 'recall';
 
 export interface NextAction {
   kind: NextActionKind;
@@ -32,11 +40,33 @@ export interface NextAction {
   wordIds?: string[];
   dialogueId?: string;
   textId?: string;
+  /** Темы тренажёра, из которых собирается практика. */
+  packIds?: string[];
+  /** Сколько заданий будет в блоке. */
+  taskCount?: number;
 }
 
 /** С какого числа созревших слов повторение важнее нового урока. */
 const REVIEW_URGENT = 12;
 export const REVIEW_BATCH = 15;
+/** Сколько тем берём в одно напоминание — чтобы оно осталось коротким. */
+const RECALL_THEMES = 3;
+
+/**
+ * Тема, теорию которой уже прошли, но ни разу не отрабатывали. Берём
+ * последнюю по порядку курса: практика должна идти сразу за своим уроком,
+ * пока правило ещё в голове.
+ */
+function untrainedPackId(state: ProgressState): string | null {
+  let found: string | null = null;
+  for (const ref of COURSE_LESSONS) {
+    const id = ref.lesson.id;
+    if (!state.course[id]?.completed) break;
+    if (!getDrillPack(id)) continue;
+    if (!isRuleTrained(state, id)) found = id;
+  }
+  return found;
+}
 
 /** Первое правило урока — самое понятное обещание того, что откроется. */
 function lessonTeaser(lesson: GrammarLesson): string {
@@ -53,6 +83,28 @@ function minutesFor(taskCount: number): string {
 export function nextAction(state: ProgressState, now: number = Date.now()): NextAction {
   const due = getDueWordIds(state, now);
 
+  // Правила забываются так же, как слова. Когда тема всплывает по
+  // интервальному повторению, она возвращается коротким блоком — тем же
+  // материалом, но на пару минут, а не на двадцать заданий.
+  const dueRules = getDueRuleIds(state, DRILL_PACK_IDS, now).slice(0, RECALL_THEMES);
+  if (dueRules.length > 0) {
+    const titles = dueRules
+      .map((id) => getDrillPack(id)?.title)
+      .filter((title): title is string => !!title);
+    return {
+      kind: 'recall',
+      action: 'Напомнить',
+      title: 'Короткое напоминание',
+      teaser:
+        titles.length === 1
+          ? `${titles[0]} — тема начала забываться, вернём её за пару минут`
+          : `${titles.join(', ')} — пора освежить`,
+      meta: `${dueRules.length * DRILL_SHORT} заданий · ≈ ${Math.max(2, dueRules.length * 2)} мин`,
+      packIds: dueRules,
+      taskCount: dueRules.length * DRILL_SHORT,
+    };
+  }
+
   // Созревшие слова — это то, что вот-вот забудется. Если их накопилось
   // много, любое новое знание поверх осыпающегося старого бессмысленно.
   if (due.length >= REVIEW_URGENT) {
@@ -65,6 +117,24 @@ export function nextAction(state: ProgressState, now: number = Date.now()): Next
       meta: minutesFor(batch.length),
       wordIds: batch,
     };
+  }
+
+  // Теория без повторов не превращается в навык, поэтому блок практики
+  // идёт раньше следующего урока: сначала закрепить, потом брать новое.
+  const untrained = untrainedPackId(state);
+  if (untrained) {
+    const pack = getDrillPack(untrained);
+    if (pack) {
+      return {
+        kind: 'drill',
+        action: 'Закрепить',
+        title: 'Практика',
+        teaser: `${pack.title} — ${DRILL_FULL} повторов, чтобы правило осело`,
+        meta: `${DRILL_FULL} заданий · ≈ 6 мин`,
+        packIds: [untrained],
+        taskCount: DRILL_FULL,
+      };
+    }
   }
 
   const nextId = nextCourseLessonId(state);

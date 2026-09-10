@@ -50,6 +50,12 @@ export interface ProgressState {
   completedLessonIds: string[];
 
   course: Record<string, CourseLessonProgress>;
+  /**
+   * Интервальное повторение для грамматики: ключ — id темы тренажёра.
+   * Правила забываются ровно так же, как слова, и точно так же требуют
+   * возврата — только напоминание короче, пять заданий вместо двадцати.
+   */
+  rules: Record<string, WordProgress>;
   dialogues: Record<string, DialogueProgress>;
 
   quests: QuestState;
@@ -106,6 +112,7 @@ export function createInitialProgress(): ProgressState {
     activeDates: [],
     completedLessonIds: [],
     course: {},
+    rules: {},
     dialogues: {},
     quests: createQuestState(toLocalDateString(new Date())),
     achievements: [],
@@ -438,6 +445,54 @@ export function applyPlacement(
     course,
     placement: { chapters: knownChapters, date: toLocalDateString(now) },
   };
+}
+
+// --- Тренажёр грамматики ------------------------------------------------
+
+/** Доля верных ответов, начиная с которой тема считается закреплённой. */
+const DRILL_PASS = 0.7;
+
+/**
+ * Итог блока практики. Тема уходит на следующий интервал только если её
+ * действительно вытянули: провалить двадцать заданий и всё равно получить
+ * «увидимся через месяц» — так себе повторение.
+ */
+export function recordDrillResult(
+  state: ProgressState,
+  packId: string,
+  correct: number,
+  total: number,
+  xpEarned: number,
+  now: number = Date.now()
+): ProgressState {
+  const passed = total === 0 || correct / total >= DRILL_PASS;
+  const next: ProgressState = {
+    ...state,
+    rules: { ...state.rules, [packId]: reviewWord(state.rules[packId], passed, now) },
+    totalCorrect: state.totalCorrect + correct,
+  };
+  return bump(addXp(next, xpEarned), 'tasks', correct);
+}
+
+/** Темы, которые пора напомнить. Самые просроченные — первыми. */
+export function getDueRuleIds(
+  state: ProgressState,
+  packIds: string[],
+  now: number = Date.now()
+): string[] {
+  return packIds
+    .filter((id) => {
+      const progress = state.rules[id];
+      // Ни разу не тренированные темы сюда не попадают: их место сразу
+      // после теории, а не в напоминаниях.
+      return !!progress && progress.seenCount > 0 && isDue(progress, now);
+    })
+    .sort((a, b) => (state.rules[a]!.dueAt ?? 0) - (state.rules[b]!.dueAt ?? 0));
+}
+
+/** Тема пройдена хотя бы раз — значит, теорию уже закрепляли. */
+export function isRuleTrained(state: ProgressState, packId: string): boolean {
+  return (state.rules[packId]?.seenCount ?? 0) > 0;
 }
 
 // --- Погружение ---------------------------------------------------------

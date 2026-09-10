@@ -1,0 +1,68 @@
+import { DrillPack } from './types';
+
+export const DRILLS_CH7: DrillPack[] = [
+  {
+    id: 'ch7_l1',
+    title: 'Конъюнктив «să»',
+    rows: [
+      { sentence: 'Vreau să ___ acasă.', ro: 'merg', ru: 'Я хочу пойти домой.', traps: ['mergi', 'meargă', 'mergem'], note: 'Оба глагола в одном лице: хочу я — иду тоже я.' },
+      { sentence: 'Vreau să ___ tu cu mine.', ro: 'mergi', ru: 'Я хочу, чтобы ты пошёл со мной.', traps: ['merg', 'meargă', 'mergem'] },
+      { sentence: 'Vreau să ___ el.', ro: 'meargă', ru: 'Я хочу, чтобы он пошёл.', traps: ['merge', 'merg', 'mergem'] },
+      { sentence: 'Pot să te ___.', ro: 'ajut', ru: 'Я могу тебе помочь.', traps: ['ajuți', 'ajute', 'ajutăm'] },
+      { sentence: 'Trebuie să ___ acum.', ro: 'plec', ru: 'Мне надо сейчас идти.', traps: ['pleci', 'plece', 'plecăm'] },
+      { sentence: 'El trebuie să ___.', ro: 'plece', ru: 'Ему надо идти.', traps: ['pleacă', 'plec', 'plecăm'] },
+      { sentence: 'Vrei să ___ ceva?', ro: 'bei', ru: 'Хочешь что-нибудь выпить?', traps: ['beau', 'bea', 'bem'] },
+      { sentence: 'Vrea să ___ acasă.', ro: 'fie', ru: 'Он хочет быть дома.', traps: ['este', 'fi', 'sunt'] },
+      { sentence: 'Trebuie să ___ grijă.', ro: 'ai', ru: 'Тебе надо быть осторожным.', traps: ['aibă', 'am', 'avem'] },
+      { sentence: 'Poate să ___ mâine.', ro: 'vină', ru: 'Он может прийти завтра.', traps: ['vine', 'vin', 'venim'] },
+    ],
+  },
+  {
+    id: 'ch7_l2',
+    title: 'Местоимения-клитики',
+    rows: [
+      { sentence: 'Eu ___ văd.', ro: 'te', ru: 'Я тебя вижу.', traps: ['îți', 'mă', 'îmi'] },
+      { sentence: 'El ___ ajută.', ro: 'mă', ru: 'Он мне помогает.', traps: ['îmi', 'te', 'îți'] },
+      { sentence: '___ place cafeaua.', ro: 'Îmi', ru: 'Мне нравится кофе.', traps: ['Mă', 'Îți', 'Te'], note: '«Нравится» устроено как в русском: кому — дательный.' },
+      { sentence: '___ place filmul?', ro: 'Îți', ru: 'Тебе нравится фильм?', traps: ['Te', 'Îmi', 'Mă'] },
+      { sentence: 'Eu ___ spun tot.', ro: 'îți', ru: 'Я тебе всё говорю.', traps: ['te', 'îmi', 'mă'] },
+      { sentence: 'Ea ___ cunoaște.', ro: 'ne', ru: 'Она нас знает.', traps: ['vă', 'îi', 'le'] },
+      { sentence: 'Îl ___ pe Ion.', ro: 'cunosc', ru: 'Я знаю Иона.', traps: ['cunoști', 'cunoaște', 'cunoaștem'] },
+      { sentence: 'O ___ pe Ana.', ro: 'văd', ru: 'Я вижу Ану.', traps: ['vezi', 'vede', 'vedem'] },
+      { sentence: 'Nu ___ înțeleg.', ro: 'te', ru: 'Я тебя не понимаю.', traps: ['îți', 'mă', 'îmi'] },
+      { sentence: '___ e frig.', ro: 'Mi-', ru: 'Мне холодно.', traps: ['Îmi', 'Mă', 'Îți'] },
+    ],
+  },
+  {
+    id: 'ch7_l3',
+    title: 'Предлог «pe» перед человеком',
+    rows: [
+      { sentence: 'Îl văd ___ Ion.', ro: 'pe', ru: 'Я вижу Иона.', traps: ['la', 'cu', 'de'] },
+      { sentence: 'O cunosc ___ Ana.', ro: 'pe', ru: 'Я знаю Ану.', traps: ['la', 'cu', 'din'] },
+      { sentence: '___ cine ai văzut?', ro: 'Pe', ru: 'Кого ты видел?', traps: ['La', 'Cu', 'De'] },
+      { sentence: 'Văd ___.', ro: 'mașina', ru: 'Я вижу машину.', traps: ['pe mașina', 'la mașina', 'cu mașina'], note: 'Перед предметом «pe» не ставится — только перед человеком.' },
+      { sentence: 'Îl aștept ___ Dan.', ro: 'pe', ru: 'Я жду Дана.', traps: ['la', 'cu', 'de'] },
+      { sentence: 'O ajut ___ mama.', ro: 'pe', ru: 'Я помогаю маме.', traps: ['la', 'cu', 'din'] },
+      { sentence: 'Îi cunosc ___ vecini.', ro: 'pe', ru: 'Я знаю соседей.', traps: ['la', 'cu', 'din'] },
+      { sentence: 'Citesc ___.', ro: 'cartea', ru: 'Я читаю книгу.', traps: ['pe cartea', 'la cartea', 'cu cartea'] },
+      { sentence: 'Îl întreb ___ profesor.', ro: 'pe', ru: 'Я спрошу преподавателя.', traps: ['la', 'cu', 'de'] },
+      { sentence: '___ care l-ai văzut?', ro: 'Pe', ru: 'Которого ты видел?', traps: ['La', 'Cu', 'De'] },
+    ],
+  },
+  {
+    id: 'ch7_l4',
+    title: 'Вежливость и просьба',
+    rows: [
+      { sentence: '___ vrea o cafea.', ro: 'Aș', ru: 'Я бы хотел кофе.', traps: ['Ai', 'Ar', 'Am'] },
+      { sentence: '___ putea să mă ajuți?', ro: 'Ai', ru: 'Ты не мог бы мне помочь?', traps: ['Aș', 'Ar', 'Ați'] },
+      { sentence: '___ fi bine să mergem.', ro: 'Ar', ru: 'Было бы хорошо пойти.', traps: ['Aș', 'Ai', 'Am'] },
+      { sentence: 'Vă ___ să așteptați.', ro: 'rog', ru: 'Прошу вас подождать.', traps: ['rogi', 'roagă', 'rugăm'] },
+      { sentence: '___-mi, te rog.', ro: 'Spune', ru: 'Скажи мне, пожалуйста.', traps: ['Spui', 'Spun', 'Spuneți'] },
+      { sentence: '___ aici!', ro: 'Vino', ru: 'Иди сюда!', traps: ['Vii', 'Vine', 'Veniți'] },
+      { sentence: 'Nu ___!', ro: 'pleca', ru: 'Не уходи!', traps: ['pleci', 'pleacă', 'plecați'], note: 'Отрицательное «не делай» на «ты» — это инфинитив без «a».' },
+      { sentence: '___ mai rar, vă rog.', ro: 'Vorbiți', ru: 'Говорите помедленнее, пожалуйста.', traps: ['Vorbește', 'Vorbesc', 'Vorbim'] },
+      { sentence: 'Ce ___ face în locul meu?', ro: 'ai', ru: 'Что бы ты сделал на моём месте?', traps: ['aș', 'ar', 'ați'] },
+      { sentence: '___ merge, dar nu pot.', ro: 'Aș', ru: 'Я бы пошёл, но не могу.', traps: ['Ai', 'Ar', 'Am'] },
+    ],
+  },
+];
