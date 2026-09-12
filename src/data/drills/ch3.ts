@@ -5,7 +5,15 @@ export const DRILLS_CH3: DrillPack[] = [
     id: 'ch3_l1',
     title: 'Глагол «иметь»',
     rule:
-      'Русское «у меня есть» в румынском — «я имею»: am / ai / are / avem / aveți / au. Возраст тоже «имеют»: am douăzeci de ani.',
+      'Русское «у меня есть» в румынском устроено как «я имею». Возраст тоже «имеют».',
+    forms: {
+      'am': 'я — и мы тоже',
+      'ai': 'ты',
+      'are': 'он, она',
+      'avem': 'мы',
+      'aveți': 'вы',
+      'au': 'они',
+    },
     transformInstruction: 'Поставь a avea в нужную форму',
     rows: [
       { sentence: 'Eu ___ o soră.', from: 'eu', ro: 'am', ru: 'У меня есть сестра.', traps: ['ai', 'are', 'avem'] },
@@ -24,7 +32,23 @@ export const DRILLS_CH3: DrillPack[] = [
     id: 'ch3_l2',
     title: 'Моё, твоё, его',
     rule:
-      'Форма согласуется с ПРЕДМЕТОМ, а не с владельцем: casa mea, telefonul meu, părinții mei, cărțile mele. «Его» и «её» — неизменяемые lui и ei.',
+      'Форма согласуется с предметом, а не с владельцем: не «моя» книга, а «книга — та, что моя».',
+    forms: {
+      'meu': 'мой — про предмет мужского рода',
+      'mea': 'моя — женский род',
+      'mei': 'мои — мужской род, много',
+      'mele': 'мои — женский род, много',
+      'tău': 'твой',
+      'ta': 'твоя',
+      'tăi': 'твои — мужской род',
+      'tale': 'твои — женский род',
+      'lui': 'его — не меняется никогда',
+      'ei': 'её — не меняется никогда',
+      'nostru': 'наш',
+      'noastră': 'наша',
+      'noștri': 'наши — мужской род',
+      'noastre': 'наши — женский род',
+    },
     rows: [
       { sentence: 'casa ___', ro: 'mea', ru: 'мой дом', traps: ['meu', 'mei', 'mele'], note: 'Форма зависит от предмета: casă — женский род.' },
       { sentence: 'telefonul ___', ro: 'meu', ru: 'мой телефон', traps: ['mea', 'mei', 'mele'] },
@@ -42,7 +66,14 @@ export const DRILLS_CH3: DrillPack[] = [
     id: 'ch3_l3',
     title: 'Согласование прилагательного',
     rule:
-      'Прилагательное стоит после существительного и согласуется с ним: înalt / înaltă / înalți / înalte. Прилагательные на «-e» (mare, fierbinte) одинаковы в мужском и женском роде.',
+      'Прилагательное стоит после существительного и подстраивается под него в роде и числе.',
+    table: [
+      { form: 'un băiat înalt', meaning: 'мужской род, один — основная форма' },
+      { form: 'o fată înaltă', meaning: 'женский род, одна — добавляется «-ă»' },
+      { form: 'doi băieți înalți', meaning: 'мужской род, много — «-i»' },
+      { form: 'două fete înalte', meaning: 'женский род, много — «-e»' },
+      { form: 'mare, fierbinte', meaning: 'прилагательные на «-e» в мужском и женском одинаковы' },
+    ],
     rows: [
       { sentence: 'un băiat ___', ro: 'înalt', ru: 'высокий мальчик', traps: ['înaltă', 'înalți', 'înalte'] },
       { sentence: 'o fată ___', ro: 'înaltă', ru: 'высокая девочка', traps: ['înalt', 'înalți', 'înalte'] },
@@ -60,7 +91,17 @@ export const DRILLS_CH3: DrillPack[] = [
     id: 'ch3_l4',
     title: 'Сравнение',
     rule:
-      'Само прилагательное не меняется — меняются слова перед ним: mai (более), cel mai и cea mai (самый), la fel de (такой же), foarte (очень). «Чем» — decât или ca.',
+      'Само прилагательное не меняется — меняются служебные слова перед ним.',
+    forms: {
+      'mai': 'более: mai cald — теплее',
+      'mai puțin': 'менее',
+      'cel mai': 'самый — мужской и средний род',
+      'cea mai': 'самая — женский род',
+      'la fel de': 'такой же',
+      'foarte': 'очень — это не сравнение',
+      'decât': 'чем',
+      'ca': 'чем; как',
+    },
     rows: [
       { sentence: 'Azi e ___ cald decât ieri.', ro: 'mai', ru: 'Сегодня теплее, чем вчера.', traps: ['cel mai', 'foarte', 'la fel de'] },
       { sentence: 'E ___ bun restaurant din oraș.', ro: 'cel mai', ru: 'Это лучший ресторан в городе.', traps: ['mai', 'foarte', 'la fel de'] },

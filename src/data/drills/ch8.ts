@@ -5,7 +5,14 @@ export const DRILLS_CH8: DrillPack[] = [
     id: 'ch8_l1',
     title: 'Делал или сделал',
     rule:
-      'Вида глагола в румынском нет — он прячется в выборе времени. Длилось, повторялось или было фоном — imperfect (-am, -ai, -a, -am, -ați, -au). Произошло один раз и закончилось — perfect compus.',
+      'Вида глагола в румынском нет — он прячется в выборе времени.',
+    table: [
+      { form: 'imperfect: citeam', meaning: 'длилось, повторялось, было фоном: «читал», «бывало читал»' },
+      { form: 'perfect compus: am citit', meaning: 'произошло один раз и закончилось: «прочитал»' },
+      { form: 'подсказка', meaning: 'вставляется «бывало» или «в тот момент» — значит imperfect' },
+      { form: '-am, -ai, -a', meaning: 'окончания imperfect: lucram, lucrai, lucra' },
+      { form: '-am, -ați, -au', meaning: 'мы, вы, они — форма «я» и «мы» совпадают' },
+    ],
     transformInstruction: 'Поставь в imperfect',
     rows: [
       { sentence: 'Când ___ mic, mergeam la bunici.', ro: 'eram', ru: 'Когда я был маленьким, я ездил к бабушке.', traps: ['am fost', 'sunt', 'o să fiu'], note: 'Состояние, которое длилось, — imperfect.' },
@@ -24,7 +31,16 @@ export const DRILLS_CH8: DrillPack[] = [
     id: 'ch8_l2',
     title: 'Условное наклонение',
     rule:
-      'aș, ai, ar, am, ați, ar плюс инфинитив без «a». В конструкции «если бы… то…» условное наклонение стоит в ОБЕИХ половинах фразы. Прошедшее условное: aș fi плюс причастие.',
+      'Частица условного наклонения плюс инфинитив без «a». В конструкции «если бы… то…» она нужна в обеих половинах.',
+    forms: {
+      'aș': 'я бы',
+      'ai': 'ты бы',
+      'ar': 'он бы, она бы, они бы',
+      'am': 'мы бы',
+      'ați': 'вы бы',
+      'aș avea': 'если бы у меня было — условное и в самом условии',
+      'am putea': 'мы могли бы',
+    },
     rows: [
       { sentence: 'Dacă ___ timp, aș veni.', ro: 'aș avea', ru: 'Если бы у меня было время, я бы пришёл.', traps: ['am', 'aveam', 'o să am'], note: 'В условии тоже нужно условное наклонение.' },
       { sentence: 'Dacă ai vrea, ___ merge împreună.', ro: 'am putea', ru: 'Если бы ты захотел, мы могли бы пойти вместе.', traps: ['putem', 'puteam', 'o să putem'] },
@@ -42,7 +58,14 @@ export const DRILLS_CH8: DrillPack[] = [
     id: 'ch8_l3',
     title: 'Придаточные с care',
     rule:
-      '«care» не склоняется — меняется то, что стоит перед ним: care (подлежащее), pe care (прямое дополнение), cu care, în care. Проверка: подходит вопрос «кого/что» — значит нужен pe care.',
+      '«care» само по себе не склоняется — меняется то, что стоит перед ним.',
+    forms: {
+      'care': 'который — сам делает действие (подлежащее)',
+      'pe care': 'которого, которую — прямое дополнение: подходит вопрос «кого/что»',
+      'cu care': 'с которым',
+      'în care': 'в котором',
+      'din care': 'из которого',
+    },
     rows: [
       { sentence: 'Omul ___ stă acolo e vecinul meu.', ro: 'care', ru: 'Человек, который там стоит, — мой сосед.', traps: ['pe care', 'cu care', 'în care'] },
       { sentence: 'Filmul ___ l-am văzut e bun.', ro: 'pe care', ru: 'Фильм, который я посмотрел, хороший.', traps: ['care', 'cu care', 'în care'], note: 'Посмотрел что? — прямое дополнение, значит pe care.' },
@@ -60,7 +83,19 @@ export const DRILLS_CH8: DrillPack[] = [
     id: 'ch8_l4',
     title: 'Книжное будущее и вероятность',
     rule:
-      'Книжное будущее: voi, vei, va, vom, veți, vor плюс инфинитив без «a» и без «să». Уверенность добавляется словами: sigur, probabil, poate, cred că.',
+      'Книжное будущее — voi, vei, va плюс чистый инфинитив, без «să». Уверенность добавляется отдельными словами.',
+    forms: {
+      'voi': 'я',
+      'vei': 'ты',
+      'va': 'он, она',
+      'vom': 'мы',
+      'veți': 'вы',
+      'vor': 'они',
+      'Sigur': 'точно',
+      'Probabil': 'наверное',
+      'Poate': 'может быть',
+      'Cred': 'думаю, что',
+    },
     rows: [
       { sentence: 'Mâine ___ ploua.', ro: 'va', ru: 'Завтра будет дождь.', traps: ['vei', 'vom', 'vor'] },
       { sentence: 'Noi ___ veni la șapte.', ro: 'vom', ru: 'Мы придём в семь.', traps: ['voi', 'vei', 'va'] },

@@ -1,6 +1,7 @@
 import { DrillPack, DrillRow } from '../data/drills/types';
 import { ChoiceStep, GrammarLesson, GrammarStep, RuleStep } from '../data/course/types';
 import { normalizeAnswer } from './courseEngine';
+import { formsTable } from './forms';
 
 /**
  * Сборка заданий из строк тренажёра.
@@ -66,6 +67,9 @@ function toChoice(row: DrillRow, pack: DrillPack, random: () => number): ChoiceS
     // Объяснение обязательно: если своей заметки у случая нет, показываем
     // правило пачки. Без этого ошибка выглядит просто как «не угадал».
     explain: row.note ?? pack.rule,
+    // Таблица форм едет вместе с заданием: по ней разбор покажет, чем
+    // выбранный вариант отличается от нужного.
+    forms: pack.forms,
   };
 }
 
@@ -133,6 +137,7 @@ function ruleCard(pack: DrillPack): RuleStep {
     kind: 'rule',
     title: pack.title,
     body: pack.rule,
+    table: pack.table ?? formsTable(pack.forms),
     examples: examples.length > 0 ? examples : undefined,
   };
 }

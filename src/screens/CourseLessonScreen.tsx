@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { View, Text, StyleSheet, ScrollView, TextInput, Animated } from 'react-native';
 import { colors, radius, spacing, softShadow } from '../theme/colors';
 import { haptic } from '../logic/haptics';
+import { describeForm } from '../logic/forms';
 import { Press } from '../components/Press';
 import { Reveal } from '../components/Reveal';
 import { CountUp } from '../components/CountUp';
@@ -77,6 +78,8 @@ export function CourseLessonScreen({
   const [xpEarned, setXpEarned] = useState(0);
   const [solved, setSolved] = useState<Set<number>>(() => new Set());
   const [mistakes, setMistakes] = useState(0);
+  /** Что человек ответил — нужно, чтобы разбор сравнил это с верным. */
+  const [picked, setPicked] = useState<string | undefined>(undefined);
 
   const currentIndex = queue[0];
   const step = currentIndex === undefined ? undefined : steps[currentIndex];
@@ -113,11 +116,12 @@ export function CourseLessonScreen({
 
   /** Единая точка входа для результата любого задания. */
   const submit = useCallback(
-    (correct: boolean) => {
+    (correct: boolean, answered?: string) => {
       if (phase !== 'question' || currentIndex === undefined) return;
 
       setAttempts((n) => n + 1);
       setWasCorrect(correct);
+      setPicked(answered);
 
       if (correct) {
         haptic('ok');
@@ -250,6 +254,7 @@ export function CourseLessonScreen({
           lang={lang}
           correct={wasCorrect}
           step={step}
+          picked={picked}
           explain={explanationForStep(steps, currentIndex)}
           onContinue={advance}
         />
@@ -268,7 +273,7 @@ interface StepProps {
   accent: string;
   /** Подсказку «тапни по слову» показываем только в начале урока. */
   showTapHint: boolean;
-  onSubmit: (correct: boolean) => void;
+  onSubmit: (correct: boolean, answered?: string) => void;
   onContinueRule: () => void;
 }
 
@@ -346,6 +351,22 @@ function RuleView({
       <Text style={styles.ruleTitle}>{step.title}</Text>
       <Text style={styles.ruleBody}>{step.body}</Text>
 
+      {/* Формы по полочкам: слева сама форма, справа — что она значит.
+          В строчку через слэши это не читается вообще. */}
+      {step.table && step.table.length > 0 ? (
+        <View style={styles.table}>
+          {step.table.map((row, i) => (
+            <View
+              key={i}
+              style={[styles.tableRow, i === step.table!.length - 1 && styles.tableRowLast]}
+            >
+              <Text style={styles.tableForm}>{row.form}</Text>
+              <Text style={styles.tableMeaning}>{row.meaning}</Text>
+            </View>
+          ))}
+        </View>
+      ) : null}
+
       {step.examples ? (
         <View style={styles.examples}>
           {step.examples.map((ex, i) => (
@@ -394,7 +415,7 @@ function ChoiceView({
   function choose(i: number) {
     if (locked) return;
     setPicked(i);
-    onSubmit(i === step.correct);
+    onSubmit(i === step.correct, step.options[i]);
   }
 
   return (
@@ -536,7 +557,7 @@ function BuildView({
         <PrimaryButton
           title={t('common.check', lang)}
           disabled={used.length === 0}
-          onPress={() => onSubmit(matchesAnswer(assembled, step.answer))}
+          onPress={() => onSubmit(matchesAnswer(assembled, step.answer), assembled)}
           style={{ marginTop: spacing.xl }}
         />
       ) : null}
@@ -576,7 +597,7 @@ function TypeView({
         <PrimaryButton
           title={t('common.check', lang)}
           disabled={value.trim().length === 0}
-          onPress={() => onSubmit(matchesAnswer(value, step.answer, step.alt))}
+          onPress={() => onSubmit(matchesAnswer(value, step.answer, step.alt), value)}
           style={{ marginTop: spacing.lg }}
         />
       ) : null}
@@ -622,7 +643,7 @@ function TransformView({
         <PrimaryButton
           title={t('common.check', lang)}
           disabled={value.trim().length === 0}
-          onPress={() => onSubmit(matchesAnswer(value, step.answer, step.alt))}
+          onPress={() => onSubmit(matchesAnswer(value, step.answer, step.alt), value)}
           style={{ marginTop: spacing.lg }}
         />
       ) : null}
@@ -727,7 +748,7 @@ function ListenView({ step, lang, immersion, locked, onSubmit }: StepProps & { s
   function choose(i: number) {
     if (locked) return;
     setPicked(i);
-    onSubmit(i === step.correct);
+    onSubmit(i === step.correct, step.options[i]);
   }
 
   return (
@@ -760,7 +781,7 @@ function SpotView({ step, lang, immersion, locked, onSubmit }: StepProps & { ste
   function choose(i: number) {
     if (locked) return;
     setPicked(i);
-    onSubmit(i === step.wrongIndex);
+    onSubmit(i === step.wrongIndex, step.tokens[i]);
   }
 
   return (
@@ -807,17 +828,26 @@ function FeedbackBar({
   lang,
   correct,
   step,
+  picked,
   explain,
   onContinue,
 }: {
   lang: Lang;
   correct: boolean;
   step: GrammarStep;
+  picked?: string;
   explain?: string;
   onContinue: () => void;
 }) {
   const answer = correctAnswerText(step);
   const speech = speechTextForStep(step);
+
+  // Разбор по существу: чем выбранная форма отличается от нужной. Общее
+  // правило внизу отвечает «почему так», а эта пара строк — «а не иначе».
+  const forms = 'forms' in step ? step.forms : undefined;
+  const pickedMeaning = !correct && picked ? describeForm(picked, forms) : undefined;
+  const answerMeaning = answer ? describeForm(answer, forms) : undefined;
+  const hasContrast = !correct && !!pickedMeaning && !!answerMeaning && picked !== answer;
 
   // Разбор выезжает снизу: так понятно, что это ответ на твоё действие,
   // а не подменившийся экран.
@@ -858,10 +888,29 @@ function FeedbackBar({
           {t('lesson.answerIs', lang)} <Text style={styles.feedbackAnswerStrong}>{answer}</Text>
         </Text>
       ) : null}
-      {explain ? (
+      {explain || hasContrast ? (
         <View style={[styles.whyBox, correct && styles.whyBoxOk]}>
           {!correct ? <Text style={styles.whyLabel}>ПОЧЕМУ</Text> : null}
-          <Text style={styles.feedbackExplain}>{explain}</Text>
+
+          {hasContrast ? (
+            <View style={styles.contrast}>
+              <View style={styles.contrastRow}>
+                <Text style={styles.contrastMark}>✗</Text>
+                <Text style={styles.contrastText}>
+                  <Text style={styles.contrastForm}>{picked}</Text> — {pickedMeaning}
+                </Text>
+              </View>
+              <View style={styles.contrastRow}>
+                <Text style={[styles.contrastMark, { color: colors.success }]}>✓</Text>
+                <Text style={styles.contrastText}>
+                  <Text style={[styles.contrastForm, { color: colors.success }]}>{answer}</Text> —{' '}
+                  {answerMeaning}
+                </Text>
+              </View>
+            </View>
+          ) : null}
+
+          {explain ? <Text style={styles.feedbackExplain}>{explain}</Text> : null}
         </View>
       ) : null}
       {/* Кнопка «дальше» всегда одна и та же: красной её делать незачем.
@@ -1048,6 +1097,31 @@ const styles = StyleSheet.create({
   },
   ruleTitle: { fontSize: 23, fontWeight: '800', color: colors.text, marginBottom: spacing.md },
   ruleBody: { fontSize: 15, lineHeight: 23, color: colors.textDim },
+  table: {
+    marginTop: spacing.lg,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.bgElevated,
+    overflow: 'hidden',
+  },
+  tableRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: spacing.md,
+    paddingVertical: 9,
+    paddingHorizontal: spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
+  },
+  tableRowLast: { borderBottomWidth: 0 },
+  tableForm: {
+    width: 96,
+    fontSize: 14,
+    fontWeight: '800',
+    color: colors.primaryBright,
+  },
+  tableMeaning: { flex: 1, fontSize: 13, color: colors.textDim, lineHeight: 18 },
   examples: { marginTop: spacing.lg, gap: spacing.sm },
   exampleRow: { backgroundColor: colors.bgElevated },
   exampleInner: {
@@ -1173,6 +1247,11 @@ const styles = StyleSheet.create({
     letterSpacing: 1.2,
     color: colors.danger,
   },
+  contrast: { gap: 4, marginBottom: 2 },
+  contrastRow: { flexDirection: 'row', alignItems: 'flex-start', gap: spacing.sm },
+  contrastMark: { fontSize: 12, color: colors.danger, fontWeight: '800', width: 12 },
+  contrastText: { flex: 1, fontSize: 13, color: colors.text, lineHeight: 19 },
+  contrastForm: { fontWeight: '800', color: colors.danger },
 
   // Итоги
   centered: {
