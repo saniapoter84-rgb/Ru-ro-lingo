@@ -4,6 +4,8 @@ export const DRILLS_CH2: DrillPack[] = [
   {
     id: 'ch2_l1',
     title: 'Артикль приклеивается сзади',
+    rule:
+      'Определённый артикль приклеивается к концу слова, а не стоит впереди: casă → casa, băiat → băiatul, câine → câinele. Женский род берёт «-a», мужской и средний — «-ul» или «-le».',
     transformInstruction: 'Добавь определённый артикль',
     rows: [
       { sentence: 'Unde e ___?', from: 'casă', ro: 'casa', ru: 'Где дом?', traps: ['casă', 'casele', 'casei'] },
@@ -21,6 +23,8 @@ export const DRILLS_CH2: DrillPack[] = [
   {
     id: 'ch2_l2',
     title: 'Множественное число',
+    rule:
+      'Три рабочие модели: женский «-ă → -e» (casă → case), мужской «→ -i» (băiat → băieți), средний «→ -uri» или «-e» (oraș → orașe). Гласная в корне при этом часто меняется.',
     transformInstruction: 'Поставь во множественное число',
     rows: [
       { sentence: 'Aici sunt două ___.', from: 'casă', ro: 'case', ru: 'Здесь два дома.', traps: ['casele', 'casă', 'casuri'] },
@@ -38,6 +42,8 @@ export const DRILLS_CH2: DrillPack[] = [
   {
     id: 'ch2_l3',
     title: 'Артикль во множественном',
+    rule:
+      'К форме множественного числа добавляется «-le» для женского и среднего рода (case → casele) и «-i» для мужского (băieți → băieții).',
     transformInstruction: 'Добавь определённый артикль',
     rows: [
       { sentence: '___ de pe stradă sunt vechi.', from: 'case', ro: 'casele', ru: 'Дома на улице старые.', traps: ['casei', 'case', 'casale'] },
@@ -55,6 +61,8 @@ export const DRILLS_CH2: DrillPack[] = [
   {
     id: 'ch2_l4',
     title: 'Числа и «de»',
+    rule:
+      'До 19 число стоит прямо перед словом. Начиная с 20 между ними обязательно «de»: douăzeci de ani. Числа «один» и «два» согласуются с родом: doi frați, но două surori.',
     rows: [
       { sentence: 'Am ___ ani.', ro: 'douăzeci și cinci de', ru: 'Мне двадцать пять лет.', traps: ['douăzeci și cinci', 'douăzeci cinci de', 'douăzeci și cinci ani'], note: 'После 20 между числом и словом всегда встаёт «de».' },
       { sentence: 'Sunt ___ studenți.', ro: 'doisprezece', ru: 'Здесь двенадцать студентов.', traps: ['doisprezece de', 'douăsprezece', 'doispe de'], note: 'До 20 «de» не нужно.' },

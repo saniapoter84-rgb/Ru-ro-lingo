@@ -68,8 +68,10 @@ export function LessonScreen({
     if (correct) {
       setSessionCorrect((n) => n + 1);
       setCompletedWordIds((s) => new Set(s).add(current.word.id));
-      speakRomanian(current.word.ro);
     }
+    // Слово звучит в обоих случаях. Ошибся — тем более: услышать верную
+    // форму важнее всего именно тогда, когда ты её не угадал.
+    speakRomanian(current.word.ro);
   }
 
   function handleContinue() {

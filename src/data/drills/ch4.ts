@@ -4,6 +4,8 @@ export const DRILLS_CH4: DrillPack[] = [
   {
     id: 'ch4_l1',
     title: 'Глаголы на -a',
+    rule:
+      'Группа на -a. Обычный тип берёт окончания -, -i, -ă (cânt, cânți, cântă), тип со вставкой добавляет «-ez-» (lucrez, lucrezi, lucrează). У части глаголов меняется гласная в корне: a mânca → mănânc.',
     transformInstruction: 'Проспрягай для указанного лица',
     rows: [
       { sentence: 'Eu ___ la birou.', from: 'a lucra · eu', ro: 'lucrez', ru: 'Я работаю в офисе.', traps: ['lucru', 'lucrezi', 'lucrează'] },
@@ -21,6 +23,8 @@ export const DRILLS_CH4: DrillPack[] = [
   {
     id: 'ch4_l2',
     title: 'Глаголы на -e и -ea',
+    rule:
+      'Группы на -e и -ea: merg, mergi, merge и văd, vezi, vede. Первое лицо часто оканчивается на согласную или «-u»: fac, scriu, beau.',
     transformInstruction: 'Проспрягай для указанного лица',
     rows: [
       { sentence: 'Eu ___ la școală.', from: 'a merge · eu', ro: 'merg', ru: 'Я иду в школу.', traps: ['mergi', 'merge', 'mergem'] },
@@ -38,6 +42,8 @@ export const DRILLS_CH4: DrillPack[] = [
   {
     id: 'ch4_l3',
     title: 'Глаголы на -i',
+    rule:
+      'Группа на -i делится надвое. Со вставкой «-esc-»: vorbesc, vorbești, vorbește. Без вставки: dorm, dormi, doarme. Какой тип у глагола — приходится запоминать.',
     transformInstruction: 'Проспрягай для указанного лица',
     rows: [
       { sentence: 'Eu ___ românește.', from: 'a vorbi · eu', ro: 'vorbesc', ru: 'Я говорю по-румынски.', traps: ['vorb', 'vorbești', 'vorbește'], note: 'Тип со вставкой «-esc-».' },
@@ -55,6 +61,8 @@ export const DRILLS_CH4: DrillPack[] = [
   {
     id: 'ch4_l4',
     title: 'Хочу, могу, беру, стою',
+    rule:
+      'Четыре самых частых глагола неправильные: vreau / vrei / vrea, pot / poți / poate, iau / iei / ia, stau / stai / stă. Их проще выучить целиком, чем выводить по правилу.',
     rows: [
       { sentence: 'Eu ___ o cafea.', ro: 'vreau', ru: 'Я хочу кофе.', traps: ['vrei', 'vrea', 'vrem'] },
       { sentence: 'Tu ___ să vii?', ro: 'vrei', ru: 'Ты хочешь прийти?', traps: ['vreau', 'vrea', 'vreți'] },
@@ -71,6 +79,8 @@ export const DRILLS_CH4: DrillPack[] = [
   {
     id: 'ch4_l5',
     title: 'Возвратные глаголы',
+    rule:
+      'Русское «-ся» стало отдельным словом перед глаголом: mă, te, se, ne, vă, se. При отрицании первым идёт «nu», частица — сразу за ним: nu mă simt bine.',
     rows: [
       { sentence: 'Eu ___ numesc Ana.', ro: 'mă', ru: 'Меня зовут Ана.', traps: ['te', 'se', 'ne'] },
       { sentence: 'Cum ___ numești?', ro: 'te', ru: 'Как тебя зовут?', traps: ['mă', 'se', 'vă'] },

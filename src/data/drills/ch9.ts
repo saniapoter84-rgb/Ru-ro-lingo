@@ -4,6 +4,8 @@ export const DRILLS_CH9: DrillPack[] = [
   {
     id: 'ch9_l1',
     title: 'Косвенная речь',
+    rule:
+      'Времена не сдвигаются — что человек сказал, то и остаётся. «Что» — că, «ли» — dacă, вопросительное слово сохраняется: ce, unde, când, cum, cine.',
     rows: [
       { sentence: 'Mi-a spus ___ nu poate veni.', ro: 'că', ru: 'Он сказал мне, что не может прийти.', traps: ['dacă', 'ce', 'care'] },
       { sentence: 'M-a întrebat ___ am timp.', ro: 'dacă', ru: 'Он спросил, есть ли у меня время.', traps: ['că', 'ce', 'cine'], note: 'Вопрос «да/нет» пересказывается через dacă — это наше «ли».' },
@@ -20,6 +22,8 @@ export const DRILLS_CH9: DrillPack[] = [
   {
     id: 'ch9_l2',
     title: 'Безличность и пассив',
+    rule:
+      'Безличность собирается частицей «se»: se vinde, se spune, nu se poate. Результат — через «a fi» плюс причастие, согласованное с подлежащим: ușa este închisă. После trebuie и e interzis идёт «să».',
     rows: [
       { sentence: 'Aici ___ vorbește românește.', ro: 'se', ru: 'Здесь говорят по-румынски.', traps: ['este', 'sunt', 'are'] },
       { sentence: 'Ușa ___ închisă.', ro: 'este', ru: 'Дверь закрыта.', traps: ['se', 'are', 'a'] },
@@ -36,6 +40,8 @@ export const DRILLS_CH9: DrillPack[] = [
   {
     id: 'ch9_l3',
     title: 'Деепричастие и связки времени',
+    rule:
+      'Деепричастие на «-ând», после мягкой основы «-ind»; форма одна на все лица. Связки: după ce плюс обычное прошедшее, înainte обязательно с «să», în timp ce любит imperfect, de când — «с тех пор как».',
     transformInstruction: 'Сделай деепричастие',
     rows: [
       { sentence: '___ pe stradă, l-am văzut.', from: 'a merge', ro: 'mergând', ru: 'Идя по улице, я его увидел.', traps: ['mergind', 'mergut', 'mers'] },
@@ -53,6 +59,8 @@ export const DRILLS_CH9: DrillPack[] = [
   {
     id: 'ch9_l4',
     title: 'Степени и связки аргумента',
+    rule:
+      'mai (более), cel mai и cea mai (самый), la fel de … ca (такой же). Связки мысли: deși (хотя), deoarece (так как), de aceea (поэтому), în schimb (зато), în plus (к тому же).',
     rows: [
       { sentence: 'Azi e ___ cald decât ieri.', ro: 'mai', ru: 'Сегодня теплее, чем вчера.', traps: ['cel mai', 'la fel de', 'foarte'] },
       { sentence: 'E ___ bună cafea din oraș.', ro: 'cea mai', ru: 'Это лучший кофе в городе.', traps: ['cel mai', 'mai', 'la fel de'] },

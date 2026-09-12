@@ -22,6 +22,7 @@ import {
 import {
   buildTokenBank,
   comboMultiplier,
+  explanationForStep,
   instructionForStep,
   matchesAnswer,
   shuffle,
@@ -128,14 +129,19 @@ export function CourseLessonScreen({
           setSolved((s) => new Set(s).add(currentIndex));
           setCorrectCount((n) => n + 1);
         }
-        const speech = speechTextForStep(steps[currentIndex]);
-        if (speech) speakRomanian(speech);
       } else {
         haptic('miss');
         runShake();
         setCombo(0);
         setMistakes((n) => n + 1);
       }
+
+      // Правильная форма звучит в обоих случаях. При ошибке — тем более:
+      // именно тогда её и нужно услышать, а раньше приложение молчало
+      // ровно в тот момент, когда звук был нужнее всего.
+      const speech = speechTextForStep(steps[currentIndex]);
+      if (speech) speakRomanian(speech);
+
       setPhase('feedback');
     },
     [phase, currentIndex, combo, boss, solved, steps, runShake]
@@ -229,7 +235,9 @@ export function CourseLessonScreen({
               immersion={immersion}
               locked={phase === 'feedback'}
               accent={chapter.color}
-              showTapHint={attempts < 3}
+              showTapHint={
+                attempts < 5 || step.kind === 'type' || step.kind === 'transform'
+              }
               onSubmit={submit}
               onContinueRule={skipRule}
             />
@@ -242,6 +250,7 @@ export function CourseLessonScreen({
           lang={lang}
           correct={wasCorrect}
           step={step}
+          explain={explanationForStep(steps, currentIndex)}
           onContinue={advance}
         />
       ) : null}
@@ -305,8 +314,11 @@ function Instruction({ step }: { step: GrammarStep }) {
 }
 
 /**
- * Подсказка о том, что по словам можно тапать. Без неё функцию не находят,
- * но и на каждом задании она не нужна: к третьему разу это уже шум.
+ * Подсказка о том, что по словам можно тапать.
+ *
+ * В начале урока её видят все, дальше она остаётся только там, где ответ
+ * надо написать самому: в задании с выбором соседний вариант всё равно
+ * подскажет, а над пустым полем ввода без перевода можно застрять.
  */
 function TapHint({ lang, show }: { lang: Lang; show: boolean }) {
   if (!show) return null;
@@ -795,15 +807,17 @@ function FeedbackBar({
   lang,
   correct,
   step,
+  explain,
   onContinue,
 }: {
   lang: Lang;
   correct: boolean;
   step: GrammarStep;
+  explain?: string;
   onContinue: () => void;
 }) {
-  const explain = 'explain' in step ? step.explain : undefined;
   const answer = correctAnswerText(step);
+  const speech = speechTextForStep(step);
 
   // Разбор выезжает снизу: так понятно, что это ответ на твоё действие,
   // а не подменившийся экран.
@@ -828,15 +842,28 @@ function FeedbackBar({
         { transform: [{ translateY }], opacity: slide },
       ]}
     >
-      <Text style={[styles.feedbackTitle, { color: correct ? colors.success : colors.danger }]}>
-        {correct ? t('lesson.correct', lang) : t('lesson.wrong', lang)}
-      </Text>
+      <View style={styles.feedbackHead}>
+        <Text
+          style={[
+            styles.feedbackTitle,
+            { color: correct ? colors.success : colors.danger },
+          ]}
+        >
+          {correct ? t('lesson.correct', lang) : t('lesson.wrong', lang)}
+        </Text>
+        {speech ? <SpeakerButton text={speech} size={32} /> : null}
+      </View>
       {!correct && answer ? (
         <Text style={styles.feedbackAnswer}>
           {t('lesson.answerIs', lang)} <Text style={styles.feedbackAnswerStrong}>{answer}</Text>
         </Text>
       ) : null}
-      {explain ? <Text style={styles.feedbackExplain}>{explain}</Text> : null}
+      {explain ? (
+        <View style={[styles.whyBox, correct && styles.whyBoxOk]}>
+          {!correct ? <Text style={styles.whyLabel}>ПОЧЕМУ</Text> : null}
+          <Text style={styles.feedbackExplain}>{explain}</Text>
+        </View>
+      ) : null}
       {/* Кнопка «дальше» всегда одна и та же: красной её делать незачем.
           Красным отмечен сам неверный вариант — этого достаточно, чтобы
           понять, что произошло, и незачем ещё и подсвечивать тревогой
@@ -1125,10 +1152,27 @@ const styles = StyleSheet.create({
   },
   feedbackOk: { borderTopColor: colors.success },
   feedbackBad: { borderTopColor: colors.danger },
-  feedbackTitle: { fontSize: 16, fontWeight: '800' },
+  feedbackHead: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
+  feedbackTitle: { flex: 1, fontSize: 16, fontWeight: '800' },
   feedbackAnswer: { color: colors.textDim, fontSize: 14, marginTop: 4 },
   feedbackAnswerStrong: { color: colors.text, fontWeight: '700' },
-  feedbackExplain: { color: colors.textDim, fontSize: 13, lineHeight: 19, marginTop: 6 },
+  feedbackExplain: { color: colors.text, fontSize: 13, lineHeight: 20 },
+  whyBox: {
+    marginTop: spacing.md,
+    padding: spacing.md,
+    borderRadius: radius.sm,
+    borderWidth: 1,
+    borderColor: colors.danger,
+    backgroundColor: colors.dangerDim,
+    gap: 5,
+  },
+  whyBoxOk: { borderColor: colors.border, backgroundColor: colors.glass },
+  whyLabel: {
+    fontSize: 9,
+    fontWeight: '800',
+    letterSpacing: 1.2,
+    color: colors.danger,
+  },
 
   // Итоги
   centered: {

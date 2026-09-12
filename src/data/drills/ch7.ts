@@ -4,6 +4,8 @@ export const DRILLS_CH7: DrillPack[] = [
   {
     id: 'ch7_l1',
     title: 'Конъюнктив «să»',
+    rule:
+      'Вместо инфинитива румынский ставит «să» и спрягает второй глагол тоже: vreau să merg. Оба глагола в одном лице. В третьем лице форма особая: să meargă, să fie, să aibă, să vină.',
     rows: [
       { sentence: 'Vreau să ___ acasă.', ro: 'merg', ru: 'Я хочу пойти домой.', traps: ['mergi', 'meargă', 'mergem'], note: 'Оба глагола в одном лице: хочу я — иду тоже я.' },
       { sentence: 'Vreau să ___ tu cu mine.', ro: 'mergi', ru: 'Я хочу, чтобы ты пошёл со мной.', traps: ['merg', 'meargă', 'mergem'] },
@@ -20,6 +22,8 @@ export const DRILLS_CH7: DrillPack[] = [
   {
     id: 'ch7_l2',
     title: 'Местоимения-клитики',
+    rule:
+      'Местоимение встаёт ПЕРЕД глаголом. Кого и что: mă, te, îl, o, ne, vă, îi, le. Кому: îmi, îți, îi, ne, vă, le. «Мне нравится» устроено как в русском: îmi place.',
     rows: [
       { sentence: 'Eu ___ văd.', ro: 'te', ru: 'Я тебя вижу.', traps: ['îți', 'mă', 'îmi'] },
       { sentence: 'El ___ ajută.', ro: 'mă', ru: 'Он мне помогает.', traps: ['îmi', 'te', 'îți'] },
@@ -36,6 +40,8 @@ export const DRILLS_CH7: DrillPack[] = [
   {
     id: 'ch7_l3',
     title: 'Предлог «pe» перед человеком',
+    rule:
+      'Перед одушевлённым прямым дополнением ставится «pe», и местоимение при этом удваивается: îl văd pe Ion. Перед предметом «pe» не нужно: văd mașina.',
     rows: [
       { sentence: 'Îl văd ___ Ion.', ro: 'pe', ru: 'Я вижу Иона.', traps: ['la', 'cu', 'de'] },
       { sentence: 'O cunosc ___ Ana.', ro: 'pe', ru: 'Я знаю Ану.', traps: ['la', 'cu', 'din'] },
@@ -52,6 +58,8 @@ export const DRILLS_CH7: DrillPack[] = [
   {
     id: 'ch7_l4',
     title: 'Вежливость и просьба',
+    rule:
+      'Условное наклонение смягчает просьбу: aș, ai, ar, am, ați, ar плюс инфинитив без «a». Повелительное на «ты» обычно совпадает с формой третьего лица (vino, spune), а отрицательное — инфинитив без «a»: nu pleca.',
     rows: [
       { sentence: '___ vrea o cafea.', ro: 'Aș', ru: 'Я бы хотел кофе.', traps: ['Ai', 'Ar', 'Am'] },
       { sentence: '___ putea să mă ajuți?', ro: 'Ai', ru: 'Ты не мог бы мне помочь?', traps: ['Aș', 'Ar', 'Ați'] },

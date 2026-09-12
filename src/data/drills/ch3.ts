@@ -4,6 +4,8 @@ export const DRILLS_CH3: DrillPack[] = [
   {
     id: 'ch3_l1',
     title: 'Глагол «иметь»',
+    rule:
+      'Русское «у меня есть» в румынском — «я имею»: am / ai / are / avem / aveți / au. Возраст тоже «имеют»: am douăzeci de ani.',
     transformInstruction: 'Поставь a avea в нужную форму',
     rows: [
       { sentence: 'Eu ___ o soră.', from: 'eu', ro: 'am', ru: 'У меня есть сестра.', traps: ['ai', 'are', 'avem'] },
@@ -21,6 +23,8 @@ export const DRILLS_CH3: DrillPack[] = [
   {
     id: 'ch3_l2',
     title: 'Моё, твоё, его',
+    rule:
+      'Форма согласуется с ПРЕДМЕТОМ, а не с владельцем: casa mea, telefonul meu, părinții mei, cărțile mele. «Его» и «её» — неизменяемые lui и ei.',
     rows: [
       { sentence: 'casa ___', ro: 'mea', ru: 'мой дом', traps: ['meu', 'mei', 'mele'], note: 'Форма зависит от предмета: casă — женский род.' },
       { sentence: 'telefonul ___', ro: 'meu', ru: 'мой телефон', traps: ['mea', 'mei', 'mele'] },
@@ -37,6 +41,8 @@ export const DRILLS_CH3: DrillPack[] = [
   {
     id: 'ch3_l3',
     title: 'Согласование прилагательного',
+    rule:
+      'Прилагательное стоит после существительного и согласуется с ним: înalt / înaltă / înalți / înalte. Прилагательные на «-e» (mare, fierbinte) одинаковы в мужском и женском роде.',
     rows: [
       { sentence: 'un băiat ___', ro: 'înalt', ru: 'высокий мальчик', traps: ['înaltă', 'înalți', 'înalte'] },
       { sentence: 'o fată ___', ro: 'înaltă', ru: 'высокая девочка', traps: ['înalt', 'înalți', 'înalte'] },
@@ -53,6 +59,8 @@ export const DRILLS_CH3: DrillPack[] = [
   {
     id: 'ch3_l4',
     title: 'Сравнение',
+    rule:
+      'Само прилагательное не меняется — меняются слова перед ним: mai (более), cel mai и cea mai (самый), la fel de (такой же), foarte (очень). «Чем» — decât или ca.',
     rows: [
       { sentence: 'Azi e ___ cald decât ieri.', ro: 'mai', ru: 'Сегодня теплее, чем вчера.', traps: ['cel mai', 'foarte', 'la fel de'] },
       { sentence: 'E ___ bun restaurant din oraș.', ro: 'cel mai', ru: 'Это лучший ресторан в городе.', traps: ['mai', 'foarte', 'la fel de'] },

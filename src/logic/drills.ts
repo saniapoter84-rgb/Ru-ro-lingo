@@ -1,5 +1,5 @@
 import { DrillPack, DrillRow } from '../data/drills/types';
-import { ChoiceStep, GrammarLesson, GrammarStep } from '../data/course/types';
+import { ChoiceStep, GrammarLesson, GrammarStep, RuleStep } from '../data/course/types';
 import { normalizeAnswer } from './courseEngine';
 
 /**
@@ -63,7 +63,9 @@ function toChoice(row: DrillRow, pack: DrillPack, random: () => number): ChoiceS
     ru: row.sentence || row.from ? row.ru : undefined,
     options,
     correct: options.indexOf(row.ro),
-    explain: row.note,
+    // Объяснение обязательно: если своей заметки у случая нет, показываем
+    // правило пачки. Без этого ошибка выглядит просто как «не угадал».
+    explain: row.note ?? pack.rule,
   };
 }
 
@@ -80,16 +82,23 @@ function toTransform(row: DrillRow, pack: DrillPack): GrammarStep | null {
     answer: row.ro,
     alt: row.alt,
     ru: row.ru,
-    explain: row.note,
+    explain: row.note ?? pack.rule,
   };
 }
 
 /** Сколько слов во фразе ещё разумно просить набрать руками целиком. */
 const TYPEABLE_WORDS = 6;
 
-function toType(row: DrillRow): GrammarStep | null {
+function toType(row: DrillRow, pack: DrillPack): GrammarStep | null {
   if (!row.sentence) {
-    return { kind: 'type', ru: row.ru, answer: row.ro, alt: row.alt, hint: row.note };
+    return {
+      kind: 'type',
+      ru: row.ru,
+      answer: row.ro,
+      alt: row.alt,
+      hint: row.note,
+      explain: row.note ?? pack.rule,
+    };
   }
 
   // Фразу из пропуска можно просить набрать целиком — но только короткую:
@@ -102,6 +111,29 @@ function toType(row: DrillRow): GrammarStep | null {
     answer: filled,
     alt: row.alt,
     hint: row.note,
+    explain: row.note ?? pack.rule,
+  };
+}
+
+/**
+ * Карточка правила перед практикой.
+ *
+ * Двадцать заданий, прилетающих без единого слова объяснения, — это не
+ * тренажёр, а угадайка. Поэтому блок всегда открывается напоминанием
+ * правила и парой разобранных примеров, и то же правило потом объясняет
+ * каждую ошибку.
+ */
+function ruleCard(pack: DrillPack): RuleStep {
+  const examples = pack.rows
+    .filter((row) => !!row.sentence)
+    .slice(0, 3)
+    .map((row) => ({ ro: row.sentence!.replace('___', row.ro), ru: row.ru }));
+
+  return {
+    kind: 'rule',
+    title: pack.title,
+    body: pack.rule,
+    examples: examples.length > 0 ? examples : undefined,
   };
 }
 
@@ -110,6 +142,11 @@ function toType(row: DrillRow): GrammarStep | null {
  * при возврате в тот же урок практика не пересобирается заново.
  */
 export function buildDrillSteps(pack: DrillPack, count: number, salt = ''): GrammarStep[] {
+  return [ruleCard(pack), ...buildDrillTasks(pack, count, salt)];
+}
+
+/** Только задания, без карточки правила. */
+function buildDrillTasks(pack: DrillPack, count: number, salt = ''): GrammarStep[] {
   const random = makeRandom(hash(pack.id + salt));
 
   // Сначала по одному упражнению на каждую строку — чтобы охватить все
@@ -118,7 +155,7 @@ export function buildDrillSteps(pack: DrillPack, count: number, salt = ''): Gram
   for (const row of shuffled(pack.rows, random)) {
     rounds[0].push(toChoice(row, pack, random));
     const transform = toTransform(row, pack);
-    const type = toType(row);
+    const type = toType(row, pack);
     if (transform) rounds[1].push(transform);
     if (type) rounds[transform ? 2 : 1].push(type);
   }

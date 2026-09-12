@@ -4,6 +4,8 @@ export const DRILLS_CH6: DrillPack[] = [
   {
     id: 'ch6_l1',
     title: 'Прошедшее время',
+    rule:
+      'Прошедшее собирается из «a avea» и причастия: am, ai, a, am, ați, au плюс форма на «-at», «-ut» или «-it». Две ловушки: «noi am» совпадает с «eu am», а третье лицо — просто «a».',
     transformInstruction: 'Сделай причастие',
     rows: [
       { sentence: 'Eu ___ lucrat ieri.', ro: 'am', ru: 'Я вчера работал.', traps: ['ai', 'a', 'ați'] },
@@ -21,6 +23,8 @@ export const DRILLS_CH6: DrillPack[] = [
   {
     id: 'ch6_l2',
     title: 'Неправильные причастия',
+    rule:
+      'Самые частые глаголы дают причастия не по правилу: a fi → fost, a face → făcut, a spune → spus, a vedea → văzut, a scrie → scris, a lua → luat, a pune → pus.',
     transformInstruction: 'Сделай причастие',
     rows: [
       { sentence: 'Am ___ acolo.', from: 'a fi', ro: 'fost', ru: 'Я там был.', traps: ['fiut', 'fiit', 'fiind'] },
@@ -38,6 +42,8 @@ export const DRILLS_CH6: DrillPack[] = [
   {
     id: 'ch6_l3',
     title: 'Будущее время',
+    rule:
+      'В речи — «o să» плюс спрягаемый глагол: o să merg, o să vină. В письме — voi, vei, va, vom, veți, vor плюс чистый инфинитив без «a» и без «să».',
     rows: [
       { sentence: 'O să ___ mâine.', ro: 'merg', ru: 'Я пойду завтра.', traps: ['merge', 'mergi', 'mergem'], note: 'После «o să» глагол спрягается по лицу.' },
       { sentence: 'O să ___ el mâine?', ro: 'vină', ru: 'Он придёт завтра?', traps: ['vine', 'vii', 'venim'], note: 'В третьем лице после «să» форма особая.' },
@@ -54,6 +60,8 @@ export const DRILLS_CH6: DrillPack[] = [
   {
     id: 'ch6_l4',
     title: 'Три времени вместе',
+    rule:
+      'Ieri → perfect compus (am fost), acum → настоящее (sunt), mâine → «o să» (o să merg). Отрицание во всех временах одинаковое: «nu» перед всей конструкцией.',
     rows: [
       { sentence: 'Ieri ___ la piață.', ro: 'am fost', ru: 'Вчера я был на рынке.', traps: ['sunt', 'o să fiu', 'eram'] },
       { sentence: 'Acum ___ acasă.', ro: 'sunt', ru: 'Сейчас я дома.', traps: ['am fost', 'o să fiu', 'eram'] },

@@ -4,6 +4,8 @@ export const DRILLS_CH1: DrillPack[] = [
   {
     id: 'ch1_l1',
     title: 'Глагол «быть»',
+    rule:
+      'Шесть форм: sunt / ești / este / suntem / sunteți / sunt. Форма «я» и форма «они» совпадают — различает их только местоимение. В живой речи «este» почти всегда звучит как «e».',
     transformInstruction: 'Поставь a fi в нужную форму',
     rows: [
       { sentence: 'Eu ___ student.', from: 'eu', ro: 'sunt', ru: 'Я студент.', traps: ['ești', 'este', 'suntem'] },
@@ -21,6 +23,8 @@ export const DRILLS_CH1: DrillPack[] = [
   {
     id: 'ch1_l2',
     title: 'Род и неопределённый артикль',
+    rule:
+      'Артикль показывает род: un — мужской и средний, o — женский. Окончание «-ă» почти всегда женский род; согласная на конце — мужской или средний.',
     transformInstruction: 'Поставь un или o',
     rows: [
       { sentence: '___ casă', from: 'casă', ro: 'o', ru: 'дом (женский род)', traps: ['un', 'o casă', 'niște'], note: 'Окончание «-ă» почти всегда женский род.' },
@@ -38,6 +42,8 @@ export const DRILLS_CH1: DrillPack[] = [
   {
     id: 'ch1_l3',
     title: 'Вопросы',
+    rule:
+      'Вопросительное слово идёт первым, остальной порядок слов не меняется: cine (кто), ce (что), unde (где), cum (как), când (когда), cât (сколько), de ce (почему).',
     rows: [
       { sentence: '___ ești?', ro: 'Cine', ru: 'Кто ты?', traps: ['Ce', 'Unde', 'Cum'] },
       { sentence: '___ faci?', ro: 'Ce', ru: 'Что делаешь?', traps: ['Cine', 'Unde', 'Când'] },
@@ -54,6 +60,8 @@ export const DRILLS_CH1: DrillPack[] = [
   {
     id: 'ch1_l4',
     title: 'Отрицание',
+    rule:
+      '«nu» ставится перед глаголом. Двойное отрицание работает как в русском: «Nu știu nimic» — «не знаю ничего», оба слова обязательны.',
     transformInstruction: 'Сделай отрицательным',
     rows: [
       { sentence: 'Eu ___ sunt student.', from: 'Eu sunt student.', ro: 'nu', ru: 'Я не студент.', traps: ['nici', 'niciun', 'ne'], alt: ['Eu nu sunt student'] },

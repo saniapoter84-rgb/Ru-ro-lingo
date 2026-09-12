@@ -30,29 +30,75 @@ export function buildTokenBank(answer: string, extra: string[] = []): string[] {
   return shuffle([...tokens, ...extra]);
 }
 
+/** В тексте есть кириллица — значит это условие задания, а не румынский. */
+function hasCyrillic(text: string): boolean {
+  return /[А-Яа-яЁё]/.test(text);
+}
+
+/** Подставляет правильный вариант в пропуск: «Eu ___ student» → «Eu sunt student». */
+function fillGap(prompt: string, answer: string): string {
+  return prompt.replace(/_+/g, answer);
+}
+
 /**
- * Текст, который надо озвучить на этом шаге. Пусто — значит озвучивать
- * нечего (например, задание целиком на русском).
+ * Текст, который надо озвучить на этом шаге, — всегда правильный вариант
+ * целиком.
+ *
+ * Раньше задание с пропуском не озвучивалось вовсе: в prompt стоит «___»,
+ * и читать было нечего. Но пропуск — это как раз то место, ради которого
+ * задание и существует, поэтому теперь верный ответ подставляется в фразу
+ * и звучит вся строка. Молчим только там, где озвучивать реально нечего:
+ * когда условие написано по-русски или исправление — это ремарка вроде
+ * «(убрать «să»)», а не слово.
  */
 export function speechTextForStep(step: GrammarStep): string | null {
+  const text = speechCandidate(step);
+  if (!text) return null;
+  const trimmed = text.trim();
+  if (!trimmed || hasCyrillic(trimmed)) return null;
+  return trimmed;
+}
+
+function speechCandidate(step: GrammarStep): string | null {
   switch (step.kind) {
     case 'listen':
       return step.ro;
     case 'build':
     case 'type':
-      return step.answer;
     case 'transform':
       return step.answer;
     case 'spot':
       // Часть исправлений — это указание («убрать», «после слова»), а не слово.
-      // Такое озвучивать нечего: получилась бы фраза с русской ремаркой внутри.
       if (step.fix.startsWith('(')) return null;
       return step.tokens.map((t, i) => (i === step.wrongIndex ? step.fix : t)).join(' ');
     case 'choice':
-      return step.prompt.includes('___') ? null : step.prompt;
+      return fillGap(step.prompt, step.options[step.correct]);
     default:
       return null;
   }
+}
+
+/**
+ * Чем объяснить ошибку на этом задании.
+ *
+ * У части заданий объяснение написано прямо в них, но у большинства его
+ * нет — и раньше человек видел только «не совсем» и правильный ответ, без
+ * единого слова о причине. Поэтому, если своего объяснения у задания нет,
+ * поднимаемся вверх по уроку до ближайшей карточки правила: задание
+ * всегда стоит после того правила, которое отрабатывает.
+ */
+export function explanationForStep(
+  steps: GrammarStep[],
+  index: number
+): string | undefined {
+  const step = steps[index];
+  if (step && 'explain' in step && step.explain) return step.explain;
+
+  for (let i = index - 1; i >= 0; i--) {
+    const previous = steps[i];
+    if (previous.kind === 'rule') return previous.aha ?? previous.body;
+  }
+  return undefined;
 }
 
 /** Короткая подпись «что от меня хотят» — заголовок над заданием. */
