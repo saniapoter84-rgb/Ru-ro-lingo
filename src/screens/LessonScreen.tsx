@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable, TextInput, ScrollView } from 'react-native';
 import { colors, radius, spacing } from '../theme/colors';
 import { Lesson, Word } from '../data';
-import { Exercise, buildExercisesForWords, isAnswerCorrect } from '../logic/exercises';
+import { Exercise, buildExercisesForWords, checkWordAnswer } from '../logic/exercises';
 import { ProgressBar } from '../components/ProgressBar';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { SpeakerButton } from '../components/SpeakerButton';
@@ -41,6 +41,8 @@ export function LessonScreen({
   const [feedback, setFeedback] = useState<Feedback>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [typed, setTyped] = useState('');
+  /** Ответ принят, но с оговоркой — например, лишнее местоимение. */
+  const [acceptedNote, setAcceptedNote] = useState<string | undefined>(undefined);
   const [sessionCorrect, setSessionCorrect] = useState(0);
   const [sessionAttempts, setSessionAttempts] = useState(0);
   const [completedWordIds, setCompletedWordIds] = useState<Set<string>>(() => new Set());
@@ -57,11 +59,13 @@ export function LessonScreen({
 
   function submitTyped() {
     if (!current || current.kind !== 'type_ro' || feedback) return;
-    finalizeAnswer(isAnswerCorrect(typed, current.acceptable));
+    const result = checkWordAnswer(typed, current.acceptable);
+    finalizeAnswer(result.correct, result.note);
   }
 
-  function finalizeAnswer(correct: boolean) {
+  function finalizeAnswer(correct: boolean, note?: string) {
     if (!current) return;
+    setAcceptedNote(note);
     setFeedback(correct ? 'correct' : 'wrong');
     setSessionAttempts((n) => n + 1);
     onAnswer(current.word.id, correct);
@@ -76,6 +80,7 @@ export function LessonScreen({
 
   function handleContinue() {
     if (!current) return;
+    setAcceptedNote(undefined);
     const wasCorrect = feedback === 'correct';
     const rest = queue.slice(1);
     if (!wasCorrect) {
@@ -183,10 +188,12 @@ export function LessonScreen({
                       : current.options.find((o) => o.id === current.correctId)?.text
                   }`}
             </Text>
+            {acceptedNote ? (
+              <Text style={styles.acceptedNote}>{acceptedNote}</Text>
+            ) : null}
             <PrimaryButton
               title={t('common.continue', lang)}
               onPress={handleContinue}
-              variant={feedback === 'correct' ? 'primary' : 'danger'}
               style={{ marginTop: spacing.md }}
             />
           </View>
@@ -440,6 +447,7 @@ const styles = StyleSheet.create({
   feedbackOk: { borderColor: colors.success },
   feedbackBad: { borderColor: colors.danger },
   feedbackText: { fontSize: 15, fontWeight: '700' },
+  acceptedNote: { fontSize: 12, color: colors.textDim, lineHeight: 18, marginTop: 6 },
 
   centered: {
     flex: 1,

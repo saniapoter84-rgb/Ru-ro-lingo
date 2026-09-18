@@ -10,6 +10,7 @@ import {
   nextCourseLessonId,
 } from './progress';
 import { comprehensionSummary } from './comprehension';
+import { planStatus } from './plan';
 import { DRILL_FULL, DRILL_SHORT } from './drills';
 
 /**
@@ -53,19 +54,64 @@ export const REVIEW_BATCH = 15;
 const RECALL_THEMES = 3;
 
 /**
- * Тема, теорию которой уже прошли, но ни разу не отрабатывали. Берём
- * последнюю по порядку курса: практика должна идти сразу за своим уроком,
- * пока правило ещё в голове.
+ * Сколько уроков должно пройти после темы, прежде чем предлагать по ней
+ * практику.
+ *
+ * Сразу после урока правило ещё лежит в оперативной памяти: двадцать
+ * заданий по горячим следам проверяют не знание, а кратковременную
+ * память. Толк появляется, когда между теорией и практикой успело
+ * вклиниться что-то другое.
  */
-function untrainedPackId(state: ProgressState): string | null {
-  let found: string | null = null;
+const DRILL_DELAY_LESSONS = 2;
+
+/**
+ * Тема, которую пора отработать: теория пройдена, с тех пор сделано ещё
+ * хотя бы пара уроков, а практики по ней не было.
+ *
+ * Из всех подошедших берём не первую и не последнюю, а случайную —
+ * иначе порядок практики повторяет порядок курса, и возвращение к теме
+ * перестаёт быть возвращением.
+ */
+function untrainedPackId(state: ProgressState, now: number): string | null {
+  const completed: string[] = [];
   for (const ref of COURSE_LESSONS) {
-    const id = ref.lesson.id;
-    if (!state.course[id]?.completed) break;
-    if (!getDrillPack(id)) continue;
-    if (!isRuleTrained(state, id)) found = id;
+    if (!state.course[ref.lesson.id]?.completed) break;
+    completed.push(ref.lesson.id);
   }
-  return found;
+
+  const eligible = completed
+    .slice(0, Math.max(0, completed.length - DRILL_DELAY_LESSONS))
+    .filter((id) => getDrillPack(id) && !isRuleTrained(state, id));
+
+  if (eligible.length === 0) return null;
+  // Выбор стабилен в пределах дня: одна и та же тема не прыгает при
+  // каждом возврате на экран.
+  const day = Math.floor(now / (24 * 60 * 60 * 1000));
+  return eligible[day % eligible.length];
+}
+
+/**
+ * Сцена, до которой человек дорос.
+ *
+ * Раньше сцены ждали конца всего курса — то есть их не видели вовсе.
+ * Живая речь нужна по дороге: как только грамматика недели наполовину
+ * закрыта, разговор по её теме уже вытягивается.
+ *
+ * Смотрим по всем неделям сразу, а не только по текущей. «Текущая» —
+ * это первая незакрытая, а неделя не закрывается, пока не выучен её
+ * словарь; грамматика при этом может уйти далеко вперёд, и сцены за
+ * пройденные темы так и не всплыли бы никогда.
+ */
+function readyDialogueId(state: ProgressState): string | null {
+  for (const week of planStatus(state).weeks) {
+    const grammarReady =
+      week.lessonsTotal === 0 || week.lessonsDone / week.lessonsTotal >= 0.5;
+    if (!grammarReady) break;
+
+    const pending = week.week.dialogueIds.find((id) => !state.dialogues[id]?.completed);
+    if (pending) return pending;
+  }
+  return null;
 }
 
 /** Первое правило урока — самое понятное обещание того, что откроется. */
@@ -119,9 +165,26 @@ export function nextAction(state: ProgressState, now: number = Date.now()): Next
     };
   }
 
+  // Сцена идёт вперёд практики. Незакреплённые темы есть почти всегда,
+  // и если пропускать сцену ради тренажёра, она не наступит никогда.
+  const readyScene = readyDialogueId(state);
+  if (readyScene) {
+    const scene = DIALOGUES.find((d) => d.id === readyScene);
+    if (scene) {
+      return {
+        kind: 'dialogue',
+        action: 'Открыть сцену',
+        title: 'Живая речь',
+        teaser: `${scene.title} — грамматика для неё уже пройдена`,
+        meta: '≈ 5 мин',
+        dialogueId: scene.id,
+      };
+    }
+  }
+
   // Теория без повторов не превращается в навык, поэтому блок практики
   // идёт раньше следующего урока: сначала закрепить, потом брать новое.
-  const untrained = untrainedPackId(state);
+  const untrained = untrainedPackId(state, now);
   if (untrained) {
     const pack = getDrillPack(untrained);
     if (pack) {

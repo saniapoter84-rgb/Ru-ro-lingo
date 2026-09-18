@@ -22,9 +22,11 @@ import {
 } from '../data/course';
 import {
   buildTokenBank,
+  checkAnswer,
   comboMultiplier,
   explanationForStep,
   instructionForStep,
+  ruleForStep,
   matchesAnswer,
   shuffle,
   speechTextForStep,
@@ -80,6 +82,8 @@ export function CourseLessonScreen({
   const [mistakes, setMistakes] = useState(0);
   /** Что человек ответил — нужно, чтобы разбор сравнил это с верным. */
   const [picked, setPicked] = useState<string | undefined>(undefined);
+  /** Ответ принят, но с оговоркой — например, лишнее местоимение. */
+  const [accepted, setAccepted] = useState<string | undefined>(undefined);
 
   const currentIndex = queue[0];
   const step = currentIndex === undefined ? undefined : steps[currentIndex];
@@ -116,12 +120,13 @@ export function CourseLessonScreen({
 
   /** Единая точка входа для результата любого задания. */
   const submit = useCallback(
-    (correct: boolean, answered?: string) => {
+    (correct: boolean, answered?: string, note?: string) => {
       if (phase !== 'question' || currentIndex === undefined) return;
 
       setAttempts((n) => n + 1);
       setWasCorrect(correct);
       setPicked(answered);
+      setAccepted(note);
 
       if (correct) {
         haptic('ok');
@@ -205,6 +210,22 @@ export function CourseLessonScreen({
 
   if (!step) return null;
 
+  // Ошибка — это не сноска внизу экрана, мимо которой проматывают.
+  // Открываем правило целиком и показываем, в чём именно промах.
+  if (phase === 'feedback' && !wasCorrect) {
+    return (
+      <MistakeReview
+        lang={lang}
+        step={step}
+        picked={picked}
+        rule={ruleForStep(steps, currentIndex)}
+        explain={explanationForStep(steps, currentIndex)}
+        accent={chapter.color}
+        onContinue={advance}
+      />
+    );
+  }
+
   const progressRatio = taskTotal === 0 ? 1 : solved.size / taskTotal;
   const translateX = shake.interpolate({ inputRange: [-1, 1], outputRange: [-9, 9] });
 
@@ -249,12 +270,13 @@ export function CourseLessonScreen({
         </ScrollView>
       </Animated.View>
 
-      {phase === 'feedback' ? (
+      {phase === 'feedback' && wasCorrect ? (
         <FeedbackBar
           lang={lang}
-          correct={wasCorrect}
+          correct
           step={step}
           picked={picked}
+          accepted={accepted}
           explain={explanationForStep(steps, currentIndex)}
           onContinue={advance}
         />
@@ -273,7 +295,7 @@ interface StepProps {
   accent: string;
   /** Подсказку «тапни по слову» показываем только в начале урока. */
   showTapHint: boolean;
-  onSubmit: (correct: boolean, answered?: string) => void;
+  onSubmit: (correct: boolean, answered?: string, note?: string) => void;
   onContinueRule: () => void;
 }
 
@@ -557,7 +579,10 @@ function BuildView({
         <PrimaryButton
           title={t('common.check', lang)}
           disabled={used.length === 0}
-          onPress={() => onSubmit(matchesAnswer(assembled, step.answer), assembled)}
+          onPress={() => {
+            const result = checkAnswer(assembled, step.answer);
+            onSubmit(result.correct, assembled, result.note);
+          }}
           style={{ marginTop: spacing.xl }}
         />
       ) : null}
@@ -597,7 +622,10 @@ function TypeView({
         <PrimaryButton
           title={t('common.check', lang)}
           disabled={value.trim().length === 0}
-          onPress={() => onSubmit(matchesAnswer(value, step.answer, step.alt), value)}
+          onPress={() => {
+            const result = checkAnswer(value, step.answer, step.alt);
+            onSubmit(result.correct, value, result.note);
+          }}
           style={{ marginTop: spacing.lg }}
         />
       ) : null}
@@ -643,7 +671,10 @@ function TransformView({
         <PrimaryButton
           title={t('common.check', lang)}
           disabled={value.trim().length === 0}
-          onPress={() => onSubmit(matchesAnswer(value, step.answer, step.alt), value)}
+          onPress={() => {
+            const result = checkAnswer(value, step.answer, step.alt);
+            onSubmit(result.correct, value, result.note);
+          }}
           style={{ marginTop: spacing.lg }}
         />
       ) : null}
@@ -822,6 +853,133 @@ function SpotView({ step, lang, immersion, locked, onSubmit }: StepProps & { ste
   );
 }
 
+// --- Разбор ошибки ------------------------------------------------------
+
+/**
+ * Полноэкранный разбор промаха.
+ *
+ * Пока это была узкая полоска внизу, её проматывали не читая: нажать
+ * «продолжить» быстрее, чем разбираться. Теперь ошибка останавливает
+ * урок и показывает три вещи по порядку — что ты выбрал и чем это
+ * отличается от верного, само правило с таблицей, и разобранные примеры.
+ */
+function MistakeReview({
+  lang,
+  step,
+  picked,
+  rule,
+  explain,
+  accent,
+  onContinue,
+}: {
+  lang: Lang;
+  step: GrammarStep;
+  picked?: string;
+  rule?: RuleStep;
+  explain?: string;
+  accent: string;
+  onContinue: () => void;
+}) {
+  const answer = correctAnswerText(step);
+  const speech = speechTextForStep(step);
+  const forms = 'forms' in step ? step.forms : undefined;
+  const pickedMeaning = picked ? describeForm(picked, forms) : undefined;
+  const answerMeaning = answer ? describeForm(answer, forms) : undefined;
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.reviewTop}>
+        <Text style={styles.reviewKicker}>РАЗБОР ОШИБКИ</Text>
+        {speech ? <SpeakerButton text={speech} size={34} /> : null}
+      </View>
+
+      <ScrollView contentContainerStyle={styles.reviewBody} showsVerticalScrollIndicator={false}>
+        {/* Что было не так — крупно, а не мелкой строкой. */}
+        <View style={styles.reviewCompare}>
+          {picked ? (
+            <View style={styles.reviewLine}>
+              <Text style={[styles.reviewMark, { color: colors.danger }]}>✗</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={[styles.reviewForm, { color: colors.danger }]}>{picked}</Text>
+                {pickedMeaning ? (
+                  <Text style={styles.reviewMeaning}>{pickedMeaning}</Text>
+                ) : null}
+              </View>
+            </View>
+          ) : null}
+
+          {answer ? (
+            <View style={styles.reviewLine}>
+              <Text style={[styles.reviewMark, { color: colors.success }]}>✓</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={[styles.reviewForm, { color: colors.success }]}>{answer}</Text>
+                {answerMeaning ? (
+                  <Text style={styles.reviewMeaning}>{answerMeaning}</Text>
+                ) : null}
+              </View>
+            </View>
+          ) : null}
+        </View>
+
+        {explain ? (
+          <View style={[styles.reviewWhy, { borderColor: accent }]}>
+            <Text style={styles.reviewWhyLabel}>ПОЧЕМУ</Text>
+            <Text style={styles.reviewWhyText}>{explain}</Text>
+          </View>
+        ) : null}
+
+        {/* Само правило, а не ссылка на него. */}
+        {rule ? (
+          <View style={styles.reviewRule}>
+            <Text style={styles.reviewRuleLabel}>ПРАВИЛО</Text>
+            <Text style={styles.reviewRuleTitle}>{rule.title}</Text>
+            <Text style={styles.ruleBody}>{rule.body}</Text>
+
+            {rule.table && rule.table.length > 0 ? (
+              <View style={styles.table}>
+                {rule.table.map((row, i) => (
+                  <View
+                    key={i}
+                    style={[styles.tableRow, i === rule.table!.length - 1 && styles.tableRowLast]}
+                  >
+                    <Text style={styles.tableForm}>{row.form}</Text>
+                    <Text style={styles.tableMeaning}>{row.meaning}</Text>
+                  </View>
+                ))}
+              </View>
+            ) : null}
+
+            {rule.examples ? (
+              <View style={styles.examples}>
+                {rule.examples.slice(0, 3).map((ex, i) => (
+                  <Panel key={i} style={styles.exampleRow} padded={false}>
+                    <View style={styles.exampleInner}>
+                      <View style={{ flex: 1 }}>
+                        <Text style={styles.exampleRo}>{ex.ro}</Text>
+                        <Text style={styles.exampleRu}>{ex.ru}</Text>
+                      </View>
+                      <SpeakerButton text={ex.ro} size={30} />
+                    </View>
+                  </Panel>
+                ))}
+              </View>
+            ) : null}
+          </View>
+        ) : null}
+
+        <View style={{ height: spacing.xxl }} />
+      </ScrollView>
+
+      <View style={styles.reviewFooter}>
+        <PrimaryButton title={t('common.continue', lang)} onPress={onContinue} />
+        <Text style={styles.reviewFooterHint}>
+          Задание вернётся в конец урока — разберёшься на нём ещё раз.
+        </Text>
+      </View>
+    </View>
+  );
+}
+
 // --- Полоса разбора -----------------------------------------------------
 
 function FeedbackBar({
@@ -829,6 +987,7 @@ function FeedbackBar({
   correct,
   step,
   picked,
+  accepted,
   explain,
   onContinue,
 }: {
@@ -836,6 +995,7 @@ function FeedbackBar({
   correct: boolean;
   step: GrammarStep;
   picked?: string;
+  accepted?: string;
   explain?: string;
   onContinue: () => void;
 }) {
@@ -883,6 +1043,13 @@ function FeedbackBar({
         </Text>
         {speech ? <SpeakerButton text={speech} size={32} /> : null}
       </View>
+      {/* Ответ приняли, но он звучит не так, как сказал бы носитель. */}
+      {correct && accepted ? (
+        <View style={styles.acceptedBox}>
+          <Text style={styles.acceptedText}>{accepted}</Text>
+        </View>
+      ) : null}
+
       {!correct && answer ? (
         <Text style={styles.feedbackAnswer}>
           {t('lesson.answerIs', lang)} <Text style={styles.feedbackAnswerStrong}>{answer}</Text>
@@ -1247,6 +1414,75 @@ const styles = StyleSheet.create({
     letterSpacing: 1.2,
     color: colors.danger,
   },
+  reviewTop: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.lg,
+    paddingBottom: spacing.md,
+  },
+  reviewKicker: {
+    flex: 1,
+    fontSize: 11,
+    fontWeight: '800',
+    letterSpacing: 1.4,
+    color: colors.danger,
+  },
+  reviewBody: { paddingHorizontal: spacing.lg },
+  reviewCompare: {
+    gap: spacing.md,
+    padding: spacing.lg,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.card,
+  },
+  reviewLine: { flexDirection: 'row', alignItems: 'flex-start', gap: spacing.md },
+  reviewMark: { fontSize: 17, fontWeight: '800', width: 18 },
+  reviewForm: { fontSize: 19, fontWeight: '800' },
+  reviewMeaning: { fontSize: 13, color: colors.textDim, marginTop: 3, lineHeight: 18 },
+  reviewWhy: {
+    marginTop: spacing.lg,
+    padding: spacing.lg,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    backgroundColor: colors.glass,
+    gap: 6,
+  },
+  reviewWhyLabel: { fontSize: 9, fontWeight: '800', letterSpacing: 1.2, color: colors.textFaint },
+  reviewWhyText: { fontSize: 14, color: colors.text, lineHeight: 21 },
+  reviewRule: { marginTop: spacing.xl },
+  reviewRuleLabel: {
+    fontSize: 9,
+    fontWeight: '800',
+    letterSpacing: 1.2,
+    color: colors.primaryBright,
+    marginBottom: 6,
+  },
+  reviewRuleTitle: {
+    fontSize: 19,
+    fontWeight: '800',
+    color: colors.text,
+    marginBottom: spacing.sm,
+  },
+  reviewFooter: {
+    padding: spacing.lg,
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
+    backgroundColor: colors.bgElevated,
+    gap: spacing.sm,
+  },
+  reviewFooterHint: { fontSize: 11, color: colors.textFaint, textAlign: 'center' },
+  acceptedBox: {
+    marginTop: spacing.md,
+    padding: spacing.md,
+    borderRadius: radius.sm,
+    borderWidth: 1,
+    borderColor: colors.borderBright,
+    backgroundColor: colors.glass,
+  },
+  acceptedText: { fontSize: 13, color: colors.textDim, lineHeight: 19 },
   contrast: { gap: 4, marginBottom: 2 },
   contrastRow: { flexDirection: 'row', alignItems: 'flex-start', gap: spacing.sm },
   contrastMark: { fontSize: 12, color: colors.danger, fontWeight: '800', width: 12 },

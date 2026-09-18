@@ -1,4 +1,5 @@
 import { ALL_WORDS, Word } from '../data';
+import { AnswerCheck, checkAnswer } from './answers';
 
 export type ExerciseKind = 'choice_ro' | 'choice_ru' | 'type_ro' | 'listen_ro';
 
@@ -79,30 +80,21 @@ function buildChoiceExercise(
   };
 }
 
-/** Убирает румынские диакритики — чтобы ответ без "ș/ț/ă/â/î" тоже засчитывался. */
-export function stripDiacritics(s: string): string {
-  return s
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .replace(/[șş]/g, 's')
-    .replace(/[țţ]/g, 't')
-    .replace(/[ăâ]/g, 'a')
-    .replace(/î/g, 'i')
-    .trim();
-}
+export { stripDiacritics } from './answers';
 
-function normalizeForCompare(s: string): string {
-  return stripDiacritics(s)
-    .replace(/[.,!?;:"'()]/g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
+/**
+ * Проверка ответа в словарном уроке. Логика общая с курсом: записи вида
+ * «acest / această» принимаются по любой из форм, уточнение в скобках
+ * необязательно, а лишнее местоимение не считается ошибкой.
+ */
+export function checkWordAnswer(userInput: string, acceptable: string[]): AnswerCheck {
+  const [first, ...rest] = acceptable;
+  if (!first) return { correct: false };
+  return checkAnswer(userInput, first, rest);
 }
 
 export function isAnswerCorrect(userInput: string, acceptable: string[]): boolean {
-  const normalizedInput = normalizeForCompare(userInput);
-  if (!normalizedInput) return false;
-  return acceptable.some((a) => normalizeForCompare(a) === normalizedInput);
+  return checkWordAnswer(userInput, acceptable).correct;
 }
 
 function buildListenExercise(word: Word, unitWords: Word[]): ListenExercise {

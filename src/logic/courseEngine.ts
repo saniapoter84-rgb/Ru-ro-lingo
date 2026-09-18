@@ -1,19 +1,7 @@
-import { GrammarStep } from '../data/course';
-import { stripDiacritics } from './exercises';
+import { GrammarStep, RuleStep } from '../data/course';
 
-/** Нормализация для сравнения: без диакритик, без пунктуации, без лишних пробелов. */
-export function normalizeAnswer(s: string): string {
-  return stripDiacritics(s)
-    .replace(/[.,!?;:"'«»()\-]/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-export function matchesAnswer(input: string, answer: string, alt?: string[]): boolean {
-  const normalized = normalizeAnswer(input);
-  if (!normalized) return false;
-  return [answer, ...(alt ?? [])].some((a) => normalizeAnswer(a) === normalized);
-}
+export { checkAnswer, matchesAnswer, normalizeAnswer, stripDiacritics } from './answers';
+export type { AnswerCheck } from './answers';
 
 export function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -93,10 +81,20 @@ export function explanationForStep(
 ): string | undefined {
   const step = steps[index];
   if (step && 'explain' in step && step.explain) return step.explain;
+  const rule = ruleForStep(steps, index);
+  return rule?.aha ?? rule?.body;
+}
 
+/**
+ * Правило, к которому относится задание, — целиком, с таблицей и примерами.
+ *
+ * Нужно, чтобы при ошибке показать не сноску в три слова, а сам разбор:
+ * человек ошибся именно в этом правиле, значит правило и надо открыть.
+ */
+export function ruleForStep(steps: GrammarStep[], index: number): RuleStep | undefined {
   for (let i = index - 1; i >= 0; i--) {
     const previous = steps[i];
-    if (previous.kind === 'rule') return previous.aha ?? previous.body;
+    if (previous.kind === 'rule') return previous;
   }
   return undefined;
 }

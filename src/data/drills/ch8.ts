@@ -4,6 +4,7 @@ export const DRILLS_CH8: DrillPack[] = [
   {
     id: 'ch8_l1',
     title: 'Делал или сделал',
+    typeHint: 'Смотри на смысл: длилось — imperfect, случилось один раз — perfect compus',
     rule:
       'Вида глагола в румынском нет — он прячется в выборе времени.',
     table: [
@@ -82,6 +83,7 @@ export const DRILLS_CH8: DrillPack[] = [
   {
     id: 'ch8_l4',
     title: 'Книжное будущее и вероятность',
+    typeHint: 'Нужна книжная форма — voi, vei, va плюс инфинитив',
     rule:
       'Книжное будущее — voi, vei, va плюс чистый инфинитив, без «să». Уверенность добавляется отдельными словами.',
     forms: {

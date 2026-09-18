@@ -2,7 +2,7 @@ import { PLAN_WEEKS, PLAN_LENGTH_WEEKS, PlanWeek } from '../data/plan';
 import { COURSE } from '../data/course';
 import { ALL_WORDS } from '../data';
 import { LIVE_TEXTS } from '../data/texts';
-import { ProgressState, toLocalDateString } from './progress';
+import { ProgressState, isWordKnown, toLocalDateString } from './progress';
 import { READABLE_RATIO, analyzeText } from './comprehension';
 
 /**
@@ -18,9 +18,6 @@ import { READABLE_RATIO, analyzeText } from './comprehension';
  * конкретную дату. Если темп не дотягивает, приложение не ругается, а
  * пересчитывает прогноз по факту и показывает честную дату выхода на B1.
  */
-
-/** Уровень SRS, с которого слово считаем выученным для целей плана. */
-const LEARNED_LEVEL = 3;
 
 /**
  * Рабочих дней в неделе. Остальные заложены свободными — именно они
@@ -58,7 +55,7 @@ export function weekStatus(week: PlanWeek, state: ProgressState): WeekStatus {
   const lessonsDone = lessons.filter((l) => state.course[l.id]?.completed).length;
 
   const words = wordsOfWeek(week);
-  const wordsLearned = words.filter((w) => (state.words[w.id]?.level ?? 0) >= LEARNED_LEVEL).length;
+  const wordsLearned = words.filter((w) => isWordKnown(state.words[w.id])).length;
 
   const texts = LIVE_TEXTS.filter((t) => week.textIds.includes(t.id));
   const textsReadable = texts.filter(

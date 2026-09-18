@@ -1,4 +1,4 @@
-import { MAX_LEVEL, WordProgress, isDue, isMastered, reviewWord } from './srs';
+import { MAX_LEVEL, WordProgress, isDue, isMastered, masteryRatio, reviewWord } from './srs';
 import { ALL_LESSONS, ALL_WORDS, Lesson, getLessonsForUnit } from '../data';
 import { COURSE, COURSE_LESSONS } from '../data/course';
 import { TOTAL_DIALOGUES } from '../data/dialogues';
@@ -335,11 +335,35 @@ export function isLessonUnlocked(state: ProgressState, lesson: Lesson): boolean 
   return !lastPrev || state.completedLessonIds.includes(lastPrev.id);
 }
 
+/**
+ * Уровень интервального повторения, с которого слово считается выученным.
+ *
+ * Не максимальный: до шестого уровня слово идёт месяцами, и требовать его
+ * для галочки «выучено» значит месяцами показывать ноль. Третий уровень —
+ * это слово, которое человек уже трижды вспомнил правильно.
+ */
+export const KNOWN_LEVEL = 3;
+
+export function isWordKnown(progress: WordProgress | undefined): boolean {
+  return (progress?.level ?? 0) >= KNOWN_LEVEL;
+}
+
+/**
+ * Прогресс по теме — средняя освоенность её слов, а не доля доведённых до
+ * максимума. Раньше здесь стоял `isMastered`, то есть шестой уровень SRS:
+ * после целого пройденного урока полоска честно показывала ноль, потому
+ * что слова были на первом. Выглядело как «ничего не засчиталось».
+ */
 export function unitProgressRatio(state: ProgressState, unitId: string): number {
   const words = ALL_WORDS.filter((w) => w.unitId === unitId);
   if (words.length === 0) return 0;
-  const masteredCount = words.filter((w) => isMastered(state.words[w.id])).length;
-  return masteredCount / words.length;
+  const total = words.reduce((sum, w) => sum + masteryRatio(state.words[w.id]), 0);
+  return total / words.length;
+}
+
+/** Сколько слов темы уже выучено — для подписи рядом с полоской. */
+export function unitKnownCount(state: ProgressState, unitId: string): number {
+  return ALL_WORDS.filter((w) => w.unitId === unitId && isWordKnown(state.words[w.id])).length;
 }
 
 // --- Курс грамматики ----------------------------------------------------
@@ -586,7 +610,9 @@ export function buildAchievementContext(state: ProgressState): AchievementContex
 
 export function overallStats(state: ProgressState) {
   const total = ALL_WORDS.length;
-  const mastered = ALL_WORDS.filter((w) => isMastered(state.words[w.id])).length;
+  // «Знаешь» — это третий уровень повторения, а не шестой: иначе счётчик
+  // неделями стоит на нуле и выглядит сломанным.
+  const mastered = ALL_WORDS.filter((w) => isWordKnown(state.words[w.id])).length;
   const learning = ALL_WORDS.filter((w) => {
     const p = state.words[w.id];
     return p && p.level > 0 && p.level < MAX_LEVEL;

@@ -100,7 +100,7 @@ function toType(row: DrillRow, pack: DrillPack): GrammarStep | null {
       ru: row.ru,
       answer: row.ro,
       alt: row.alt,
-      hint: row.note,
+      hint: pack.typeHint ?? row.note,
       explain: row.note ?? pack.rule,
     };
   }
@@ -113,8 +113,10 @@ function toType(row: DrillRow, pack: DrillPack): GrammarStep | null {
     kind: 'type',
     ru: row.ru,
     answer: filled,
-    alt: row.alt,
-    hint: row.note,
+    // Запасные написания тоже подставляем в фразу: `row.alt` описывает
+    // пропуск, а отвечать человек будет предложением целиком.
+    alt: (row.alt ?? []).map((variant) => row.sentence!.replace('___', variant)),
+    hint: pack.typeHint ?? row.note,
     explain: row.note ?? pack.rule,
   };
 }

@@ -62,5 +62,13 @@ export interface DrillPack {
   table?: { form: string; meaning: string }[];
   /** Формулировка задания для преобразований. */
   transformInstruction?: string;
+  /**
+   * Какую форму ждём в заданиях на ввод.
+   *
+   * Нужно там, где правильных ответов объективно несколько: «пойду» — это
+   * и «o să merg», и «voi merge». Не сказать, какая форма нужна, и не
+   * засчитать вторую — значит наказать за верный ответ.
+   */
+  typeHint?: string;
   rows: DrillRow[];
 }
