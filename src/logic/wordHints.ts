@@ -1,4 +1,6 @@
 import { ALL_WORDS } from '../data';
+import { COURSE } from '../data/course';
+import { DRILL_PACKS } from '../data/drills';
 
 // Подсказка по тапу на слово. Словарь знает слова в начальной форме, а в
 // заданиях они стоят в живых: глагол спрягается, у существительного сзади
@@ -255,8 +257,137 @@ function buildSingleWordIndex(field: 'ru' | 'ro'): Map<string, string> {
   return map;
 }
 
+/**
+ * Слова и формы, введённые уроками.
+ *
+ * Словарь по темам знает начальные формы: «carte», «a merge». А в заданиях
+ * стоят живые — «cărțile», «mergeam», «mergând», — плюс служебные слова
+ * («aș», «va», «deoarece»), которых в тематическом словаре нет вовсе.
+ *
+ * Переводы для всего этого уже написаны: блоками «слова, которые
+ * встретятся» на карточках правил и разборами форм, по которым строится
+ * объяснение ошибки. Их и подключаем, чтобы тап по слову не молчал там,
+ * где само приложение это слово только что объясняло.
+ */
+function collectLessonWords(): Map<string, string> {
+  const map = new Map<string, string>();
+  const put = (ro: string, ru: string) => {
+    const key = normalizeToken(ro);
+    if (!key || !ru.trim() || map.has(key)) return;
+    // Пометки вида «такой формы нет» — это разбор ошибки, а не перевод.
+    if (/такой формы нет/i.test(ru)) return;
+    map.set(key, ru);
+  };
+
+  for (const chapter of COURSE) {
+    for (const lesson of chapter.lessons) {
+      for (const step of lesson.steps) {
+        if (step.kind === 'rule') {
+          for (const item of step.vocabulary ?? []) put(item.ro, item.ru);
+        } else if (step.kind === 'choice') {
+          for (const [form, meaning] of Object.entries(step.forms ?? {})) put(form, meaning);
+        }
+      }
+    }
+  }
+
+  for (const pack of DRILL_PACKS) {
+    for (const item of pack.vocabulary ?? []) put(item.ro, item.ru);
+    for (const [form, meaning] of Object.entries(pack.forms ?? {})) put(form, meaning);
+    for (const task of pack.tasks) {
+      if (task.kind !== 'choice') continue;
+      for (const [form, meaning] of Object.entries(task.forms ?? {})) put(form, meaning);
+    }
+  }
+  return map;
+}
+
 const RU_WORD_TO_RO = buildSingleWordIndex('ru');
 const RO_WORD_TO_RU = buildSingleWordIndex('ro');
+const LESSON_WORDS = collectLessonWords();
+
+/**
+ * Имена, города и названия языков.
+ *
+ * Учить в них нечего, но молчать на тап тоже неправильно: человек видит
+ * незнакомое слово и не понимает, что это просто имя.
+ */
+/**
+ * Глаголы без частицы «a».
+ *
+ * В словаре инфинитив лежит целиком — «a vedea», — а в живой фразе после
+ * «voi», «aș» и «trebuie» частица отваливается: «voi vedea». Ключом такая
+ * пара быть не может (в индексе только однословные), поэтому отдельная
+ * карта.
+ */
+const BARE_INFINITIVES = (() => {
+  const map = new Map<string, string>();
+  for (const w of ALL_WORDS) {
+    const match = /^a\s+(\S+)$/.exec(w.ro.trim());
+    if (!match) continue;
+    const key = normalizeToken(match[1]);
+    if (key && !map.has(key)) map.set(key, w.ru);
+  }
+  return map;
+})();
+
+/**
+ * Половинки слитных форм: «m-a văzut», «l-am citit», «mi-e frig».
+ *
+ * Сами по себе эти куски в словаре не живут, но тап приходится именно на
+ * целое слово, и разобрать его по частям — единственный способ ответить.
+ */
+const CLITICS = new Map<string, string>([
+  ['m', 'меня'], ['te', 'тебя'], ['l', 'его'], ['o', 'её'],
+  ['ne', 'нас'], ['v', 'вас'], ['i', 'ему, им'], ['le', 'им'],
+  ['mi', 'мне'], ['ți', 'тебе'], ['s', 'себя'],
+  ['am', 'вспомогательный: я, мы'], ['ai', 'вспомогательный: ты'],
+  ['a', 'вспомогательный: он, она'], ['au', 'вспомогательный: они'],
+  ['ați', 'вспомогательный: вы'], ['e', 'есть'],
+  ['nu', 'не'], ['într', 'в'], ['un', 'один'], ['o-', 'будущее: «o să»'],
+]);
+
+/**
+ * Слова, которые встречаются в заданиях, но в тематический словарь не
+ * попали: служебные, формы с приклеенным артиклем и пара обиходных слов
+ * вроде «om». Тап по ним молчать не должен.
+ */
+const EXTRA_WORDS = new Map<string, string>([
+  ['om', 'человек'], ['omul', 'человек — тот самый'],
+  ['oameni', 'люди'], ['oamenii', 'люди — те самые'],
+  ['frații', 'братья — те самые'], ['studenții', 'студенты — те самые'],
+  ['trenurile', 'поезда — те самые'],
+  ['fel', 'вид, род · «la fel de» — такой же'],
+  ['peste', 'через — о времени; над'],
+  ['stânga', 'левая сторона · «la stânga» — налево'],
+  ['dreapta', 'правая сторона · «la dreapta» — направо'],
+  ['ori', 'раз · «de trei ori» — три раза'],
+  ['sută', 'сто'], ['viitoare', 'будущая, следующая'],
+  ['născut', 'родился — причастие от «a naște»'],
+  ['plătit', 'заплатил — причастие от «a plăti»'],
+  ['numiți', 'зовётесь'], ['locuiește', 'живёт'],
+  ['mut', 'переезжаю — от «a se muta»'],
+  ['închiriază', 'сдаётся; снимает'],
+  ['termin', 'заканчиваю'], ['simți', 'чувствуешь'],
+  ['sună', 'звони; звонит'], ['întreabă', 'спроси; спрашивает'],
+]);
+
+const PROPER_NAMES = new Map<string, string>([
+  ['ana', 'Ана — имя'],
+  ['ion', 'Ион — имя'],
+  ['maria', 'Мария — имя'],
+  ['dan', 'Дан — имя'],
+  ['alexandru', 'Александру — имя'],
+  ['bucurești', 'Бухарест'],
+  ['cluj', 'Клуж — город в Румынии'],
+  ['moscova', 'Москва'],
+  ['românește', 'по-румынски'],
+  ['rusește', 'по-русски'],
+  ['spaniolă', 'испанский'],
+  ['engleză', 'английский'],
+  ['română', 'румынский'],
+  ['rusă', 'русский'],
+]);
 
 /** Ключи списков форм приводим к тому же виду, что и запросы. */
 function normalizeFormMap(forms: Record<string, string>): Map<string, string> {
@@ -369,8 +500,43 @@ export function lookupWordHint(token: string, lang: 'ru' | 'ro'): string | undef
   if (exact) return exact;
 
   if (lang === 'ro') {
+    // Формы и служебные слова, объяснённые уроками, точнее любых догадок.
+    const fromLesson = LESSON_WORDS.get(key);
+    if (fromLesson) return fromLesson;
+
+    // Имена и города: тап по ним не должен молчать, хотя учить там нечего.
+    const proper = PROPER_NAMES.get(key);
+    if (proper) return proper;
+
+    // Инфинитив после «voi», «aș», «trebuie» идёт без частицы «a», а в
+    // словаре глагол лежит с ней: «voi vedea» → «a vedea».
+    const bare = BARE_INFINITIVES.get(key);
+    if (bare) return bare;
+
+    const clitic = CLITICS.get(key);
+    if (clitic) return clitic;
+
+    const extra = EXTRA_WORDS.get(key);
+    if (extra) return extra;
+
     const stripped = guessBaseForm(key);
     if (stripped) return stripped;
+
+    // Слитные формы с клитикой: «mi-a», «spune-mi», «într-o». В словаре
+    // их нет и быть не может — собираем подсказку из половинок.
+    if (key.includes('-')) {
+      const parts = key.split('-').filter(Boolean);
+      if (parts.length === 1) {
+        const only = lookupWordHint(parts[0], 'ro');
+        if (only) return only;
+      }
+      if (parts.length > 1) {
+        // Для половинок короткая клитическая расшифровка точнее словарной:
+        // «am» тут вспомогательный глагол, а не «у меня есть».
+        const pieces = parts.map((part) => CLITICS.get(part) ?? lookupWordHint(part, 'ro'));
+        if (pieces.every(Boolean)) return pieces.join(' + ');
+      }
+    }
   }
 
   return matchByStem(key, index);
