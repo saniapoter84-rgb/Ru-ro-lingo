@@ -45,7 +45,46 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
+/**
+ * Все верные ответы на каждый вопрос — по обоим направлениям.
+ *
+ * Слово может значить не одно: «nepot» это и племянник, и внук, «sigur» —
+ * и «конечно», и «безопасный». Причём второе значение живёт отдельной
+ * карточкой, иногда в другой теме, а у «конечно» есть ещё и синоним
+ * «desigur». Собираем индекс один раз и дальше сверяемся с ним.
+ */
+let answerIndex: { byRo: Map<string, Set<string>>; byRu: Map<string, Set<string>> } | null = null;
+
+function answersFor(prompt: string, field: 'ru' | 'ro'): Set<string> {
+  if (!answerIndex) {
+    const byRo = new Map<string, Set<string>>();
+    const byRu = new Map<string, Set<string>>();
+    const add = (map: Map<string, Set<string>>, key: string, value: string) => {
+      const set = map.get(key) ?? new Set<string>();
+      set.add(value);
+      map.set(key, set);
+    };
+    for (const w of ALL_WORDS) {
+      const ro = w.ro.toLowerCase();
+      const ru = w.ru.toLowerCase();
+      add(byRo, ro, ru);
+      add(byRu, ru, ro);
+      for (const form of w.alt ?? []) add(byRo, form.toLowerCase(), ru);
+    }
+    answerIndex = { byRo, byRu };
+  }
+  // Спрашиваем румынское слово — верны его русские переводы, и наоборот.
+  const map = field === 'ru' ? answerIndex.byRo : answerIndex.byRu;
+  return map.get(prompt.toLowerCase()) ?? new Set<string>();
+}
+
 function pickDistractors(word: Word, unitWords: Word[], field: 'ru' | 'ro', n: number): Word[] {
+  // Поле, которое человек видит в вопросе, и все ответы, которые на него
+  // верны. Поставить любой из них в ловушки значит наказать за верный
+  // ответ, поэтому такие кандидаты не берутся вовсе.
+  const promptField: 'ru' | 'ro' = field === 'ru' ? 'ro' : 'ru';
+  const forbidden = answersFor(word[promptField], field);
+
   const seenText = new Set([word[field].toLowerCase()]);
   const fromUnit = unitWords.filter((w) => w.id !== word.id);
   const rest = ALL_WORDS.filter((w) => w.id !== word.id && w.unitId !== word.unitId);
@@ -54,6 +93,7 @@ function pickDistractors(word: Word, unitWords: Word[], field: 'ru' | 'ro', n: n
   const result: Word[] = [];
   for (const candidate of pool) {
     const text = candidate[field].toLowerCase();
+    if (forbidden.has(text)) continue;
     if (seenText.has(text)) continue;
     seenText.add(text);
     result.push(candidate);
