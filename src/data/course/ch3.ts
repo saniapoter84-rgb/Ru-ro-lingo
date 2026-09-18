@@ -59,6 +59,14 @@ export const CHAPTER_3: CourseChapter = {
           ru: 'У неё два брата.',
           options: ['am', 'ai', 'are', 'au'],
           correct: 2,
+          explain:
+            'Обладание в румынском описывается как «она имеет двух братьев». Третье лицо единственного — «are».',
+          forms: {
+            are: 'он, она имеет',
+            am: 'я имею',
+            ai: 'ты имеешь',
+            au: 'они имеют',
+          },
         },
         {
           kind: 'choice',
@@ -66,6 +74,13 @@ export const CHAPTER_3: CourseChapter = {
           ru: 'У нас большой дом.',
           options: ['avem', 'aveți', 'au', 'are'],
           correct: 0,
+          explain: 'У «мы» своя форма — «avem». Не «am»: это только «я», хотя рука тянется поставить её.',
+          forms: {
+            avem: 'мы имеем',
+            'aveți': 'вы имеете',
+            au: 'они имеют',
+            are: 'он, она имеет',
+          },
         },
         {
           kind: 'build',
@@ -91,6 +106,8 @@ export const CHAPTER_3: CourseChapter = {
           answer: 'Câți ani ai',
           alt: ['Câți ani ai?'],
           hint: 'câți — сколько (для мужского рода мн.ч.)',
+          explain:
+            'Возраст в румынском не «есть», а «имеют»: «сколько лет ты имеешь». И «câți» — мужской род множественного, потому что считаем годы.',
         },
         {
           kind: 'spot',
@@ -106,6 +123,8 @@ export const CHAPTER_3: CourseChapter = {
           options: ['Am o soră și un frate', 'Are o soră mare', 'Am două surori'],
           correct: 0,
           ru: 'У меня есть сестра и брат.',
+          explain:
+            '«Am» — это «я имею». У «are» было бы «у неё», а «două surori» — две сестры вместо сестры и брата.',
         },
         {
           kind: 'choice',
@@ -113,12 +132,20 @@ export const CHAPTER_3: CourseChapter = {
           ru: 'У вас есть дети?',
           options: ['avem', 'aveți', 'au', 'ai'],
           correct: 1,
+          explain: 'Окончание «-ți» — признак формы «вы», как и в «sunteți».',
+          forms: {
+            'aveți': 'вы имеете',
+            avem: 'мы имеем',
+            au: 'они имеют',
+            ai: 'ты имеешь',
+          },
         },
         {
           kind: 'build',
           ru: 'У них есть машина.',
           answer: 'Ei au o mașină',
           bank: ['are', 'un'],
+          explain: '«Они имеют» — au. Артикль «o» при этом нужен: машина одна, но неопределённая.',
         },
       ],
     },
@@ -160,6 +187,12 @@ export const CHAPTER_3: CourseChapter = {
           options: ['meu', 'mea', 'mei', 'mele'],
           correct: 1,
           explain: 'mașină — женский род, единственное число → «mea».',
+          forms: {
+            mea: 'моя — ж.р.',
+            meu: 'мой — м.р.',
+            mei: 'мои — м.р., много',
+            mele: 'мои — ж.р., много',
+          },
         },
         {
           kind: 'choice',
@@ -168,6 +201,12 @@ export const CHAPTER_3: CourseChapter = {
           options: ['meu', 'mea', 'mei', 'mele'],
           correct: 2,
           explain: 'frați — мужской род, множественное → «mei».',
+          forms: {
+            mei: 'мои — м.р., много',
+            meu: 'мой — м.р.',
+            mea: 'моя — ж.р.',
+            mele: 'мои — ж.р., много',
+          },
         },
         {
           kind: 'choice',
@@ -175,6 +214,14 @@ export const CHAPTER_3: CourseChapter = {
           ru: 'твой дом',
           options: ['tău', 'ta', 'tăi', 'tale'],
           correct: 1,
+          explain:
+            'Форма притяжательного зависит от предмета, а не от владельца: «casă» женского рода — значит «ta».',
+          forms: {
+            ta: 'твоя — ж.р.',
+            'tău': 'твой — м.р.',
+            'tăi': 'твои — м.р., много',
+            tale: 'твои — ж.р., много',
+          },
         },
         {
           kind: 'spot',
@@ -212,11 +259,15 @@ export const CHAPTER_3: CourseChapter = {
           ru: 'Мои друзья дома.',
           answer: 'Prietenii mei sunt acasă',
           bank: ['mele', 'prieteni'],
+          explain:
+            'Друзья — мужской род во множественном, значит «mei». И существительное перед притяжательным берёт артикль: prietenii.',
         },
         {
           kind: 'type',
           ru: 'её книга',
           answer: 'cartea ei',
+          explain:
+            '«Её» — всегда «ei», оно не меняется ни по роду, ни по числу предмета. А «carte» перед ним встаёт в определённую форму: cartea.',
         },
         {
           kind: 'transform',
@@ -224,6 +275,7 @@ export const CHAPTER_3: CourseChapter = {
           from: 'casa mea',
           answer: 'casa noastră',
           ru: 'мой дом → наш дом',
+          explain: 'Предмет тот же, значит и род тот же: женскому «casa» соответствует «noastră».',
         },
         {
           kind: 'listen',
@@ -231,6 +283,8 @@ export const CHAPTER_3: CourseChapter = {
           options: ['Prietenii mei sunt aici', 'Prietena mea este aici', 'Casa mea este aici'],
           correct: 0,
           ru: 'Мои друзья здесь.',
+          explain:
+            '«Prietenii mei» — множественное: друзья. «Prietena mea» это подруга, одна, и глагол там был бы «este».',
         },
       ],
     },
@@ -273,6 +327,14 @@ export const CHAPTER_3: CourseChapter = {
           ru: 'красивая девочка',
           options: ['frumos', 'frumoasă', 'frumoși', 'frumoase'],
           correct: 1,
+          explain:
+            'Прилагательное согласуется с существительным: «fată» женского рода в единственном — значит «frumoasă». И заметь, что «o» внутри слова превратилось в «oa».',
+          forms: {
+            'frumoasă': 'ж.р., одна',
+            frumos: 'м.р., один',
+            'frumoși': 'м.р., много',
+            frumoase: 'ж.р., много',
+          },
         },
         {
           kind: 'choice',
@@ -281,6 +343,12 @@ export const CHAPTER_3: CourseChapter = {
           options: ['frumos', 'frumoasă', 'frumoși', 'frumoase'],
           correct: 3,
           explain: 'case — женский род множественного числа → «frumoase».',
+          forms: {
+            frumoase: 'ж.р., много',
+            frumos: 'м.р., один',
+            'frumoasă': 'ж.р., одна',
+            'frumoși': 'м.р., много',
+          },
         },
         {
           kind: 'choice',
@@ -288,6 +356,13 @@ export const CHAPTER_3: CourseChapter = {
           ru: 'два хороших мальчика',
           options: ['bun', 'bună', 'buni', 'bune'],
           correct: 2,
+          explain: 'Мужской род во множественном — «buni», с окончанием «-i».',
+          forms: {
+            buni: 'м.р., много',
+            bun: 'м.р., один',
+            'bună': 'ж.р., одна',
+            bune: 'ж.р., много',
+          },
         },
         {
           kind: 'spot',
@@ -332,12 +407,16 @@ export const CHAPTER_3: CourseChapter = {
           answer: 'doi băieți buni',
           alt: ['băieți buni', 'niște băieți buni'],
           ru: 'хороший мальчик → хорошие мальчики',
+          explain:
+            'Во множественное уходит всё сразу: артикль (un → doi), существительное (băiat → băieți) и прилагательное (bun → buni).',
         },
         {
           kind: 'type',
           ru: 'большой город',
           answer: 'un oraș mare',
           alt: ['oraș mare'],
+          explain:
+            '«mare» — прилагательное на «-e»: у него всего две формы, и род оно не различает. И стоит оно после существительного.',
         },
         {
           kind: 'listen',
@@ -345,6 +424,8 @@ export const CHAPTER_3: CourseChapter = {
           options: ['Am o casă mică', 'Am o casă mare', 'Am un câine mic'],
           correct: 0,
           ru: 'У меня маленький дом.',
+          explain:
+            '«mică» — маленькая. «Mare» это наоборот, большая, а «un câine mic» — маленький пёс, другое существительное.',
         },
       ],
     },
@@ -382,6 +463,14 @@ export const CHAPTER_3: CourseChapter = {
           ru: 'Ана выше, чем Мария.',
           options: ['mai', 'cel mai', 'ca', 'foarte'],
           correct: 0,
+          explain:
+            'Само прилагательное при сравнении не меняется — перед ним ставится «mai». Русский суффикс «-ее» здесь становится отдельным словом.',
+          forms: {
+            mai: 'более',
+            'cel mai': 'самый',
+            ca: 'чем — разговорный вариант',
+            foarte: 'очень — это не сравнение',
+          },
         },
         {
           kind: 'rule',
@@ -401,12 +490,21 @@ export const CHAPTER_3: CourseChapter = {
           ru: 'Она самая лучшая.',
           options: ['cel', 'cea', 'cei', 'cele'],
           correct: 1,
+          explain: 'Слово «cel» меняется по роду и числу: женский род единственного — «cea».',
+          forms: {
+            cea: 'самая — ж.р., одна',
+            cel: 'самый — м.р., один',
+            cei: 'самые — м.р.',
+            cele: 'самые — ж.р.',
+          },
         },
         {
           kind: 'build',
           ru: 'Это самый большой город.',
           answer: 'Acesta este cel mai mare oraș',
           bank: ['cea', 'foarte'],
+          explain:
+            '«Город» мужского рода — значит «cel». И при превосходной степени прилагательное переезжает вперёд существительного.',
         },
         {
           kind: 'rule',
@@ -425,6 +523,14 @@ export const CHAPTER_3: CourseChapter = {
           ru: 'Кофе очень вкусный!',
           options: ['mai', 'foarte', 'cel mai', 'ca'],
           correct: 1,
+          explain:
+            '«Очень» и «более» — разные слова. «Mai bună» значило бы «получше», а тут просто усиление: foarte.',
+          forms: {
+            foarte: 'очень — усиление',
+            mai: 'более — сравнение',
+            'cel mai': 'самый',
+            ca: 'чем',
+          },
         },
         {
           kind: 'match',
@@ -441,6 +547,7 @@ export const CHAPTER_3: CourseChapter = {
           ru: 'Мой дом больше.',
           answer: 'Casa mea e mai mare',
           alt: ['Casa mea este mai mare'],
+          explain: '«Больше» разбирается на два слова: mai + mare. Само прилагательное не трогаем.',
         },
         {
           kind: 'spot',
@@ -456,6 +563,8 @@ export const CHAPTER_3: CourseChapter = {
           options: ['Este cel mai bun prieten', 'Este un prieten bun', 'Este mai bun'],
           correct: 0,
           ru: 'Это самый лучший друг.',
+          explain:
+            '«cel mai» — превосходная степень, самый лучший. Без «cel» вышло бы «получше», а без «mai» — просто «хороший».',
         },
       ],
     },
@@ -481,6 +590,8 @@ export const CHAPTER_3: CourseChapter = {
           ru: 'Моя сестра красивая.',
           answer: 'Sora mea este frumoasă',
           bank: ['meu', 'frumos'],
+          explain:
+            'Три вещи разом: артикль на существительном (sora), притяжательное после него (mea) и прилагательное в женском роде (frumoasă).',
         },
         {
           kind: 'choice',
@@ -489,6 +600,12 @@ export const CHAPTER_3: CourseChapter = {
           options: ['mea', 'meu', 'mei', 'mele'],
           correct: 1,
           explain: 'В румынском câine — мужского рода, русский род тут не помощник.',
+          forms: {
+            meu: 'мой — м.р.',
+            mea: 'моя — ж.р.',
+            mei: 'мои — м.р., много',
+            mele: 'мои — ж.р., много',
+          },
         },
         {
           kind: 'spot',
@@ -496,12 +613,14 @@ export const CHAPTER_3: CourseChapter = {
           wrongIndex: 1,
           fix: 'am',
           ru: 'Мне тридцать лет.',
+          explain: 'Возраст «имеют», а не «есть»: не «sunt treizeci de ani», а «am treizeci de ani».',
         },
         {
           kind: 'type',
           ru: 'У нас большой дом.',
           answer: 'Avem o casă mare',
           alt: ['Noi avem o casă mare'],
+          explain: '«Мы имеем» — avem. Не «am»: это форма только для «я».',
         },
         {
           kind: 'choice',
@@ -509,6 +628,13 @@ export const CHAPTER_3: CourseChapter = {
           ru: 'Они самые лучшие.',
           options: ['cel', 'cea', 'cei', 'cele'],
           correct: 3,
+          explain: 'Множественное число женского рода — «cele». Мужской род дал бы «cei».',
+          forms: {
+            cele: 'самые — ж.р., много',
+            cel: 'самый — м.р., один',
+            cea: 'самая — ж.р., одна',
+            cei: 'самые — м.р., много',
+          },
         },
         {
           kind: 'transform',
@@ -533,6 +659,7 @@ export const CHAPTER_3: CourseChapter = {
           ru: 'У неё нет машины.',
           answer: 'Ea nu are mașină',
           bank: ['este', 'o'],
+          explain: '«nu» перед глаголом. Артикль при отрицании пропадает: «nu are mașină», а не «o mașină».',
         },
         {
           kind: 'listen',
@@ -544,6 +671,8 @@ export const CHAPTER_3: CourseChapter = {
           ],
           correct: 0,
           ru: 'Моей сестре двадцать лет.',
+          explain:
+            '«are» — третье лицо: у неё. И «de» между числом и «ani» слышно отчётливо — без него было бы «doi ani», два года.',
         },
         {
           kind: 'choice',
@@ -551,18 +680,29 @@ export const CHAPTER_3: CourseChapter = {
           ru: 'Этот кофе лучше, чем тот.',
           options: ['foarte', 'mai', 'cea mai', 'ca'],
           correct: 1,
+          explain:
+            'Есть «decât» — значит идёт сравнение, а сравнение делает «mai». «Foarte» с «decât» не сочетается вовсе.',
+          forms: {
+            mai: 'более — сравнение',
+            foarte: 'очень — усиление, с «decât» не бывает',
+            'cea mai': 'самая',
+            ca: 'чем — но тогда без «decât»',
+          },
         },
         {
           kind: 'type',
           ru: 'Сколько тебе лет?',
           answer: 'Câți ani ai',
           alt: ['Câți ani ai?'],
+          explain:
+            'Та же конструкция, что в начале главы: возраст «имеют». «Câți» согласуется с «ani» — мужской род множественного.',
         },
         {
           kind: 'build',
           ru: 'Их дети очень хорошие.',
           answer: 'Copiii lor sunt foarte buni',
           bank: ['mai', 'lui'],
+          explain: '«Их» — «lor», оно не меняется. «foarte» усиливает, а прилагательное согласуется с детьми: buni.',
         },
       ],
     },

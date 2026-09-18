@@ -56,6 +56,14 @@ export const CHAPTER_4: CourseChapter = {
           ru: 'Мы поём песню.',
           options: ['cânt', 'cânți', 'cântăm', 'cântați'],
           correct: 2,
+          explain:
+            'Группа на «-a»: у «мы» окончание «-ăm». «a cânta» идёт без вставки «-ez-», поэтому основа голая.',
+          forms: {
+            'cântăm': 'мы поём',
+            'cânt': 'я пою',
+            'cânți': 'ты поёшь',
+            'cântați': 'вы поёте',
+          },
         },
         {
           kind: 'rule',
@@ -77,6 +85,14 @@ export const CHAPTER_4: CourseChapter = {
           ru: 'Я работаю в магазине.',
           options: ['lucr', 'lucrez', 'lucră', 'lucrăm'],
           correct: 1,
+          explain:
+            'А «a lucra» — тип со вставкой «-ez-», и без неё формы нет вовсе. Тип по инфинитиву не виден: «a cânta» и «a lucra» устроены одинаково, а спрягаются по-разному.',
+          forms: {
+            lucrez: 'я работаю',
+            lucr: 'такой формы нет — нужна вставка «-ez-»',
+            'lucră': 'такой формы нет',
+            'lucrăm': 'мы работаем',
+          },
         },
         {
           kind: 'choice',
@@ -85,6 +101,12 @@ export const CHAPTER_4: CourseChapter = {
           options: ['lucrezăm', 'lucrăm', 'lucrează', 'lucrez'],
           correct: 1,
           explain: 'В форме «noi» вставка «-ez-» не появляется — просто «lucrăm».',
+          forms: {
+            'lucrăm': 'мы работаем',
+            'lucrezăm': 'такой формы нет — у «мы» вставки не бывает',
+            'lucrează': 'он, она работает',
+            lucrez: 'я работаю',
+          },
         },
         {
           kind: 'match',
@@ -118,6 +140,7 @@ export const CHAPTER_4: CourseChapter = {
           ru: 'Ты работаешь?',
           answer: 'Lucrezi',
           alt: ['Lucrezi?', 'Tu lucrezi', 'Tu lucrezi?'],
+          explain: 'Вставка остаётся и в форме «ты»: lucrezi. Вопрос делает интонация, порядок слов не меняется.',
         },
         {
           kind: 'spot',
@@ -125,6 +148,7 @@ export const CHAPTER_4: CourseChapter = {
           wrongIndex: 1,
           fix: 'lucrăm',
           ru: 'Мы здесь работаем.',
+          explain: '«lucrez» — это «я». При «noi» нужна форма «lucrăm», и вставка «-ez-» в ней пропадает.',
         },
         {
           kind: 'listen',
@@ -132,6 +156,7 @@ export const CHAPTER_4: CourseChapter = {
           options: ['Ei lucrează aici', 'Eu lucrez aici', 'Noi lucrăm aici'],
           correct: 0,
           ru: 'Они здесь работают.',
+          explain: '«-ează» — третье лицо. У «я» было бы «lucrez», у «мы» — «lucrăm».',
         },
       ],
     },
@@ -166,6 +191,13 @@ export const CHAPTER_4: CourseChapter = {
           ru: 'Вы идёте в магазин?',
           options: ['merg', 'mergi', 'mergem', 'mergeți'],
           correct: 3,
+          explain: 'Группа на «-e»: у «вы» окончание «-eți».',
+          forms: {
+            'mergeți': 'вы идёте',
+            merg: 'я иду — и они',
+            mergi: 'ты идёшь',
+            mergem: 'мы идём',
+          },
         },
         {
           kind: 'rule',
@@ -183,6 +215,13 @@ export const CHAPTER_4: CourseChapter = {
           ru: 'Ты смотришь фильм?',
           options: ['văd', 'vezi', 'vede', 'vedem'],
           correct: 1,
+          explain: 'В корне чередование: перед «-i» согласная «d» переходит в «z». Я — văd, ты — vezi.',
+          forms: {
+            vezi: 'ты видишь',
+            'văd': 'я вижу',
+            vede: 'он, она видит',
+            vedem: 'мы видим',
+          },
         },
         {
           kind: 'match',
@@ -218,6 +257,13 @@ export const CHAPTER_4: CourseChapter = {
           ru: 'Они пьют кофе по утрам.',
           options: ['beau', 'bea', 'bei', 'bem'],
           correct: 0,
+          explain: 'У «a bea» формы «я» и «они» совпадают — обе beau. Различает их местоимение.',
+          forms: {
+            beau: 'я пью — и они тоже',
+            bea: 'он, она пьёт',
+            bei: 'ты пьёшь',
+            bem: 'мы пьём',
+          },
         },
         {
           kind: 'spot',
@@ -225,12 +271,14 @@ export const CHAPTER_4: CourseChapter = {
           wrongIndex: 1,
           fix: 'mergem',
           ru: 'Мы идём в школу.',
+          explain: '«merg» — это «я» или «они». При «noi» нужно «mergem».',
         },
         {
           kind: 'type',
           ru: 'Что ты делаешь?',
           answer: 'Ce faci',
           alt: ['Ce faci?'],
+          explain: '«Ce faci?» — это разом и «что делаешь», и «как дела». Одна из самых ходовых фраз языка.',
         },
         {
           kind: 'listen',
@@ -238,12 +286,14 @@ export const CHAPTER_4: CourseChapter = {
           options: ['Merg la magazin', 'Mergem la magazin', 'Mergi la magazin'],
           correct: 0,
           ru: 'Я иду в магазин.',
+          explain: 'Окончания нет — значит «я». У «мы» было бы «mergem», у «ты» — «mergi».',
         },
         {
           kind: 'build',
           ru: 'Я не вижу ничего.',
           answer: 'Nu văd nimic',
           bank: ['vezi', 'este'],
+          explain: 'Двойное отрицание, как в русском: «nu» перед глаголом и «nimic» после. Убирать «nu» нельзя.',
         },
       ],
     },
@@ -277,6 +327,13 @@ export const CHAPTER_4: CourseChapter = {
           ru: 'Я читаю книгу.',
           options: ['citesc', 'citești', 'citim', 'cit'],
           correct: 0,
+          explain: '«a citi» — тип со вставкой «-esc-». Голой основы «cit» в языке нет.',
+          forms: {
+            citesc: 'я читаю — и они',
+            'citești': 'ты читаешь',
+            citim: 'мы читаем',
+            cit: 'такой формы нет — нужна вставка «-esc-»',
+          },
         },
         {
           kind: 'choice',
@@ -284,6 +341,14 @@ export const CHAPTER_4: CourseChapter = {
           ru: 'Мы говорим по-румынски.',
           options: ['vorbesc', 'vorbești', 'vorbim', 'vorbiți'],
           correct: 2,
+          explain:
+            'Вставка работает только в четырёх формах: я, ты, он и они. У «мы» и «вы» её нет: vorbim, vorbiți.',
+          forms: {
+            vorbim: 'мы говорим',
+            vorbesc: 'я говорю — и они',
+            'vorbești': 'ты говоришь',
+            'vorbiți': 'вы говорите',
+          },
         },
         {
           kind: 'rule',
@@ -303,6 +368,12 @@ export const CHAPTER_4: CourseChapter = {
           options: ['dorm', 'dormi', 'doarme', 'dormim'],
           correct: 2,
           explain: 'В форме «он» появляется дифтонг: dorm → doarme.',
+          forms: {
+            doarme: 'он, она спит',
+            dorm: 'я сплю — и они',
+            dormi: 'ты спишь',
+            dormim: 'мы спим',
+          },
         },
         {
           kind: 'choice',
@@ -311,6 +382,12 @@ export const CHAPTER_4: CourseChapter = {
           options: ['vin', 'vii', 'vine', 'veniți'],
           correct: 1,
           explain: '«tu vii» — с двумя «i». Настоящее время часто работает и как будущее.',
+          forms: {
+            vii: 'ты придёшь',
+            vin: 'я приду — и они',
+            vine: 'он, она придёт',
+            'veniți': 'вы придёте',
+          },
         },
         {
           kind: 'match',
@@ -342,6 +419,7 @@ export const CHAPTER_4: CourseChapter = {
           ru: 'Я не понимаю.',
           answer: 'Nu înțeleg',
           hint: 'a înțelege — понимать (группа на -e)',
+          explain: '«a înțelege» идёт без вставки: înțeleg, а не «înțelegesc». Самая нужная фраза первых недель.',
         },
         {
           kind: 'listen',
@@ -349,6 +427,7 @@ export const CHAPTER_4: CourseChapter = {
           options: ['Vorbiți românește?', 'Vorbesc românește', 'Vorbim rusește'],
           correct: 0,
           ru: 'Вы говорите по-румынски?',
+          explain: 'Окончание «-ți» — это «вы». У «я» было бы «vorbesc», у «мы» — «vorbim».',
         },
         {
           kind: 'transform',
@@ -357,6 +436,7 @@ export const CHAPTER_4: CourseChapter = {
           answer: 'noi citim',
           alt: ['citim'],
           ru: 'я читаю → мы читаем',
+          explain: 'У «мы» вставка «-esc-» исчезает: citesc → citim. Это и есть главная ловушка типа со вставкой.',
         },
       ],
     },
@@ -388,6 +468,13 @@ export const CHAPTER_4: CourseChapter = {
           ru: 'Я хочу кофе.',
           options: ['vreau', 'vrei', 'vrea', 'vrem'],
           correct: 0,
+          explain: 'Неправильный глагол: формы «a vrea» не выводятся из инфинитива, их учат целиком.',
+          forms: {
+            vreau: 'я хочу',
+            vrei: 'ты хочешь',
+            vrea: 'он, она хочет',
+            vrem: 'мы хотим',
+          },
         },
         {
           kind: 'choice',
@@ -395,6 +482,14 @@ export const CHAPTER_4: CourseChapter = {
           ru: 'Ты можешь мне помочь?',
           options: ['pot', 'poți', 'poate', 'putem'],
           correct: 1,
+          explain:
+            'После «poți» второй глагол тоже спрягается, в ту же форму «ты»: ajuți. Инфинитива после «pot» не ставят.',
+          forms: {
+            'poți': 'ты можешь',
+            pot: 'я могу',
+            poate: 'он может · и ещё «может быть»',
+            putem: 'мы можем',
+          },
         },
         {
           kind: 'rule',
@@ -421,6 +516,8 @@ export const CHAPTER_4: CourseChapter = {
           ru: 'Я не знаю, где он.',
           answer: 'Nu știu unde este',
           bank: ['știe', 'sunt'],
+          explain:
+            'Вопросительное слово внутри фразы сохраняется как есть: «unde». И глагол «este» обязателен, выбросить его нельзя.',
         },
         {
           kind: 'rule',
@@ -440,6 +537,14 @@ export const CHAPTER_4: CourseChapter = {
           ru: 'Я беру такси.',
           options: ['iau', 'iei', 'ia', 'luăm'],
           correct: 0,
+          explain:
+            '«a lua» меняет корень до неузнаваемости: iau, iei, ia — от «lu» ничего не осталось. Зато у «мы» оно возвращается: luăm.',
+          forms: {
+            iau: 'я беру',
+            iei: 'ты берёшь',
+            ia: 'он, она берёт',
+            'luăm': 'мы берём',
+          },
         },
         {
           kind: 'spot',
@@ -447,12 +552,14 @@ export const CHAPTER_4: CourseChapter = {
           wrongIndex: 1,
           fix: 'vrem',
           ru: 'Мы хотим воды.',
+          explain: '«vreau» — это «я». При «noi» нужна форма «vrem».',
         },
         {
           kind: 'type',
           ru: 'Я могу.',
           answer: 'Pot',
           alt: ['Eu pot'],
+          explain: 'Одно слово — уже полная фраза: окончание показывает лицо, местоимение не нужно.',
         },
         {
           kind: 'listen',
@@ -460,12 +567,15 @@ export const CHAPTER_4: CourseChapter = {
           options: ['Vreau o cafea, vă rog', 'Vrei o cafea?', 'Pot să beau cafea'],
           correct: 0,
           ru: 'Я хочу кофе, пожалуйста.',
+          explain: '«Vreau» — я хочу. «Vrei» было бы вопросом к тебе, а «pot să beau» — «могу ли я выпить».',
         },
         {
           kind: 'build',
           ru: 'Они не могут прийти.',
           answer: 'Ei nu pot veni',
           bank: ['poate', 'vin'],
+          explain:
+            'После «pot» «să» можно опустить и поставить инфинитив без «a»: «pot veni». Это поблажка только для этого глагола.',
         },
       ],
     },
@@ -508,6 +618,13 @@ export const CHAPTER_4: CourseChapter = {
           ru: 'Меня зовут Александр.',
           options: ['Mă', 'Te', 'Se', 'Ne'],
           correct: 0,
+          explain: 'Русское «-ся» здесь стало отдельным словом и встало ПЕРЕД глаголом. Для «я» это «mă».',
+          forms: {
+            'Mă': 'меня — про меня',
+            Te: 'тебя — про тебя',
+            Se: 'себя — про него, её, их',
+            Ne: 'нас — про нас',
+          },
         },
         {
           kind: 'choice',
@@ -516,6 +633,12 @@ export const CHAPTER_4: CourseChapter = {
           options: ['mă', 'te', 'îl', 'ne'],
           correct: 2,
           explain: 'Про третье лицо — «îl cheamă» (его зовут). Подробно про «îl» — в главе 7.',
+          forms: {
+            'îl': 'его — речь о третьем лице',
+            'mă': 'меня',
+            te: 'тебя',
+            ne: 'нас',
+          },
         },
         {
           kind: 'match',
@@ -543,6 +666,7 @@ export const CHAPTER_4: CourseChapter = {
           ru: 'Я чувствую себя хорошо.',
           answer: 'Mă simt bine',
           bank: ['te', 'sunt'],
+          explain: '«a se simți» без частицы не употребляется вовсе — она часть слова.',
         },
         {
           kind: 'choice',
@@ -550,6 +674,13 @@ export const CHAPTER_4: CourseChapter = {
           ru: 'Мы просыпаемся рано.',
           options: ['mă', 'te', 'ne', 'vă'],
           correct: 2,
+          explain: 'Частица и окончание глагола всегда показывают одно и то же лицо: ne и trezim.',
+          forms: {
+            ne: 'про нас',
+            'mă': 'про меня',
+            te: 'про тебя',
+            'vă': 'про вас',
+          },
         },
         {
           kind: 'spot',
@@ -557,6 +688,7 @@ export const CHAPTER_4: CourseChapter = {
           wrongIndex: 1,
           fix: 'mă',
           ru: 'Меня зовут Ион.',
+          explain: '«te» — это «тебя». При «eu» нужна частица «mă».',
         },
         {
           kind: 'rule',
@@ -573,6 +705,7 @@ export const CHAPTER_4: CourseChapter = {
           ru: 'Меня зовут Ана.',
           answer: 'Mă cheamă Ana',
           alt: ['Mă numesc Ana'],
+          explain: 'Дословно — «меня зовёт Ана». Звучит странно по-русски, но именно так и говорят.',
         },
         {
           kind: 'listen',
@@ -580,6 +713,7 @@ export const CHAPTER_4: CourseChapter = {
           options: ['Cum te cheamă?', 'Mă cheamă Ana', 'Cum vă numiți?'],
           correct: 0,
           ru: 'Как тебя зовут?',
+          explain: '«te» — про тебя. «Mă cheamă Ana» это уже ответ, а «Cum vă numiți?» — вежливое «как вас зовут».',
         },
       ],
     },
@@ -606,12 +740,21 @@ export const CHAPTER_4: CourseChapter = {
           ru: 'Мы вечером идём домой.',
           options: ['merg', 'mergi', 'mergem', 'mergeți'],
           correct: 2,
+          explain: 'Группа на «-e»: у «мы» окончание «-em».',
+          forms: {
+            mergem: 'мы идём',
+            merg: 'я иду — и они',
+            mergi: 'ты идёшь',
+            'mergeți': 'вы идёте',
+          },
         },
         {
           kind: 'build',
           ru: 'Я просыпаюсь рано и пью кофе.',
           answer: 'Mă trezesc devreme și beau cafea',
           bank: ['te', 'bea'],
+          explain:
+            'Первый глагол возвратный (mă trezesc), второй обычный (beau). Частица относится только к своему глаголу.',
         },
         {
           kind: 'spot',
@@ -619,6 +762,7 @@ export const CHAPTER_4: CourseChapter = {
           wrongIndex: 1,
           fix: 'citesc',
           ru: 'Они читают книгу.',
+          explain: '«citim» — это «мы». При «ei» нужна форма «citesc», со вставкой.',
         },
         {
           kind: 'choice',
@@ -626,12 +770,21 @@ export const CHAPTER_4: CourseChapter = {
           ru: 'Ты можешь прийти?',
           options: ['pot', 'poți', 'poate', 'puteți'],
           correct: 1,
+          explain: 'Оба глагола в форме «ты»: poți и vii. Лицо согласуется дважды.',
+          forms: {
+            'poți': 'ты можешь',
+            pot: 'я могу',
+            poate: 'он может',
+            'puteți': 'вы можете',
+          },
         },
         {
           kind: 'type',
           ru: 'Я работаю в магазине.',
           answer: 'Lucrez la un magazin',
           alt: ['Eu lucrez la un magazin', 'Lucrez într-un magazin'],
+          explain:
+            'Вставка «-ez-» обязательна: «lucrez». Местоимение можно выбросить — окончание уже показывает лицо.',
         },
         {
           kind: 'match',
@@ -649,12 +802,21 @@ export const CHAPTER_4: CourseChapter = {
           ru: 'Он спит восемь часов в сутки.',
           options: ['dorm', 'dormi', 'doarme', 'dormim'],
           correct: 2,
+          explain: '«a dormi» идёт без вставки, зато с чередованием в корне: o → oa. dorm, но doarme.',
+          forms: {
+            doarme: 'он, она спит',
+            dorm: 'я сплю — и они',
+            dormi: 'ты спишь',
+            dormim: 'мы спим',
+          },
         },
         {
           kind: 'build',
           ru: 'Мы не знаем, где магазин.',
           answer: 'Nu știm unde este magazinul',
           bank: ['știu', 'magazin'],
+          explain:
+            '«a ști» неправильный: știu, știi, știe, știm. И «magazinul» здесь с артиклем — магазин вполне конкретный.',
         },
         {
           kind: 'listen',
@@ -662,6 +824,7 @@ export const CHAPTER_4: CourseChapter = {
           options: ['Mă trezesc la șapte', 'Te trezești la șapte', 'Mă simt bine'],
           correct: 0,
           ru: 'Я просыпаюсь в семь.',
+          explain: '«mă» — про меня. «Te trezești» было бы про тебя, а «mă simt bine» — другой глагол вовсе.',
         },
         {
           kind: 'transform',
@@ -670,6 +833,7 @@ export const CHAPTER_4: CourseChapter = {
           answer: 'noi lucrăm',
           alt: ['lucrăm'],
           ru: 'я работаю → мы работаем',
+          explain: 'У «мы» вставка «-ez-» исчезает: lucrez → lucrăm. Форма «lucrezăm» не существует.',
         },
         {
           kind: 'choice',
@@ -677,12 +841,20 @@ export const CHAPTER_4: CourseChapter = {
           ru: 'Что ты сейчас делаешь?',
           options: ['fac', 'faci', 'face', 'facem'],
           correct: 1,
+          explain: '«a face» — глагол на все случаи: им делают кофе, погоду и самочувствие.',
+          forms: {
+            faci: 'ты делаешь',
+            fac: 'я делаю — и они',
+            face: 'он, она делает',
+            facem: 'мы делаем',
+          },
         },
         {
           kind: 'build',
           ru: 'Я хочу воды, пожалуйста.',
           answer: 'Vreau apă vă rog',
           bank: ['vrea', 'o'],
+          explain: 'Артикль перед «apă» не нужен: воды вообще, а не конкретной. «Vă rog» — пожалуйста.',
         },
       ],
     },
