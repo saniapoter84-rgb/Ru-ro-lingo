@@ -36,6 +36,11 @@ export const DRILLS_CH6: DrillPack[] = [
       { form: 'глаголы на «-i»', meaning: 'причастие на «-it»: vorbit' },
       { form: 'ловушка', meaning: '«noi am» совпадает с «eu am», а третье лицо — просто «a»' },
     ],
+    vocabulary: [
+      { ro: 'toată', ru: 'вся' },
+      { ro: 'mers', ru: 'шёл — причастие от «a merge»' },
+      { ro: 'băut', ru: 'пил — причастие от «a bea»' },
+    ],
     rows: [
       { sentence: 'Eu ___ lucrat ieri.', ro: 'am', ru: 'Я вчера работал.', traps: ['ai', 'a', 'ați'] },
       { sentence: 'Tu ___ mâncat?', ro: 'ai', ru: 'Ты поел?', traps: ['am', 'a', 'ați'] },
@@ -65,6 +70,12 @@ export const DRILLS_CH6: DrillPack[] = [
       { form: 'a pune → pus', meaning: 'класть → положил' },
     ],
     transformInstruction: 'Сделай причастие',
+    vocabulary: [
+      { ro: 'tot', ru: 'всё' },
+      { ro: 'adevărul', ru: 'правда — та самая' },
+      { ro: 'scrisoare', ru: 'письмо' },
+      { ro: 'pus', ru: 'положил — причастие от «a pune»' },
+    ],
     rows: [
       { sentence: 'Am ___ acolo.', from: 'a fi', ro: 'fost', ru: 'Я там был.', traps: ['fiut', 'fiit', 'fiind'] },
       { sentence: 'Am ___ tot.', from: 'a face', ro: 'făcut', ru: 'Я всё сделал.', traps: ['făcat', 'făcit', 'făcând'] },
@@ -117,6 +128,9 @@ export const DRILLS_CH6: DrillPack[] = [
       { form: 'acum, de obicei', meaning: 'настоящее: sunt, citesc' },
       { form: 'mâine, peste o oră', meaning: 'будущее: o să fiu, o să citesc' },
       { form: 'nu', meaning: 'отрицание одинаковое во всех трёх — перед всей конструкцией' },
+    ],
+    vocabulary: [
+      { ro: 'bolnav', ru: 'больной' },
     ],
     rows: [
       { sentence: 'Ieri ___ la piață.', ro: 'am fost', ru: 'Вчера я был на рынке.', traps: ['sunt', 'o să fiu', 'eram'] },

@@ -15,6 +15,10 @@ export const DRILLS_CH3: DrillPack[] = [
       'au': 'они',
     },
     transformInstruction: 'Поставь a avea в нужную форму',
+    vocabulary: [
+      { ro: 'bilete', ru: 'билеты' },
+      { ro: 'acolo', ru: 'там, туда' },
+    ],
     rows: [
       { sentence: 'Eu ___ o soră.', from: 'eu', ro: 'am', ru: 'У меня есть сестра.', traps: ['ai', 'are', 'avem'] },
       { sentence: 'Tu ___ timp?', from: 'tu', ro: 'ai', ru: 'У тебя есть время?', traps: ['am', 'are', 'aveți'] },
@@ -49,6 +53,9 @@ export const DRILLS_CH3: DrillPack[] = [
       'noștri': 'наши — мужской род',
       'noastre': 'наши — женский род',
     },
+    vocabulary: [
+      { ro: 'școala', ru: 'школа — та самая' },
+    ],
     rows: [
       { sentence: 'casa ___', ro: 'mea', ru: 'мой дом', traps: ['meu', 'mei', 'mele'], note: 'Форма зависит от предмета: casă — женский род.' },
       { sentence: 'telefonul ___', ro: 'meu', ru: 'мой телефон', traps: ['mea', 'mei', 'mele'] },
@@ -73,6 +80,11 @@ export const DRILLS_CH3: DrillPack[] = [
       { form: 'doi băieți înalți', meaning: 'мужской род, много — «-i»' },
       { form: 'două fete înalte', meaning: 'женский род, много — «-e»' },
       { form: 'mare, fierbinte', meaning: 'прилагательные на «-e» в мужском и женском одинаковы' },
+    ],
+    vocabulary: [
+      { ro: 'fierbinte', ru: 'горячий' },
+      { ro: 'ochi', ru: 'глаза' },
+      { ro: 'albaștri', ru: 'голубые' },
     ],
     rows: [
       { sentence: 'un băiat ___', ro: 'înalt', ru: 'высокий мальчик', traps: ['înaltă', 'înalți', 'înalte'] },
@@ -102,6 +114,16 @@ export const DRILLS_CH3: DrillPack[] = [
       'decât': 'чем',
       'ca': 'чем; как',
     },
+    vocabulary: [
+      { ro: 'azi', ru: 'сегодня' },
+      { ro: 'cald', ru: 'тепло, тёплый' },
+      { ro: 'ieri', ru: 'вчера' },
+      { ro: 'restaurant', ru: 'ресторан' },
+      { ro: 'filmul', ru: 'фильм — тот самый' },
+      { ro: 'mergi', ru: 'идёшь' },
+      { ro: 'repede', ru: 'быстро' },
+      { ro: 'simt', ru: 'чувствую' },
+    ],
     rows: [
       { sentence: 'Azi e ___ cald decât ieri.', ro: 'mai', ru: 'Сегодня теплее, чем вчера.', traps: ['cel mai', 'foarte', 'la fel de'] },
       { sentence: 'E ___ bun restaurant din oraș.', ro: 'cel mai', ru: 'Это лучший ресторан в городе.', traps: ['mai', 'foarte', 'la fel de'] },

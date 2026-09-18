@@ -39,6 +39,11 @@ export const DRILLS_CH4: DrillPack[] = [
       { form: 'plec, pleci, pleacă', meaning: 'и здесь тоже: e → ea' },
       { form: 'какой тип у глагола', meaning: 'по инфинитиву не видно — только запоминать' },
     ],
+    vocabulary: [
+      { ro: 'birou', ru: 'офис; письменный стол' },
+      { ro: 'pizza', ru: 'пицца' },
+      { ro: 'pleacă', ru: 'уезжает, уходит' },
+    ],
     rows: [
       { sentence: 'Eu ___ la birou.', from: 'a lucra · eu', ro: 'lucrez', ru: 'Я работаю в офисе.', traps: ['lucru', 'lucrezi', 'lucrează'] },
       { sentence: 'Tu ___ mult.', from: 'a lucra · tu', ro: 'lucrezi', ru: 'Ты много работаешь.', traps: ['lucrez', 'lucrează', 'lucrăm'] },
@@ -87,6 +92,11 @@ export const DRILLS_CH4: DrillPack[] = [
       { form: 'mergem, mergeți, merg', meaning: 'мы, вы, они — форма «я» и «они» совпадают' },
       { form: 'văd → vezi', meaning: 'в корне бывает чередование: d → z' },
       { form: 'scriu, beau', meaning: 'форма «я» на «-u» — это нормально' },
+    ],
+    vocabulary: [
+      { ro: 'jos', ru: 'низ · «pe jos» — пешком' },
+      { ro: 'scriu', ru: 'пишу' },
+      { ro: 'scrisoare', ru: 'письмо' },
     ],
     rows: [
       { sentence: 'Eu ___ la școală.', from: 'a merge · eu', ro: 'merg', ru: 'Я иду в школу.', traps: ['mergi', 'merge', 'mergem'] },
@@ -139,6 +149,15 @@ export const DRILLS_CH4: DrillPack[] = [
       { form: 'со вставкой', meaning: 'a vorbi, a citi, a găsi' },
       { form: 'без вставки', meaning: 'a dormi, a veni' },
     ],
+    vocabulary: [
+      { ro: 'vorbesc', ru: 'говорю' },
+      { ro: 'repede', ru: 'быстро' },
+      { ro: 'vorbește', ru: 'говорит' },
+      { ro: 'limbi', ru: 'языки' },
+      { ro: 'deja', ru: 'уже' },
+      { ro: 'găsesc', ru: 'нахожу' },
+      { ro: 'cheile', ru: 'ключи — те самые' },
+    ],
     rows: [
       { sentence: 'Eu ___ românește.', from: 'a vorbi · eu', ro: 'vorbesc', ru: 'Я говорю по-румынски.', traps: ['vorb', 'vorbești', 'vorbește'], note: 'Тип со вставкой «-esc-».' },
       { sentence: 'Tu ___ prea repede.', from: 'a vorbi · tu', ro: 'vorbești', ru: 'Ты говоришь слишком быстро.', traps: ['vorbesc', 'vorbește', 'vorbim'] },
@@ -178,6 +197,11 @@ export const DRILLS_CH4: DrillPack[] = [
       'stă': 'находится',
       'stăm': 'находимся',
     },
+    vocabulary: [
+      { ro: 'plece', ru: 'ушёл — форма после «să»' },
+      { ro: 'autobuzul', ru: 'автобус — тот самый' },
+      { ro: 'hotel', ru: 'отель' },
+    ],
     rows: [
       { sentence: 'Eu ___ o cafea.', ro: 'vreau', ru: 'Я хочу кофе.', traps: ['vrei', 'vrea', 'vrem'] },
       { sentence: 'Tu ___ să vii?', ro: 'vrei', ru: 'Ты хочешь прийти?', traps: ['vreau', 'vrea', 'vreți'] },
@@ -203,6 +227,13 @@ export const DRILLS_CH4: DrillPack[] = [
       'ne': 'себя — про нас',
       'vă': 'себя — про вас',
     },
+    vocabulary: [
+      { ro: 'numești', ru: 'зовёшься' },
+      { ro: 'numește', ru: 'зовётся' },
+      { ro: 'distrează', ru: 'развлекаются' },
+      { ro: 'repede', ru: 'быстро' },
+      { ro: 'grăbești', ru: 'торопишься' },
+    ],
     rows: [
       { sentence: 'Eu ___ numesc Ana.', ro: 'mă', ru: 'Меня зовут Ана.', traps: ['te', 'se', 'ne'] },
       { sentence: 'Cum ___ numești?', ro: 'te', ru: 'Как тебя зовут?', traps: ['mă', 'se', 'vă'] },

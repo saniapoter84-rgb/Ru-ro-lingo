@@ -15,6 +15,10 @@ export const DRILLS_CH8: DrillPack[] = [
       { form: '-am, -ați, -au', meaning: 'мы, вы, они — форма «я» и «мы» совпадают' },
     ],
     transformInstruction: 'Поставь в imperfect',
+    vocabulary: [
+      { ro: 'toată', ru: 'вся' },
+      { ro: 'atunci', ru: 'тогда' },
+    ],
     rows: [
       { sentence: 'Când ___ mic, mergeam la bunici.', ro: 'eram', ru: 'Когда я был маленьким, я ездил к бабушке.', traps: ['am fost', 'sunt', 'o să fiu'], note: 'Состояние, которое длилось, — imperfect.' },
       { sentence: 'Ieri ___ la doctor.', ro: 'am fost', ru: 'Вчера я сходил к врачу.', traps: ['eram', 'sunt', 'o să fiu'], note: 'Один законченный поход — perfect compus.' },
@@ -42,6 +46,10 @@ export const DRILLS_CH8: DrillPack[] = [
       'aș avea': 'если бы у меня было — условное и в самом условии',
       'am putea': 'мы могли бы',
     },
+    vocabulary: [
+      { ro: 'împreună', ru: 'вместе' },
+      { ro: 'ruga', ru: 'просить' },
+    ],
     rows: [
       { sentence: 'Dacă ___ timp, aș veni.', ro: 'aș avea', ru: 'Если бы у меня было время, я бы пришёл.', traps: ['am', 'aveam', 'o să am'], note: 'В условии тоже нужно условное наклонение.' },
       { sentence: 'Dacă ai vrea, ___ merge împreună.', ro: 'am putea', ru: 'Если бы ты захотел, мы могли бы пойти вместе.', traps: ['putem', 'puteam', 'o să putem'] },
@@ -67,6 +75,11 @@ export const DRILLS_CH8: DrillPack[] = [
       'în care': 'в котором',
       'din care': 'из которого',
     },
+    vocabulary: [
+      { ro: 'grea', ru: 'трудная, тяжёлая' },
+      { ro: 'crescut', ru: 'вырос — причастие от «a crește»' },
+      { ro: 'amabil', ru: 'приятный, любезный' },
+    ],
     rows: [
       { sentence: 'Omul ___ stă acolo e vecinul meu.', ro: 'care', ru: 'Человек, который там стоит, — мой сосед.', traps: ['pe care', 'cu care', 'în care'] },
       { sentence: 'Filmul ___ l-am văzut e bun.', ro: 'pe care', ru: 'Фильм, который я посмотрел, хороший.', traps: ['care', 'cu care', 'în care'], note: 'Посмотрел что? — прямое дополнение, значит pe care.' },

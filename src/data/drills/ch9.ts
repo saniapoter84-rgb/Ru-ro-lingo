@@ -93,6 +93,12 @@ export const DRILLS_CH9: DrillPack[] = [
       { form: 'în timp ce vorbeam', meaning: 'пока — любит imperfect' },
       { form: 'de când locuiesc aici', meaning: 'с тех пор как' },
     ],
+    vocabulary: [
+      { ro: 'înțeles', ru: 'понял — причастие от «a înțelege»' },
+      { ro: 'adormit', ru: 'заснул — причастие от «a adormi»' },
+      { ro: 'văzând', ru: 'видя — деепричастие' },
+      { ro: 'tăcut', ru: 'замолчал — причастие от «a tăcea»' },
+    ],
     rows: [
       { sentence: '___ pe stradă, l-am văzut.', from: 'a merge', ro: 'mergând', ru: 'Идя по улице, я его увидел.', traps: ['mergind', 'mergut', 'mers'] },
       { sentence: '___ cu el, am înțeles tot.', from: 'a vorbi', ro: 'vorbind', ru: 'Поговорив с ним, я всё понял.', traps: ['vorbând', 'vorbit', 'vorbut'] },

@@ -19,6 +19,11 @@ export const DRILLS_CH5: DrillPack[] = [
       'vizavi': 'напротив',
       'spre': 'в сторону',
     },
+    vocabulary: [
+      { ro: 'farmacia', ru: 'аптека — та самая' },
+      { ro: 'tine', ru: 'тебя, тебе' },
+      { ro: 'cadoul', ru: 'подарок — тот самый' },
+    ],
     rows: [
       { sentence: 'Merg ___ magazin.', ro: 'la', ru: 'Иду в магазин.', traps: ['în', 'pe', 'de'] },
       { sentence: 'Sunt ___ casă.', ro: 'în', ru: 'Я в доме.', traps: ['la', 'pe', 'cu'] },
@@ -42,6 +47,9 @@ export const DRILLS_CH5: DrillPack[] = [
       { form: 'la școala mea', meaning: 'появилось уточнение — артикль вернулся' },
       { form: 'cu mașina', meaning: 'исключение: «cu» о транспорте артикль сохраняет' },
       { form: 'în casă', meaning: 'то же самое с «în»: без артикля' },
+    ],
+    vocabulary: [
+      { ro: 'birou', ru: 'офис; письменный стол' },
     ],
     rows: [
       { sentence: 'Merg la ___.', ro: 'magazin', ru: 'Иду в магазин.', traps: ['magazinul', 'magazine', 'magazinele'], note: 'После предлога слово «раздевается» — артикль пропадает.' },
@@ -73,6 +81,10 @@ export const DRILLS_CH5: DrillPack[] = [
       'Câți': 'сколько — мужской род, много: câți ani',
       'Câte': 'сколько — женский род, много: câte fete',
     },
+    vocabulary: [
+      { ro: 'răspunzi', ru: 'отвечаешь' },
+      { ro: 'tine', ru: 'тебя, тебе' },
+    ],
     rows: [
       { sentence: '___ costă?', ro: 'Cât', ru: 'Сколько стоит?', traps: ['Câtă', 'Câți', 'Câte'] },
       { sentence: '___ ani ai?', ro: 'Câți', ru: 'Сколько тебе лет?', traps: ['Cât', 'Câtă', 'Câte'], note: '«cât» согласуется с тем, что считают.' },
@@ -103,6 +115,11 @@ export const DRILLS_CH5: DrillPack[] = [
       'aici': 'здесь, сюда',
       'acolo': 'там, туда',
     },
+    vocabulary: [
+      { ro: 'astea', ru: 'эти — женский род' },
+      { ro: 'ăștia', ru: 'эти — мужской род' },
+      { ro: 'vecinul', ru: 'сосед — тот самый' },
+    ],
     rows: [
       { sentence: 'Cartea ___ e bună.', ro: 'asta', ru: 'Эта книга хорошая.', traps: ['ăsta', 'astea', 'ăștia'] },
       { sentence: 'Telefonul ___ e nou.', ro: 'ăsta', ru: 'Этот телефон новый.', traps: ['asta', 'astea', 'ăștia'] },

@@ -140,6 +140,7 @@ function ruleCard(pack: DrillPack): RuleStep {
     title: pack.title,
     body: pack.rule,
     table: pack.table ?? formsTable(pack.forms),
+    vocabulary: pack.vocabulary,
     examples: examples.length > 0 ? examples : undefined,
   };
 }
@@ -155,6 +156,17 @@ export function buildDrillSteps(pack: DrillPack, count: number, salt = ''): Gram
 /** Только задания, без карточки правила. */
 function buildDrillTasks(pack: DrillPack, count: number, salt = ''): GrammarStep[] {
   const random = makeRandom(hash(pack.id + salt));
+
+  // Уровень написан руками — идём по нему, ничего не собирая. Для
+  // короткого напоминания берём срез со сдвигом, чтобы возвращаться не к
+  // одним и тем же пяти заданиям.
+  if (pack.tasks && pack.tasks.length > 0) {
+    const tasks = pack.tasks;
+    if (count >= tasks.length) return tasks.slice(0, count);
+    const offset = Math.floor(random() * tasks.length);
+    return Array.from({ length: count }, (_, i) => tasks[(offset + i) % tasks.length]);
+  }
+
 
   // Сначала по одному упражнению на каждую строку — чтобы охватить все
   // случаи, прежде чем повторять любой из них.

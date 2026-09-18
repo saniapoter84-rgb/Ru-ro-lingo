@@ -389,6 +389,28 @@ function RuleView({
         </View>
       ) : null}
 
+      {/* Слова темы — до заданий, а не после них. */}
+      {step.vocabulary && step.vocabulary.length > 0 ? (
+        <View style={styles.vocabBlock}>
+          <Text style={styles.vocabLabel}>СЛОВА, КОТОРЫЕ ВСТРЕТЯТСЯ</Text>
+          <View style={styles.table}>
+            {step.vocabulary.map((word, i) => (
+              <View
+                key={i}
+                style={[
+                  styles.tableRow,
+                  i === step.vocabulary!.length - 1 && styles.tableRowLast,
+                ]}
+              >
+                <Text style={styles.tableForm}>{word.ro}</Text>
+                <Text style={styles.tableMeaning}>{word.ru}</Text>
+                <SpeakerButton text={word.ro} size={26} />
+              </View>
+            ))}
+          </View>
+        </View>
+      ) : null}
+
       {step.examples ? (
         <View style={styles.examples}>
           {step.examples.map((ex, i) => (
@@ -1264,6 +1286,14 @@ const styles = StyleSheet.create({
   },
   ruleTitle: { fontSize: 23, fontWeight: '800', color: colors.text, marginBottom: spacing.md },
   ruleBody: { fontSize: 15, lineHeight: 23, color: colors.textDim },
+  vocabBlock: { marginTop: spacing.lg },
+  vocabLabel: {
+    fontSize: 9,
+    fontWeight: '800',
+    letterSpacing: 1.2,
+    color: colors.accent,
+    marginBottom: spacing.sm,
+  },
   table: {
     marginTop: spacing.lg,
     borderRadius: radius.md,

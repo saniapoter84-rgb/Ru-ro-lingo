@@ -45,6 +45,9 @@ export const DRILLS_CH7: DrillPack[] = [
       'îți': 'тебе',
       'Mi-': 'мне — перед «e»: mi-e frig',
     },
+    vocabulary: [
+      { ro: 'cunoaște', ru: 'знает' },
+    ],
     rows: [
       { sentence: 'Eu ___ văd.', ro: 'te', ru: 'Я тебя вижу.', traps: ['îți', 'mă', 'îmi'] },
       { sentence: 'El ___ ajută.', ro: 'mă', ru: 'Он мне помогает.', traps: ['îmi', 'te', 'îți'] },
@@ -70,6 +73,9 @@ export const DRILLS_CH7: DrillPack[] = [
       'de': 'от, о',
       'din': 'из',
     },
+    vocabulary: [
+      { ro: 'profesor', ru: 'преподаватель' },
+    ],
     rows: [
       { sentence: 'Îl văd ___ Ion.', ro: 'pe', ru: 'Я вижу Иона.', traps: ['la', 'cu', 'de'] },
       { sentence: 'O cunosc ___ Ana.', ro: 'pe', ru: 'Я знаю Ану.', traps: ['la', 'cu', 'din'] },
@@ -95,6 +101,9 @@ export const DRILLS_CH7: DrillPack[] = [
       'am': 'мы бы',
       'ați': 'вы бы',
     },
+    vocabulary: [
+      { ro: 'locul', ru: 'место — то самое' },
+    ],
     rows: [
       { sentence: '___ vrea o cafea.', ro: 'Aș', ru: 'Я бы хотел кофе.', traps: ['Ai', 'Ar', 'Am'] },
       { sentence: '___ putea să mă ajuți?', ro: 'Ai', ru: 'Ты не мог бы мне помочь?', traps: ['Aș', 'Ar', 'Ați'] },
