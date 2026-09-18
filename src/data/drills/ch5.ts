@@ -40,7 +40,6 @@ export const DRILLS_CH5: DrillPack[] = [
       { ro: 'bancă', ru: 'банк' },
       { ro: 'magazin', ru: 'магазин' },
     ],
-    rows: [],
     tasks: [
       {
         kind: 'choice',
@@ -241,7 +240,6 @@ export const DRILLS_CH5: DrillPack[] = [
       { ro: 'magazin', ru: 'магазин' },
       { ro: 'autobuzul', ru: 'автобус — тот самый' },
     ],
-    rows: [],
     tasks: [
       {
         kind: 'choice',
@@ -459,7 +457,6 @@ export const DRILLS_CH5: DrillPack[] = [
       { ro: 'tine', ru: 'тебя, тебе' },
       { ro: 'costă', ru: 'стоит — о цене' },
     ],
-    rows: [],
     tasks: [
       {
         kind: 'choice',
@@ -657,7 +654,6 @@ export const DRILLS_CH5: DrillPack[] = [
       { ro: 'aceea', ru: 'та — «тот» в женском роде' },
       { ro: 'acela', ru: 'тот' },
     ],
-    rows: [],
     tasks: [
       {
         kind: 'choice',

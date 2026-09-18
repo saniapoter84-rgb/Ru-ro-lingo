@@ -32,7 +32,6 @@ export const DRILLS_CH1: DrillPack[] = [
       { ro: 'copiii', ru: 'дети — те самые' },
       { ro: 'școală', ru: 'школа' },
     ],
-    rows: [],
     tasks: [
       {
         kind: 'choice',
@@ -235,7 +234,6 @@ export const DRILLS_CH1: DrillPack[] = [
       { ro: 'am', ru: 'у меня есть' },
       { ro: 'aici', ru: 'здесь, сюда' },
     ],
-    rows: [],
     tasks: [
       {
         kind: 'choice',
@@ -428,7 +426,6 @@ export const DRILLS_CH1: DrillPack[] = [
       { ro: 'baia', ru: 'туалет, ванная' },
       { ro: 'te cheamă', ru: 'тебя зовут' },
     ],
-    rows: [],
     tasks: [
       {
         kind: 'choice',
@@ -610,6 +607,8 @@ export const DRILLS_CH1: DrillPack[] = [
       niciodată: 'никогда',
       nicăieri: 'нигде',
       deloc: 'совсем, нисколько',
+      nici: 'ни — усиливает отрицание, но «nu» само не заменяет',
+      ne: 'нас, нам — это местоимение, а не отрицание',
       ceva: 'что-то — это не отрицание',
     },
     vocabulary: [
@@ -624,7 +623,6 @@ export const DRILLS_CH1: DrillPack[] = [
       { ro: 'deloc', ru: 'совсем, нисколько' },
       { ro: 'vorbește', ru: 'говорит' },
     ],
-    rows: [],
     tasks: [
       {
         kind: 'choice',
@@ -633,7 +631,12 @@ export const DRILLS_CH1: DrillPack[] = [
         options: ['nu', 'nici', 'ne', 'nimic'],
         correct: 0,
         explain: 'Отрицание — одно слово «nu», и оно стоит прямо перед глаголом.',
-        forms: { nu: 'не', nimic: 'ничего' },
+        forms: {
+          nu: 'не — всегда перед глаголом',
+          nimic: 'ничего',
+          nici: 'ни — усиливает отрицание, но «nu» не заменяет',
+          ne: 'нас, нам — это местоимение, а не отрицание',
+        },
       },
       {
         kind: 'choice',
@@ -696,7 +699,12 @@ export const DRILLS_CH1: DrillPack[] = [
         options: ['nu', 'nimic', 'nici', 'deloc'],
         correct: 0,
         explain: '«Нет» в смысле «не имеет» — это «nu» перед глаголом «are».',
-        forms: { nu: 'не', nimic: 'ничего', deloc: 'совсем' },
+        forms: {
+          nu: 'не — всегда перед глаголом',
+          nimic: 'ничего',
+          deloc: 'совсем, нисколько',
+          nici: 'ни — усиливает отрицание, но «nu» не заменяет',
+        },
       },
       {
         kind: 'build',

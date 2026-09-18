@@ -52,7 +52,6 @@ export const DRILLS_CH6: DrillPack[] = [
       { ro: 'devreme', ru: 'рано' },
       { ro: 'ziua', ru: 'день — тот самый' },
     ],
-    rows: [],
     tasks: [
       {
         kind: 'choice',
@@ -269,7 +268,6 @@ export const DRILLS_CH6: DrillPack[] = [
       { ro: 'târziu', ru: 'поздно' },
       { ro: 'filmul', ru: 'фильм — тот самый' },
     ],
-    rows: [],
     tasks: [
       {
         kind: 'choice',
@@ -483,7 +481,6 @@ export const DRILLS_CH6: DrillPack[] = [
       { ro: 'ploua', ru: 'идти — о дожде' },
       { ro: 'devreme', ru: 'рано' },
     ],
-    rows: [],
     tasks: [
       {
         kind: 'choice',
@@ -683,7 +680,6 @@ export const DRILLS_CH6: DrillPack[] = [
       { ro: 'săptămâna', ru: 'неделя — та самая' },
       { ro: 'oră', ru: 'час' },
     ],
-    rows: [],
     tasks: [
       {
         kind: 'choice',

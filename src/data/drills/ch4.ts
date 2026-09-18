@@ -51,7 +51,6 @@ export const DRILLS_CH4: DrillPack[] = [
       { ro: 'pizza', ru: 'пицца' },
       { ro: 'pleacă', ru: 'уезжает, уходит' },
     ],
-    rows: [],
     tasks: [
       {
         kind: 'choice',
@@ -294,7 +293,6 @@ export const DRILLS_CH4: DrillPack[] = [
       { ro: 'scriu', ru: 'пишу' },
       { ro: 'scrisoare', ru: 'письмо' },
     ],
-    rows: [],
     tasks: [
       {
         kind: 'choice',
@@ -517,7 +515,6 @@ export const DRILLS_CH4: DrillPack[] = [
       { ro: 'cheile', ru: 'ключи — те самые' },
       { ro: 'ore', ru: 'часы — о времени' },
     ],
-    rows: [],
     tasks: [
       {
         kind: 'choice',
@@ -739,7 +736,6 @@ export const DRILLS_CH4: DrillPack[] = [
       { ro: 'taxi', ru: 'такси' },
       { ro: 'ajut', ru: 'помогу' },
     ],
-    rows: [],
     tasks: [
       {
         kind: 'choice',
@@ -937,7 +933,6 @@ export const DRILLS_CH4: DrillPack[] = [
       { ro: 'îmbracă', ru: 'одевается' },
       { ro: 'simt', ru: 'чувствую' },
     ],
-    rows: [],
     tasks: [
       {
         kind: 'choice',

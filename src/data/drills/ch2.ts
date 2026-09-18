@@ -28,7 +28,6 @@ export const DRILLS_CH2: DrillPack[] = [
       { ro: 'merge', ru: 'идёт; работает' },
       { ro: 'apă', ru: 'вода' },
     ],
-    rows: [],
     tasks: [
       {
         kind: 'choice',
@@ -38,6 +37,12 @@ export const DRILLS_CH2: DrillPack[] = [
         correct: 0,
         explain:
           'Женский род: конечное «-ă» превращается в «-a». «casă» — это дом вообще, «casele» — несколько домов, «casei» — падежная форма.',
+        forms: {
+          casa: 'дом — тот самый',
+          casă: 'дом — какой-то, без артикля',
+          casele: 'дома — те самые, множественное',
+          casei: 'дома, дому — падежная форма',
+        },
       },
       {
         kind: 'choice',
@@ -47,6 +52,12 @@ export const DRILLS_CH2: DrillPack[] = [
         correct: 0,
         explain:
           'Мужской род на согласную берёт «-ul». «Băieții» — это уже мальчики во множественном, а формы «băiata» не существует.',
+        forms: {
+          Băiatul: 'мальчик — тот самый',
+          Băiat: 'мальчик — без артикля',
+          Băieții: 'мальчики — те самые',
+          Băiata: 'такой формы нет — «băiat» мужского рода, его артикль «-ul»',
+        },
       },
       {
         kind: 'choice',
@@ -56,6 +67,12 @@ export const DRILLS_CH2: DrillPack[] = [
         correct: 0,
         explain:
           'Слова на «-e» берут «-le», а не «-ul»: câine → câinele. «Câinii» — это собаки во множественном.',
+        forms: {
+          Câinele: 'собака — та самая',
+          Câine: 'собака — без артикля',
+          Câinul: 'такой формы нет — у слов на «-e» артикль «-le»',
+          Câinii: 'собаки — те самые, множественное',
+        },
       },
       {
         kind: 'choice',
@@ -64,6 +81,12 @@ export const DRILLS_CH2: DrillPack[] = [
         options: ['Masa', 'Masă', 'Mesele', 'Masei'],
         correct: 0,
         explain: 'Как и casă: «-ă» меняется на «-a». «Mesele» — столы, «masei» — падежная форма.',
+        forms: {
+          Masa: 'стол — тот самый',
+          Masă: 'стол — без артикля',
+          Mesele: 'столы — те самые',
+          Masei: 'стола, столу — падежная форма',
+        },
       },
       {
         kind: 'choice',
@@ -73,6 +96,12 @@ export const DRILLS_CH2: DrillPack[] = [
         correct: 0,
         explain:
           'Средний род в единственном числе ведёт себя как мужской, поэтому «-ul». «Orașe» и «orașele» — множественное.',
+        forms: {
+          Orașul: 'город — тот самый',
+          Oraș: 'город — без артикля',
+          Orașe: 'города — без артикля',
+          Orașele: 'города — те самые',
+        },
       },
       {
         kind: 'choice',
@@ -82,6 +111,12 @@ export const DRILLS_CH2: DrillPack[] = [
         correct: 0,
         explain:
           'Женский род на «-e» берёт «-a»: carte → cartea. «Cărțile» — книги во множественном.',
+        forms: {
+          Cartea: 'книга — та самая',
+          Carte: 'книга — без артикля',
+          Cărțile: 'книги — те самые',
+          Cartele: 'такой формы нет — во множественном корень меняется: cărțile',
+        },
       },
       {
         kind: 'choice',
@@ -90,6 +125,12 @@ export const DRILLS_CH2: DrillPack[] = [
         options: ['Telefonul', 'Telefon', 'Telefoanele', 'Telefona'],
         correct: 0,
         explain: 'Согласная на конце — значит «-ul». «Telefoanele» — телефоны во множественном.',
+        forms: {
+          Telefonul: 'телефон — тот самый',
+          Telefon: 'телефон — без артикля',
+          Telefoanele: 'телефоны — те самые',
+          Telefona: 'такой формы нет — артикль этого слова «-ul»',
+        },
       },
       {
         kind: 'choice',
@@ -98,6 +139,12 @@ export const DRILLS_CH2: DrillPack[] = [
         options: ['Fata', 'Fată', 'Fetele', 'Fetei'],
         correct: 0,
         explain: '«-ă» меняется на «-a». «Fetele» — девочки, «fetei» — падежная форма.',
+        forms: {
+          Fata: 'девочка — та самая',
+          Fată: 'девочка — без артикля',
+          Fetele: 'девочки — те самые',
+          Fetei: 'девочки, девочке — падежная форма',
+        },
       },
       {
         kind: 'choice',
@@ -107,6 +154,12 @@ export const DRILLS_CH2: DrillPack[] = [
         correct: 0,
         explain:
           'Согласная на конце — «-ul». «Copiii» с тремя «i» — это дети во множественном с артиклем.',
+        forms: {
+          Copilul: 'ребёнок — тот самый',
+          Copil: 'ребёнок — без артикля',
+          Copiii: 'дети — те самые',
+          Copila: 'девочка — другое слово, женского рода',
+        },
       },
       {
         kind: 'choice',
@@ -115,6 +168,12 @@ export const DRILLS_CH2: DrillPack[] = [
         options: ['Apa', 'Apă', 'Apele', 'Apei'],
         correct: 0,
         explain: '«-ă» меняется на «-a». «Apele» — воды, «apei» — падежная форма.',
+        forms: {
+          Apa: 'вода — та самая',
+          Apă: 'вода — без артикля',
+          Apele: 'воды — те самые',
+          Apei: 'воды, воде — падежная форма',
+        },
       },
       {
         kind: 'transform',
@@ -218,7 +277,6 @@ export const DRILLS_CH2: DrillPack[] = [
       { ro: 'mulți', ru: 'много — о мужском роде' },
       { ro: 'zile', ru: 'дни' },
     ],
-    rows: [],
     tasks: [
       {
         kind: 'choice',
@@ -228,6 +286,12 @@ export const DRILLS_CH2: DrillPack[] = [
         correct: 0,
         explain:
           'Женский род: «-ă» меняется на «-e». «Casele» — это уже с артиклем, а «casuri» не существует.',
+        forms: {
+          case: 'дома — множественное без артикля',
+          casele: 'дома — те самые, с артиклем',
+          casă: 'дом — один',
+          casuri: 'такой формы нет — «casă» даёт «case»',
+        },
       },
       {
         kind: 'choice',
@@ -236,6 +300,12 @@ export const DRILLS_CH2: DrillPack[] = [
         options: ['băieți', 'băiate', 'băiatul', 'băiaturi'],
         correct: 0,
         explain: 'Мужской род берёт «-i», и в корне «a» переходит в «ie»: băiat → băieți.',
+        forms: {
+          băieți: 'мальчики',
+          băiate: 'такой формы нет — мужской род даёт «-i»',
+          băiatul: 'мальчик — тот самый, один',
+          băiaturi: 'такой формы нет',
+        },
       },
       {
         kind: 'choice',
@@ -244,6 +314,12 @@ export const DRILLS_CH2: DrillPack[] = [
         options: ['mese', 'mesele', 'măse', 'masuri'],
         correct: 0,
         explain: '«-ă» меняется на «-e», плюс чередование в корне: masă → mese.',
+        forms: {
+          mese: 'столы',
+          mesele: 'столы — те самые',
+          măse: 'такой формы нет — в корне «a» переходит в «e»: mese',
+          masuri: 'такой формы нет',
+        },
       },
       {
         kind: 'choice',
@@ -252,6 +328,12 @@ export const DRILLS_CH2: DrillPack[] = [
         options: ['orașe', 'orașuri', 'orașii', 'orașul'],
         correct: 0,
         explain: 'Средний род чаще берёт «-e». Окончание «-uri» тоже бывает, но не у этого слова.',
+        forms: {
+          orașe: 'города',
+          orașuri: 'такой формы нет — «oraș» даёт «orașe»',
+          orașii: 'такой формы нет',
+          orașul: 'город — тот самый, один',
+        },
       },
       {
         kind: 'choice',
@@ -261,6 +343,12 @@ export const DRILLS_CH2: DrillPack[] = [
         correct: 0,
         explain:
           'Женский род на «-e» берёт «-i», и в корне «a» переходит в «ă»: carte → cărți. «Cărțile» — с артиклем.',
+        forms: {
+          cărți: 'книги',
+          cartele: 'такой формы нет — во множественном корень меняется: cărți',
+          carte: 'книга — одна',
+          cărțile: 'книги — те самые, с артиклем',
+        },
       },
       {
         kind: 'choice',
@@ -269,6 +357,12 @@ export const DRILLS_CH2: DrillPack[] = [
         options: ['copii', 'copiii', 'copile', 'copiluri'],
         correct: 0,
         explain: 'Мужской род на «-i»: copil → copii. Три «i» — это уже форма с артиклем.',
+        forms: {
+          copii: 'дети',
+          copiii: 'дети — те самые, с артиклем',
+          copile: 'девочки — от «copilă», другое слово',
+          copiluri: 'такой формы нет',
+        },
       },
       {
         kind: 'choice',
@@ -277,6 +371,12 @@ export const DRILLS_CH2: DrillPack[] = [
         options: ['flori', 'florile', 'floare', 'floruri'],
         correct: 0,
         explain: 'В корне «oa» сжимается в «o»: floare → flori.',
+        forms: {
+          flori: 'цветы',
+          florile: 'цветы — те самые',
+          floare: 'цветок — один',
+          floruri: 'такой формы нет — «floare» даёт «flori»',
+        },
       },
       {
         kind: 'choice',
@@ -285,6 +385,12 @@ export const DRILLS_CH2: DrillPack[] = [
         options: ['scaune', 'scauni', 'scaunele', 'scaunuri'],
         correct: 0,
         explain: 'Средний род берёт «-e». Формы «scauni» не существует.',
+        forms: {
+          scaune: 'стулья',
+          scauni: 'такой формы нет — средний род даёт «-e»',
+          scaunele: 'стулья — те самые',
+          scaunuri: 'такой формы нет',
+        },
       },
       {
         kind: 'choice',
@@ -293,6 +399,12 @@ export const DRILLS_CH2: DrillPack[] = [
         options: ['prieteni', 'prietenii', 'prietene', 'prietenuri'],
         correct: 0,
         explain: 'Мужской род: просто «-i». «Prietenii» — это уже с артиклем.',
+        forms: {
+          prieteni: 'друзья',
+          prietenii: 'друзья — те самые',
+          prietene: 'подруги — женский род',
+          prietenuri: 'такой формы нет',
+        },
       },
       {
         kind: 'choice',
@@ -301,6 +413,12 @@ export const DRILLS_CH2: DrillPack[] = [
         options: ['zile', 'zii', 'zilele', 'ziuri'],
         correct: 0,
         explain: 'Нерегулярная пара: zi → zile. «Zilele» — с артиклем.',
+        forms: {
+          zile: 'дни',
+          zii: 'такой формы нет — «zi» даёт «zile»',
+          zilele: 'дни — те самые',
+          ziuri: 'такой формы нет',
+        },
       },
       {
         kind: 'transform',
@@ -412,7 +530,6 @@ export const DRILLS_CH2: DrillPack[] = [
       { ro: 'zilele', ru: 'дни — те самые' },
       { ro: 'ofilit', ru: 'завял' },
     ],
-    rows: [],
     tasks: [
       {
         kind: 'choice',
@@ -421,6 +538,12 @@ export const DRILLS_CH2: DrillPack[] = [
         options: ['Casele', 'Case', 'Casei', 'Casale'],
         correct: 0,
         explain: 'К форме множественного добавляется «-le»: case → casele.',
+        forms: {
+          Casele: 'дома — те самые',
+          Case: 'дома — без артикля',
+          Casei: 'дома, дому — падежная форма единственного',
+          Casale: 'такой формы нет',
+        },
       },
       {
         kind: 'choice',
@@ -429,6 +552,12 @@ export const DRILLS_CH2: DrillPack[] = [
         options: ['Băieții', 'Băieți', 'Băiețele', 'Băiatul'],
         correct: 0,
         explain: 'Мужской род: к «-i» добавляется ещё одна «-i».',
+        forms: {
+          Băieții: 'мальчики — те самые',
+          Băieți: 'мальчики — без артикля',
+          Băiețele: 'такой формы нет — у мужского рода артикль «-i»',
+          Băiatul: 'мальчик — тот самый, один',
+        },
       },
       {
         kind: 'choice',
@@ -437,6 +566,12 @@ export const DRILLS_CH2: DrillPack[] = [
         options: ['Orașele', 'Orașe', 'Orașii', 'Orașul'],
         correct: 0,
         explain: 'Средний род во множественном ведёт себя как женский: «-le».',
+        forms: {
+          Orașele: 'города — те самые',
+          Orașe: 'города — без артикля',
+          Orașii: 'такой формы нет',
+          Orașul: 'город — тот самый, один',
+        },
       },
       {
         kind: 'choice',
@@ -445,6 +580,12 @@ export const DRILLS_CH2: DrillPack[] = [
         options: ['Cărțile', 'Cărți', 'Cartele', 'Cărțele'],
         correct: 0,
         explain: 'Формы на «-i» берут «-le», вместе получается «-ile»: cărți → cărțile.',
+        forms: {
+          Cărțile: 'книги — те самые',
+          Cărți: 'книги — без артикля',
+          Cartele: 'такой формы нет — корень меняется: cărțile',
+          Cărțele: 'такой формы нет — артикль у «cărți» это «-le»',
+        },
       },
       {
         kind: 'choice',
@@ -453,6 +594,12 @@ export const DRILLS_CH2: DrillPack[] = [
         options: ['Copiii', 'Copii', 'Copiile', 'Copilii'],
         correct: 0,
         explain: 'Три «i» подряд — это нормально: copii плюс «-i».',
+        forms: {
+          Copiii: 'дети — те самые · три «i» подряд',
+          Copii: 'дети — без артикля',
+          Copiile: 'девочки — те самые, от «copilă»',
+          Copilii: 'такой формы нет — во множественном «l» выпадает: copiii',
+        },
       },
       {
         kind: 'choice',
@@ -461,6 +608,12 @@ export const DRILLS_CH2: DrillPack[] = [
         options: ['Scaunele', 'Scaune', 'Scaunii', 'Scaunul'],
         correct: 0,
         explain: 'Средний род: «-le» к форме на «-e».',
+        forms: {
+          Scaunele: 'стулья — те самые',
+          Scaune: 'стулья — без артикля',
+          Scaunii: 'такой формы нет — средний род берёт «-le»',
+          Scaunul: 'стул — тот самый, один',
+        },
       },
       {
         kind: 'choice',
@@ -469,6 +622,12 @@ export const DRILLS_CH2: DrillPack[] = [
         options: ['Prietenii', 'Prieteni', 'Prietenele', 'Prietenul'],
         correct: 0,
         explain: 'Ещё одна «-i» к мужскому множественному. Перед «mei» артикль обязателен.',
+        forms: {
+          Prietenii: 'друзья — те самые',
+          Prieteni: 'друзья — без артикля',
+          Prietenele: 'подруги — те самые, женский род',
+          Prietenul: 'друг — тот самый, один',
+        },
       },
       {
         kind: 'choice',
@@ -477,6 +636,12 @@ export const DRILLS_CH2: DrillPack[] = [
         options: ['Zilele', 'Zile', 'Ziile', 'Zilei'],
         correct: 0,
         explain: '«-le» к форме множественного: zile → zilele.',
+        forms: {
+          Zilele: 'дни — те самые',
+          Zile: 'дни — без артикля',
+          Ziile: 'такой формы нет',
+          Zilei: 'дня, дню — падежная форма единственного',
+        },
       },
       {
         kind: 'choice',
@@ -485,6 +650,12 @@ export const DRILLS_CH2: DrillPack[] = [
         options: ['Mesele', 'Mese', 'Mesile', 'Masele'],
         correct: 0,
         explain: 'То же самое: mese плюс «-le».',
+        forms: {
+          Mesele: 'столы — те самые',
+          Mese: 'столы — без артикля',
+          Mesile: 'такой формы нет — артикль «-le» цепляется к «mese»',
+          Masele: 'такой формы нет — во множественном «a» переходит в «e»',
+        },
       },
       {
         kind: 'choice',
@@ -493,6 +664,12 @@ export const DRILLS_CH2: DrillPack[] = [
         options: ['Florile', 'Flori', 'Floarele', 'Florii'],
         correct: 0,
         explain: '«-i» плюс «-le» даёт «-ile»: flori → florile.',
+        forms: {
+          Florile: 'цветы — те самые',
+          Flori: 'цветы — без артикля',
+          Floarele: 'такой формы нет — артикль цепляется к множественному «flori»',
+          Florii: 'цветка, цветку — падежная форма',
+        },
       },
       {
         kind: 'transform',
@@ -594,7 +771,6 @@ export const DRILLS_CH2: DrillPack[] = [
       { ro: 'costă', ru: 'стоит' },
       { ro: 'am plătit', ru: 'я заплатил' },
     ],
-    rows: [],
     tasks: [
       {
         kind: 'choice',
@@ -608,6 +784,12 @@ export const DRILLS_CH2: DrillPack[] = [
         ],
         correct: 0,
         explain: 'Двадцать пять больше двадцати — значит между числом и словом обязательно «de».',
+        forms: {
+          'douăzeci și cinci de': 'двадцать пять — с «de» перед существительным',
+          'douăzeci și cinci': 'двадцать пять — само число, без существительного',
+          'douăzeci cinci de': 'такой формы нет — между десятками и единицами нужно «și»',
+          'douăzeci și cinci ani': 'такой формы нет — от двадцати «de» обязательно',
+        },
       },
       {
         kind: 'choice',
@@ -617,6 +799,12 @@ export const DRILLS_CH2: DrillPack[] = [
         correct: 0,
         explain:
           'Двенадцать меньше двадцати, «de» не нужно. И «студенты» мужского рода: doisprezece, а не douăsprezece.',
+        forms: {
+          doisprezece: 'двенадцать — мужской род, до двадцати «de» не нужно',
+          'doisprezece de': 'такой формы нет — «de» появляется только от двадцати',
+          douăsprezece: 'двенадцать — женский род: douăsprezece fete',
+          'doispe de': 'такой формы нет — «doișpe» это разговорное сокращение, и «de» с ним тоже не нужно',
+        },
       },
       {
         kind: 'choice',
@@ -625,6 +813,12 @@ export const DRILLS_CH2: DrillPack[] = [
         options: ['treizeci de', 'treizeci', 'trezeci de', 'treizeci și'],
         correct: 0,
         explain: 'Тридцать больше двадцати — значит «de».',
+        forms: {
+          'treizeci de': 'тридцать — с «de» перед существительным',
+          treizeci: 'тридцать — само число',
+          'trezeci de': 'такой формы нет — пишется treizeci',
+          'treizeci și': 'такой формы нет — «și» нужно только перед единицами',
+        },
       },
       {
         kind: 'choice',
@@ -633,6 +827,12 @@ export const DRILLS_CH2: DrillPack[] = [
         options: ['doi', 'două', 'doi de', 'doisprezece'],
         correct: 0,
         explain: '«Братья» мужского рода, поэтому doi. Форма «două» — для женского.',
+        forms: {
+          doi: 'два — мужской род',
+          două: 'две — женский род',
+          'doi de': 'такой формы нет — «de» появляется только от двадцати',
+          doisprezece: 'двенадцать',
+        },
       },
       {
         kind: 'choice',
@@ -641,6 +841,12 @@ export const DRILLS_CH2: DrillPack[] = [
         options: ['două', 'doi', 'două de', 'douăzeci'],
         correct: 0,
         explain: '«Сёстры» женского рода, поэтому două.',
+        forms: {
+          două: 'две — женский род',
+          doi: 'два — мужской род',
+          'două de': 'такой формы нет — до двадцати «de» не ставят',
+          douăzeci: 'двадцать',
+        },
       },
       {
         kind: 'choice',
@@ -649,6 +855,12 @@ export const DRILLS_CH2: DrillPack[] = [
         options: ['unu', 'un', 'una', 'unul'],
         correct: 0,
         explain: 'В ответе на «который час» используется unu — не un и не una.',
+        forms: {
+          unu: 'один — как число, при счёте и о времени',
+          un: 'один — артикль перед существительным мужского рода',
+          una: 'одна — сама по себе, без существительного',
+          unul: 'один — сам по себе, мужской род',
+        },
       },
       {
         kind: 'choice',
@@ -657,6 +869,12 @@ export const DRILLS_CH2: DrillPack[] = [
         options: ['unsprezece', 'unsprezece de', 'unspe de', 'unusprezece'],
         correct: 0,
         explain: 'Одиннадцать меньше двадцати, «de» не нужно.',
+        forms: {
+          unsprezece: 'одиннадцать',
+          'unsprezece de': 'такой формы нет — до двадцати «de» не ставят',
+          'unspe de': 'такой формы нет — «unșpe» разговорное, и «de» с ним не нужно',
+          unusprezece: 'такой формы нет — пишется unsprezece',
+        },
       },
       {
         kind: 'choice',
@@ -665,6 +883,12 @@ export const DRILLS_CH2: DrillPack[] = [
         options: ['o sută de', 'o sută', 'un sută de', 'una sută de'],
         correct: 0,
         explain: 'Сто — это «o sută», и после сотни тоже идёт «de».',
+        forms: {
+          'o sută de': 'сто — с «de» перед существительным',
+          'o sută': 'сто — само число',
+          'un sută de': 'такой формы нет — «sută» женского рода, нужен артикль «o»',
+          'una sută de': 'такой формы нет — перед существительным идёт «o», а не «una»',
+        },
       },
       {
         kind: 'choice',
@@ -673,6 +897,12 @@ export const DRILLS_CH2: DrillPack[] = [
         options: ['șapte', 'șapte de', 'șaptesprezece', 'șaptezeci'],
         correct: 0,
         explain: 'Семь меньше двадцати — без «de».',
+        forms: {
+          șapte: 'семь',
+          'șapte de': 'такой формы нет — до двадцати «de» не ставят',
+          șaptesprezece: 'семнадцать',
+          șaptezeci: 'семьдесят',
+        },
       },
       {
         kind: 'choice',
@@ -681,6 +911,12 @@ export const DRILLS_CH2: DrillPack[] = [
         options: ['patruzeci de', 'patruzeci', 'patru zeci de', 'paisprezece'],
         correct: 0,
         explain: 'Сорок больше двадцати — значит «de».',
+        forms: {
+          'patruzeci de': 'сорок — с «de» перед существительным',
+          patruzeci: 'сорок — само число',
+          'patru zeci de': 'такой формы нет — десятки пишутся одним словом',
+          paisprezece: 'четырнадцать',
+        },
       },
       {
         kind: 'build',

@@ -22,7 +22,6 @@ export const DRILLS_CH3: DrillPack[] = [
       au: 'они',
     },
     transformInstruction: 'Поставь a avea в нужную форму',
-    rows: [],
     tasks: [
       {
         kind: 'choice',
@@ -220,7 +219,6 @@ export const DRILLS_CH3: DrillPack[] = [
       noastre: 'наши — женский род',
     },
     vocabulary: [{ ro: 'școala', ru: 'школа — та самая' }],
-    rows: [],
     tasks: [
       {
         kind: 'choice',
@@ -410,7 +408,6 @@ export const DRILLS_CH3: DrillPack[] = [
       { ro: 'ochi', ru: 'глаза' },
       { ro: 'albaștri', ru: 'голубые' },
     ],
-    rows: [],
     tasks: [
       {
         kind: 'choice',
@@ -618,7 +615,6 @@ export const DRILLS_CH3: DrillPack[] = [
       { ro: 'restaurant', ru: 'ресторан' },
       { ro: 'filmul', ru: 'фильм — тот самый' },
     ],
-    rows: [],
     tasks: [
       {
         kind: 'choice',
