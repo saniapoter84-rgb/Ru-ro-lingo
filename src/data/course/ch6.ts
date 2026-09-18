@@ -64,6 +64,14 @@ export const CHAPTER_6: CourseChapter = {
           ru: 'Он поел.',
           options: ['are', 'a', 'am', 'au'],
           correct: 1,
+          explain:
+            'Ловушка прошедшего времени: в третьем лице вспомогательный сжался до одной буквы «a». Форма «are» осталась только в настоящем.',
+          forms: {
+            a: 'он, она — в прошедшем',
+            are: 'он имеет — только в настоящем',
+            am: 'я — и мы тоже',
+            au: 'они',
+          },
         },
         {
           kind: 'choice',
@@ -71,6 +79,14 @@ export const CHAPTER_6: CourseChapter = {
           ru: 'Мы прочитали книгу.',
           options: ['am', 'avem', 'ați', 'au'],
           correct: 0,
+          explain:
+            'Вторая ловушка: у «мы» в прошедшем тоже «am», ровно как у «я». Отличить их можно только по местоимению, поэтому выбрасывать его нельзя. Обычное «avem» в прошедшем не работает вовсе.',
+          forms: {
+            am: 'я и мы — одна форма',
+            avem: 'мы имеем — только в настоящем',
+            'ați': 'вы',
+            au: 'они',
+          },
         },
         {
           kind: 'rule',
@@ -90,6 +106,8 @@ export const CHAPTER_6: CourseChapter = {
           from: 'lucrez',
           answer: 'am lucrat',
           ru: 'я работаю → я работал',
+          explain:
+            'Прошедшее собирается из двух частей: «am» по лицу плюс неизменяемое причастие. Глаголы на «-a» дают причастие на «-at».',
         },
         {
           kind: 'transform',
@@ -97,12 +115,15 @@ export const CHAPTER_6: CourseChapter = {
           from: 'citești',
           answer: 'ai citit',
           ru: 'ты читаешь → ты читал',
+          explain:
+            'Спрягается только вспомогательный: ты — «ai». Причастие от глаголов на «-i» кончается на «-it», и вставка «-esc-» в нём исчезает.',
         },
         {
           kind: 'build',
           ru: 'Вчера я работал много.',
           answer: 'Ieri am lucrat mult',
           bank: ['lucrez', 'a'],
+          explain: 'Одно прошедшее покрывает и «работал», и «поработал»: вида у румынского глагола нет.',
         },
         {
           kind: 'spot',
@@ -117,6 +138,7 @@ export const CHAPTER_6: CourseChapter = {
           ru: 'Я прочитал книгу.',
           answer: 'Am citit o carte',
           alt: ['Eu am citit o carte', 'Am citit cartea'],
+          explain: 'Причастие «citit» не меняется вообще — по лицам ходит только «am».',
         },
         {
           kind: 'listen',
@@ -124,6 +146,7 @@ export const CHAPTER_6: CourseChapter = {
           options: ['Ieri am fost acasă', 'Azi sunt acasă', 'Mâine merg acasă'],
           correct: 0,
           ru: 'Вчера я был дома.',
+          explain: '«am fost» — прошедшее от «a fi». «Azi sunt» это настоящее, «mâine merg» — будущее.',
         },
       ],
     },
@@ -163,6 +186,13 @@ export const CHAPTER_6: CourseChapter = {
           ru: 'Вчера я ходил в магазин.',
           options: ['merg', 'mers', 'mergut', 'mergat'],
           correct: 1,
+          explain: 'У «a merge» причастие неправильное: mers. По правилу вышло бы «mergut» — такого слова нет.',
+          forms: {
+            mers: 'ходил — причастие от «a merge»',
+            merg: 'я иду — настоящее время',
+            mergut: 'такой формы нет',
+            mergat: 'такой формы нет',
+          },
         },
         {
           kind: 'choice',
@@ -170,6 +200,14 @@ export const CHAPTER_6: CourseChapter = {
           ru: 'Что ты делал вчера?',
           options: ['fac', 'facut', 'făcut', 'făcat'],
           correct: 2,
+          explain:
+            'Причастие от «a face» — făcut, с «ă» в корне. Написание «facut» без диакритики встречается, но правильно с «ă».',
+          forms: {
+            'făcut': 'сделал — причастие',
+            fac: 'я делаю — настоящее время',
+            facut: 'то же слово без диакритики — правильно «făcut»',
+            'făcat': 'такой формы нет',
+          },
         },
         {
           kind: 'rule',
@@ -190,6 +228,13 @@ export const CHAPTER_6: CourseChapter = {
           ru: 'Я не смог прийти.',
           options: ['pot', 'putut', 'putat', 'poatut'],
           correct: 1,
+          explain: 'Причастие от «a putea» — putut. И после него снова «să» со спрягаемым глаголом.',
+          forms: {
+            putut: 'смог — причастие',
+            pot: 'я могу — настоящее время',
+            putat: 'такой формы нет',
+            poatut: 'такой формы нет',
+          },
         },
         {
           kind: 'rule',
@@ -207,6 +252,8 @@ export const CHAPTER_6: CourseChapter = {
           ru: 'Вчера я был дома.',
           answer: 'Ieri am fost acasă',
           bank: ['sunt', 'a'],
+          explain:
+            '«am fost» — от инфинитива «a fi» тут не осталось ни одной буквы. Эту форму просто запоминают целиком.',
         },
         {
           kind: 'transform',
@@ -215,6 +262,7 @@ export const CHAPTER_6: CourseChapter = {
           answer: 'am văzut',
           alt: ['noi am văzut'],
           ru: 'мы видим → мы видели',
+          explain: 'У «a vedea» меняется и корень: vedea → văzut. Ни «vedut», ни «vezut» не существует.',
         },
         {
           kind: 'spot',
@@ -222,12 +270,14 @@ export const CHAPTER_6: CourseChapter = {
           wrongIndex: 1,
           fix: 'mers',
           ru: 'Я ходил в школу.',
+          explain: 'У «a merge» причастие неправильное — mers. «Mergut» выглядит логично, но такого слова нет.',
         },
         {
           kind: 'type',
           ru: 'Что ты сказал?',
           answer: 'Ce ai spus',
           alt: ['Ce ai spus?'],
+          explain: 'Причастие «spus» — короткое, на «-s». Таких целое семейство: spus, scris, pus, mers.',
         },
         {
           kind: 'listen',
@@ -235,6 +285,7 @@ export const CHAPTER_6: CourseChapter = {
           options: ['Ai fost în România?', 'Am fost în Rusia', 'Ai mers la magazin?'],
           correct: 0,
           ru: 'Ты был в Румынии?',
+          explain: '«ai» — второе лицо: ты был. «Am fost» было бы про меня, а «ai mers» — другой глагол.',
         },
       ],
     },
@@ -265,6 +316,14 @@ export const CHAPTER_6: CourseChapter = {
           ru: 'Завтра я пойду на работу.',
           options: ['o să', 'am', 'a', 'voi să'],
           correct: 0,
+          explain:
+            'Разговорное будущее — неизменяемое «o să» плюс спрягаемый глагол. «Voi să» не бывает: «voi» идёт с инфинитивом и без «să».',
+          forms: {
+            'o să': 'разговорное будущее — не меняется',
+            am: 'вспомогательный прошедшего',
+            a: 'он — вспомогательный прошедшего',
+            'voi să': 'такой формы нет — «voi» идёт без «să»',
+          },
         },
         {
           kind: 'choice',
@@ -273,6 +332,12 @@ export const CHAPTER_6: CourseChapter = {
           options: ['vine', 'vină', 'venit', 'veni'],
           correct: 1,
           explain: 'Третье лицо после «să» меняет форму: vine → să vină.',
+          forms: {
+            'vină': 'он придёт — форма после «să»',
+            vine: 'он приходит — обычное настоящее',
+            venit: 'пришёл — причастие',
+            veni: 'прийти — инфинитив, нужен после «va»',
+          },
         },
         {
           kind: 'rule',
@@ -321,12 +386,15 @@ export const CHAPTER_6: CourseChapter = {
           ru: 'Завтра я пойду в магазин.',
           answer: 'Mâine o să merg la magazin',
           bank: ['am', 'magazinul'],
+          explain: 'После «o să» глагол спрягается по лицу: для «я» это «merg». Само «o să» не меняется никогда.',
         },
         {
           kind: 'type',
           ru: 'Я приду завтра.',
           answer: 'O să vin mâine',
           alt: ['Vin mâine', 'Voi veni mâine'],
+          explain:
+            '«o să vin» — для «я» форма после «să» совпадает с настоящим временем. Отличается только третье лицо: там «vină».',
         },
         {
           kind: 'spot',
@@ -342,6 +410,7 @@ export const CHAPTER_6: CourseChapter = {
           options: ['O să vin mâine', 'Am venit ieri', 'Vin acum'],
           correct: 0,
           ru: 'Я приду завтра.',
+          explain: '«o să» — будущее. «Am venit» это прошедшее, а «vin acum» — настоящее.',
         },
         {
           kind: 'choice',
@@ -349,6 +418,13 @@ export const CHAPTER_6: CourseChapter = {
           ru: 'Мы поедем на море.',
           options: ['o să', 'am', 'ați', 'va'],
           correct: 0,
+          explain: '«o să» одинаково для всех лиц — работу делает глагол: mergem.',
+          forms: {
+            'o să': 'разговорное будущее — одно на все лица',
+            am: 'вспомогательный прошедшего',
+            'ați': 'вы — вспомогательный прошедшего',
+            va: 'он — книжное будущее, идёт с инфинитивом',
+          },
         },
       ],
     },
@@ -379,6 +455,14 @@ export const CHAPTER_6: CourseChapter = {
           ru: 'Вчера я ходил в театр.',
           options: ['merg', 'am mers', 'o să merg', 'mergeam'],
           correct: 1,
+          explain:
+            'Маркер «ieri» требует прошедшего. «Mergeam» — тоже прошедшее, но другое: оно про «бывало, регулярно».',
+          forms: {
+            'am mers': 'я сходил',
+            merg: 'я иду',
+            'o să merg': 'я пойду',
+            mergeam: 'я ходил регулярно — другое прошедшее',
+          },
         },
         {
           kind: 'choice',
@@ -386,6 +470,13 @@ export const CHAPTER_6: CourseChapter = {
           ru: 'Завтра я пойду в театр.',
           options: ['am mers', 'merg', 'o să merg', 'mers'],
           correct: 2,
+          explain: 'Маркер «mâine» требует будущего. Само слово времени и выбирает форму.',
+          forms: {
+            'o să merg': 'я пойду',
+            'am mers': 'я сходил',
+            merg: 'я иду',
+            mers: 'ходил — причастие, само по себе не работает',
+          },
         },
         {
           kind: 'transform',
@@ -393,6 +484,7 @@ export const CHAPTER_6: CourseChapter = {
           from: 'Merg la muncă.',
           answer: 'Am mers la muncă',
           ru: 'Я иду на работу. → Я ходил на работу.',
+          explain: 'Спрягаемая форма уходит целиком, вместо неё «am» плюс причастие «mers».',
         },
         {
           kind: 'transform',
@@ -401,6 +493,7 @@ export const CHAPTER_6: CourseChapter = {
           answer: 'O să citesc o carte',
           alt: ['Voi citi o carte'],
           ru: 'Я читаю книгу. → Я буду читать книгу.',
+          explain: 'Добавляется «o să», а глагол остаётся спрягаемым: citesc. Это не инфинитив.',
         },
         {
           kind: 'rule',
@@ -418,6 +511,8 @@ export const CHAPTER_6: CourseChapter = {
           ru: 'Вчера я не работал.',
           answer: 'Ieri nu am lucrat',
           bank: ['lucrez', 'o'],
+          explain:
+            '«nu» встаёт перед всей конструкцией, а не между «am» и причастием. В речи «nu am» сливается в «n-am».',
         },
         {
           kind: 'spot',
@@ -442,6 +537,7 @@ export const CHAPTER_6: CourseChapter = {
           ru: 'Завтра я не пойду на работу.',
           answer: 'Mâine nu o să merg la muncă',
           alt: ['Mâine nu merg la muncă'],
+          explain: 'И здесь «nu» впереди всего: «nu o să merg». Порядок одинаковый во всех трёх временах.',
         },
         {
           kind: 'listen',
@@ -449,12 +545,14 @@ export const CHAPTER_6: CourseChapter = {
           options: ['Ieri nu am lucrat', 'Azi nu lucrez', 'Mâine o să lucrez'],
           correct: 0,
           ru: 'Вчера я не работал.',
+          explain: '«ieri» плюс «am lucrat» — прошедшее. «Azi nu lucrez» настоящее, «mâine o să lucrez» будущее.',
         },
         {
           kind: 'build',
           ru: 'Сегодня я дома, а завтра поеду в город.',
           answer: 'Azi sunt acasă și mâine o să merg în oraș',
           bank: ['am', 'orașul'],
+          explain: 'Два времени в одной фразе, и каждое со своим маркером: azi — настоящее, mâine — будущее.',
         },
       ],
     },
@@ -478,6 +576,13 @@ export const CHAPTER_6: CourseChapter = {
           ru: 'Он пришёл вчера.',
           options: ['are', 'a', 'am', 'au'],
           correct: 1,
+          explain: 'Та же ловушка, что в начале главы: в прошедшем третье лицо — просто «a», а не «are».',
+          forms: {
+            a: 'он, она — в прошедшем',
+            are: 'он имеет — только в настоящем',
+            am: 'я — и мы',
+            au: 'они',
+          },
         },
         {
           kind: 'transform',
@@ -485,12 +590,14 @@ export const CHAPTER_6: CourseChapter = {
           from: 'fac',
           answer: 'am făcut',
           ru: 'я делаю → я сделал',
+          explain: 'Причастие от «a face» — făcut. Корень сохранился, а окончание встало по группе на «-e»: «-ut».',
         },
         {
           kind: 'build',
           ru: 'Вчера мы были в городе.',
           answer: 'Ieri am fost în oraș',
           bank: ['suntem', 'orașul'],
+          explain: 'У «мы» в прошедшем тоже «am». Местоимение тут можно выбросить: контекст и так ясен.',
         },
         {
           kind: 'choice',
@@ -498,6 +605,14 @@ export const CHAPTER_6: CourseChapter = {
           ru: 'Завтра она пойдёт на работу.',
           options: ['merge', 'meargă', 'mers', 'merg'],
           correct: 1,
+          explain:
+            'В третьем лице форма после «să» особая: не «merge», а «meargă». Это единственное лицо, где она отличается от настоящего.',
+          forms: {
+            'meargă': 'она пойдёт — форма после «să»',
+            merge: 'она идёт — обычное настоящее',
+            mers: 'ходила — причастие',
+            merg: 'я иду — и они',
+          },
         },
         {
           kind: 'spot',
@@ -505,12 +620,14 @@ export const CHAPTER_6: CourseChapter = {
           wrongIndex: 1,
           fix: 'am',
           ru: 'Мы прочитали книгу.',
+          explain: '«a» — третье лицо. При «noi» нужен «am», та же форма, что у «я».',
         },
         {
           kind: 'type',
           ru: 'Я не смог прийти.',
           answer: 'Nu am putut să vin',
           alt: ['Nu am putut veni', 'N-am putut să vin'],
+          explain: 'Прошедшее от «a putea» плюс «să» со спрягаемым глаголом: «nu am putut să vin».',
         },
         {
           kind: 'match',
@@ -528,6 +645,13 @@ export const CHAPTER_6: CourseChapter = {
           ru: 'Вчера я прочитал хорошую книгу.',
           options: ['citesc', 'am citit', 'o să citesc', 'citit'],
           correct: 1,
+          explain: '«ieri» — прошедшее. И книга дочитана, есть результат: am citit.',
+          forms: {
+            'am citit': 'я прочитал',
+            citesc: 'я читаю',
+            'o să citesc': 'я прочитаю',
+            citit: 'прочитал — причастие, само по себе не работает',
+          },
         },
         {
           kind: 'listen',
@@ -535,12 +659,14 @@ export const CHAPTER_6: CourseChapter = {
           options: ['Ce ai făcut ieri?', 'Ce faci acum?', 'Ce o să faci mâine?'],
           correct: 0,
           ru: 'Что ты делал вчера?',
+          explain: '«ai făcut» плюс «ieri» — прошедшее. «Ce faci acum» настоящее, «ce o să faci» будущее.',
         },
         {
           kind: 'build',
           ru: 'Мы не пойдём завтра.',
           answer: 'Nu o să mergem mâine',
           bank: ['am', 'merg'],
+          explain: '«nu» перед «o să», а глагол в форме «мы»: mergem.',
         },
         {
           kind: 'transform',
@@ -549,12 +675,14 @@ export const CHAPTER_6: CourseChapter = {
           answer: 'O să beau cafea',
           alt: ['Voi bea cafea'],
           ru: 'Я пью кофе. → Я буду пить кофе.',
+          explain: 'После «o să» глагол спрягается, и для «я» это по-прежнему «beau».',
         },
         {
           kind: 'type',
           ru: 'Ты был в Румынии?',
           answer: 'Ai fost în România',
           alt: ['Ai fost în România?'],
+          explain: '«ai fost» — ты был. Вопрос делает интонация, порядок слов не меняется.',
         },
       ],
     },

@@ -48,6 +48,13 @@ export const CHAPTER_5: CourseChapter = {
           ru: 'Книга на столе.',
           options: ['în', 'pe', 'sub', 'la'],
           correct: 1,
+          explain: '«pe» — на поверхности. Один из немногих предлогов, который совпадает с русским один в один.',
+          forms: {
+            pe: 'на поверхности',
+            'în': 'внутри',
+            sub: 'под',
+            la: 'к цели, у кого-то',
+          },
         },
         {
           kind: 'choice',
@@ -55,6 +62,13 @@ export const CHAPTER_5: CourseChapter = {
           ru: 'Кошка под кроватью.',
           options: ['pe', 'în', 'sub', 'lângă'],
           correct: 2,
+          explain: '«sub» — под. Существительное после него идёт без артикля, как и после «pe».',
+          forms: {
+            sub: 'под',
+            pe: 'на поверхности',
+            'în': 'внутри',
+            'lângă': 'рядом с',
+          },
         },
         {
           kind: 'rule',
@@ -85,12 +99,21 @@ export const CHAPTER_5: CourseChapter = {
           ru: 'Я из Москвы.',
           options: ['la', 'din', 'în', 'pe'],
           correct: 1,
+          explain:
+            '«din» — из города, страны, здания: изнутри наружу. «de la» было бы «от человека» или «от точки»: de la gară.',
+          forms: {
+            din: 'из — откуда родом',
+            la: 'к цели, у кого-то',
+            'în': 'внутри',
+            pe: 'на поверхности',
+          },
         },
         {
           kind: 'build',
           ru: 'Кошка на столе.',
           answer: 'Pisica este pe masă',
           bank: ['în', 'sub'],
+          explain: 'Подлежащее с артиклем (pisica), а после предлога артикль пропадает: pe masă.',
         },
         {
           kind: 'rule',
@@ -108,6 +131,7 @@ export const CHAPTER_5: CourseChapter = {
           ru: 'Я в школе.',
           answer: 'Sunt la școală',
           alt: ['Eu sunt la școală'],
+          explain: '«la școală» — в школе как в заведении. «În școală» значило бы «внутри здания», а это другое.',
         },
         {
           kind: 'listen',
@@ -115,6 +139,7 @@ export const CHAPTER_5: CourseChapter = {
           options: ['Cartea este pe masă', 'Cartea este sub masă', 'Pisica este pe masă'],
           correct: 0,
           ru: 'Книга на столе.',
+          explain: '«pe» — на. «Sub» было бы под столом, а «pisica» — вообще другое подлежащее.',
         },
         {
           kind: 'spot',
@@ -163,6 +188,14 @@ export const CHAPTER_5: CourseChapter = {
           ru: 'Иду в магазин.',
           options: ['magazin', 'magazinul', 'magazine', 'magazinele'],
           correct: 0,
+          explain:
+            'Главное правило главы: после предлога существительное «раздевается» — определённый артикль пропадает. Не «la magazinul», а «la magazin».',
+          forms: {
+            magazin: 'магазин — голое слово, как и нужно после предлога',
+            magazinul: 'магазин — тот самый, после предлога так не говорят',
+            magazine: 'магазины',
+            magazinele: 'магазины — те самые',
+          },
         },
         {
           kind: 'choice',
@@ -171,6 +204,12 @@ export const CHAPTER_5: CourseChapter = {
           options: ['școală', 'școala', 'școli', 'școlile'],
           correct: 1,
           explain: 'Есть «mea» → артикль обязателен: «școala mea».',
+          forms: {
+            'școala': 'школа — артикль вернулся из-за «mea»',
+            'școală': 'школа без артикля — но тут есть уточнение',
+            'școli': 'школы',
+            'școlile': 'школы — те самые',
+          },
         },
         {
           kind: 'spot',
@@ -199,6 +238,14 @@ export const CHAPTER_5: CourseChapter = {
           ru: 'Я езжу на работу на автобусе.',
           options: ['autobuz', 'autobuzul', 'autobuze', 'un autobuz'],
           correct: 1,
+          explain:
+            'Красивое исключение: когда «cu» говорит про способ передвижения, артикль остаётся. cu autobuzul, cu mașina, cu trenul.',
+          forms: {
+            autobuzul: 'автобус — тот самый, исключение для транспорта',
+            autobuz: 'автобус без артикля',
+            autobuze: 'автобусы',
+            'un autobuz': 'какой-то автобус',
+          },
         },
         {
           kind: 'build',
@@ -211,6 +258,7 @@ export const CHAPTER_5: CourseChapter = {
           kind: 'type',
           ru: 'Я еду на машине.',
           answer: 'Merg cu mașina',
+          explain: 'Транспорт идёт через «cu» и с артиклем: cu mașina. «Pe mașină» значило бы «на крыше машины».',
         },
         {
           kind: 'choice',
@@ -218,13 +266,23 @@ export const CHAPTER_5: CourseChapter = {
           ru: 'Я в его доме.',
           options: ['casă', 'casa', 'case', 'casele'],
           correct: 1,
+          explain:
+            'Появилось уточнение «lui» — и артикль немедленно вернулся. Пара «în casă / în casa lui» и есть всё правило целиком.',
+          forms: {
+            casa: 'дом — артикль вернулся из-за «lui»',
+            'casă': 'дом без артикля',
+            case: 'дома',
+            casele: 'дома — те самые',
+          },
         },
         {
           kind: 'listen',
-          ro: 'Merg cu trenul la Bucureşti',
+          ro: 'Merg cu trenul la București',
           options: ['Merg cu trenul la București', 'Merg cu mașina la muncă', 'Sunt în tren'],
           correct: 0,
           ru: 'Я еду на поезде в Бухарест.',
+          explain:
+            '«cu trenul» — на поезде, с артиклем: транспорт это исключение. «Cu mașina la muncă» другой транспорт и другая цель, а «sunt în tren» — просто про нахождение.',
         },
         {
           kind: 'spot',
@@ -274,6 +332,13 @@ export const CHAPTER_5: CourseChapter = {
           ru: 'Сколько стоит?',
           options: ['Ce', 'Cât', 'Care', 'Cum'],
           correct: 1,
+          explain: 'Без существительного берут основную форму — «cât». «Ce costă» звучало бы как «что стоит».',
+          forms: {
+            'Cât': 'сколько — само по себе',
+            Ce: 'что, какой',
+            Care: 'который из',
+            Cum: 'как',
+          },
         },
         {
           kind: 'rule',
@@ -292,6 +357,13 @@ export const CHAPTER_5: CourseChapter = {
           ru: 'Сколько ещё дней?',
           options: ['Cât', 'Câtă', 'Câți', 'Câte'],
           correct: 3,
+          explain: '«cât» согласуется с тем, что считают: «zile» — женский род множественного, значит «câte».',
+          forms: {
+            'Câte': 'сколько — ж.р., много',
+            'Cât': 'сколько — само по себе',
+            'Câtă': 'сколько — ж.р., неисчисляемое',
+            'Câți': 'сколько — м.р., много',
+          },
         },
         {
           kind: 'rule',
@@ -318,12 +390,21 @@ export const CHAPTER_5: CourseChapter = {
           ru: 'Когда ты придёшь? — Завтра.',
           options: ['Unde', 'Când', 'Cum', 'Cine'],
           correct: 1,
+          explain:
+            'Ответ «завтра» — значит спрашивали про время. Остальные вопросительные слова, в отличие от «cât», не меняются вовсе.',
+          forms: {
+            'Când': 'когда',
+            Unde: 'где, куда',
+            Cum: 'как',
+            Cine: 'кто',
+          },
         },
         {
           kind: 'type',
           ru: 'Сколько это стоит?',
           answer: 'Cât costă',
           alt: ['Cât costă?', 'Cât costă asta', 'Cât costă asta?'],
+          explain: '«Cât costă» — готовая фраза, её берут целиком. Местоимение «это» тут не нужно.',
         },
         {
           kind: 'listen',
@@ -331,12 +412,14 @@ export const CHAPTER_5: CourseChapter = {
           options: ['Unde este gara?', 'Cât costă biletul?', 'Cum ajung la centru?'],
           correct: 0,
           ru: 'Где вокзал?',
+          explain: '«Unde» — где. «Cât costă» было бы про цену, а «cum ajung» — про дорогу.',
         },
         {
           kind: 'build',
           ru: 'Как добраться до центра?',
           answer: 'Cum ajung la centru',
           bank: ['unde', 'centrul'],
+          explain: 'Дословно — «как я добираюсь до центра». Настоящее время работает тут вопросом о будущем.',
         },
         {
           kind: 'choice',
@@ -345,6 +428,12 @@ export const CHAPTER_5: CourseChapter = {
           options: ['Ce', 'Cine', 'Care', 'Cât'],
           correct: 2,
           explain: '«care» — когда выбирают из нескольких вариантов.',
+          forms: {
+            Care: 'который из — выбор из известного набора',
+            Ce: 'что, какой — вообще',
+            Cine: 'кто',
+            'Cât': 'сколько',
+          },
         },
       ],
     },
@@ -384,6 +473,14 @@ export const CHAPTER_5: CourseChapter = {
           ru: 'Что это?',
           options: ['ăsta', 'asta', 'acela', 'aceia'],
           correct: 1,
+          explain:
+            'Когда указывают на что-то безымянное, берут форму женского рода «asta». Она работает безличным «это».',
+          forms: {
+            asta: 'это — безличная форма',
+            'ăsta': 'этот — про предмет мужского рода',
+            acela: 'тот — м.р.',
+            aceia: 'те — м.р.',
+          },
         },
         {
           kind: 'rule',
@@ -402,12 +499,22 @@ export const CHAPTER_5: CourseChapter = {
           ru: 'Этот дом красивый.',
           options: ['Casă', 'Casa', 'Case', 'O casă'],
           correct: 1,
+          explain:
+            'Перед разговорным указательным существительное обязано быть определённым: не «casă asta», а «casa asta».',
+          forms: {
+            Casa: 'дом — тот самый, с артиклем',
+            'Casă': 'дом без артикля — перед «asta» так нельзя',
+            Case: 'дома',
+            'O casă': 'какой-то дом',
+          },
         },
         {
           kind: 'build',
           ru: 'Этот человек мой друг.',
           answer: 'Omul ăsta este prietenul meu',
           bank: ['om', 'asta'],
+          explain:
+            'Та же пара: артикль на существительном (omul), указательное следом (ăsta). Мужской род — значит «ăsta».',
         },
         {
           kind: 'rule',
@@ -436,12 +543,22 @@ export const CHAPTER_5: CourseChapter = {
           ru: 'Вокзал далеко?',
           options: ['aici', 'aproape', 'departe', 'acolo'],
           correct: 2,
+          explain:
+            '«departe» — далеко. «Aproape» это наоборот, близко, а «aici» и «acolo» отвечают на «где», а не на «насколько далеко».',
+          forms: {
+            departe: 'далеко',
+            aproape: 'близко',
+            aici: 'здесь, сюда',
+            acolo: 'там, туда',
+          },
         },
         {
           kind: 'type',
           ru: 'Сколько это стоит?',
           answer: 'Cât costă asta',
           alt: ['Cât costă asta?'],
+          explain:
+            'Здесь «это» названо прямо — «asta». Без него фраза тоже верна, но так указывают на конкретную вещь.',
         },
         {
           kind: 'listen',
@@ -453,12 +570,16 @@ export const CHAPTER_5: CourseChapter = {
           ],
           correct: 0,
           ru: 'Этот дом очень красивый.',
+          explain:
+            '«asta» — указание на конкретный дом. «Casa mea» было бы «мой дом», а «omul ăsta» — про человека.',
         },
         {
           kind: 'build',
           ru: 'Магазин здесь, близко.',
           answer: 'Magazinul este aici aproape',
           bank: ['acolo', 'departe'],
+          explain:
+            '«aici» отвечает на «где», «aproape» — на «насколько далеко». Слова разные и не заменяют друг друга.',
         },
       ],
     },
@@ -485,6 +606,13 @@ export const CHAPTER_5: CourseChapter = {
           ru: 'Иду на работу.',
           options: ['muncă', 'munca', 'munci', 'o muncă'],
           correct: 0,
+          explain: 'После предлога артикля нет: «la muncă». Работа тут как занятие, а не конкретное место.',
+          forms: {
+            'muncă': 'работа — без артикля, как и нужно после предлога',
+            munca: 'работа — та самая',
+            munci: 'работы',
+            'o muncă': 'какая-то работа',
+          },
         },
         {
           kind: 'choice',
@@ -492,6 +620,13 @@ export const CHAPTER_5: CourseChapter = {
           ru: 'Еду на поезде.',
           options: ['tren', 'trenul', 'trenuri', 'un tren'],
           correct: 1,
+          explain: 'И снова исключение для транспорта: с «cu» артикль остаётся.',
+          forms: {
+            trenul: 'поезд — тот самый, исключение для транспорта',
+            tren: 'поезд без артикля',
+            trenuri: 'поезда',
+            'un tren': 'какой-то поезд',
+          },
         },
         {
           kind: 'spot',
@@ -499,18 +634,21 @@ export const CHAPTER_5: CourseChapter = {
           wrongIndex: 2,
           fix: 'magazin',
           ru: 'Я в магазине.',
+          explain: 'После предлога артикль пропадает: «la magazin».',
         },
         {
           kind: 'build',
           ru: 'Где вокзал? Это далеко?',
           answer: 'Unde este gara Este departe',
           bank: ['gară', 'aproape'],
+          explain: 'Две готовые фразы подряд. «Gara» с артиклем: вокзал вполне конкретный.',
         },
         {
           kind: 'type',
           ru: 'Как добраться до центра?',
           answer: 'Cum ajung la centru',
           alt: ['Cum ajung la centru?'],
+          explain: '«la centru» — без артикля, как и положено после предлога.',
         },
         {
           kind: 'choice',
@@ -518,6 +656,13 @@ export const CHAPTER_5: CourseChapter = {
           ru: 'Сколько стоит билет?',
           options: ['Ce', 'Cât', 'Care', 'Cum'],
           correct: 1,
+          explain: '«cât» без существительного — «сколько» вообще. А «biletul» с артиклем: билет конкретный.',
+          forms: {
+            'Cât': 'сколько — само по себе',
+            Ce: 'что, какой',
+            Care: 'который из',
+            Cum: 'как',
+          },
         },
         {
           kind: 'match',
@@ -535,6 +680,13 @@ export const CHAPTER_5: CourseChapter = {
           ru: 'Иду в свою школу.',
           options: ['școală', 'școala', 'școli', 'școlile'],
           correct: 1,
+          explain: 'Уточнение «mea» вернуло артикль: «la școala mea», хотя было бы «la școală».',
+          forms: {
+            'școala': 'школа — артикль вернулся из-за «mea»',
+            'școală': 'школа без артикля',
+            'școli': 'школы',
+            'școlile': 'школы — те самые',
+          },
         },
         {
           kind: 'listen',
@@ -546,12 +698,14 @@ export const CHAPTER_5: CourseChapter = {
           ],
           correct: 0,
           ru: 'Идите прямо, потом налево.',
+          explain: '«drept înainte» — прямо, «la stânga» — налево. «La dreapta» было бы направо.',
         },
         {
           kind: 'build',
           ru: 'Кошка под столом.',
           answer: 'Pisica este sub masă',
           bank: ['pe', 'masa'],
+          explain: '«sub» — под, и после него артикля нет: sub masă.',
         },
         {
           kind: 'spot',
@@ -559,12 +713,14 @@ export const CHAPTER_5: CourseChapter = {
           wrongIndex: 2,
           fix: 'autobuzul',
           ru: 'Я еду на автобусе.',
+          explain: 'Транспорт с «cu» — исключение: артикль остаётся. «Cu autobuzul».',
         },
         {
           kind: 'type',
           ru: 'Я из России.',
           answer: 'Sunt din Rusia',
           alt: ['Eu sunt din Rusia'],
+          explain: '«din» — из страны. Местоимение можно выбросить: «sunt» и так значит «я есть».',
         },
       ],
     },
