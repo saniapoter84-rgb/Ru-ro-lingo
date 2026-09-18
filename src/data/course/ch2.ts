@@ -47,6 +47,12 @@ export const CHAPTER_2: CourseChapter = {
           options: ['tren', 'trenul', 'trena', 'un tren'],
           correct: 1,
           explain: 'tren — мужской/средний род → «-ul» → trenul.',
+          forms: {
+            trenul: 'поезд — тот самый',
+            tren: 'поезд — без артикля',
+            trena: 'такой формы нет — артикль этого слова «-ul»',
+            'un tren': 'какой-то поезд — неопределённый артикль',
+          },
         },
         {
           kind: 'choice',
@@ -54,6 +60,12 @@ export const CHAPTER_2: CourseChapter = {
           options: ['stradaul', 'strada', 'stradăle', 'stradale'],
           correct: 1,
           explain: 'Женский род на «-ă»: конечное «-ă» меняется на «-a» → strada.',
+          forms: {
+            strada: 'улица — та самая',
+            stradaul: 'такой формы нет — «-ul» бывает только у мужского рода',
+            'stradăle': 'такой формы нет',
+            stradale: 'такой формы нет',
+          },
         },
         {
           kind: 'transform',
@@ -61,6 +73,8 @@ export const CHAPTER_2: CourseChapter = {
           from: 'un oraș',
           answer: 'orașul',
           ru: 'город → тот самый город',
+          explain:
+            'Средний род в единственном берёт «-ul», как и мужской: oraș → orașul. Неопределённый артикль при этом уходит — двух артиклей у слова не бывает.',
         },
         {
           kind: 'transform',
@@ -68,6 +82,8 @@ export const CHAPTER_2: CourseChapter = {
           from: 'o masă',
           answer: 'masa',
           ru: 'стол → тот самый стол',
+          explain:
+            'Женский род: конечное «-ă» превращается в «-a». masă → masa. Слово при этом не удлиняется — меняется одна буква.',
         },
         {
           kind: 'transform',
@@ -121,6 +137,8 @@ export const CHAPTER_2: CourseChapter = {
           options: ['Câinele este mic', 'Un câine mic', 'Casa este mică'],
           correct: 0,
           ru: 'Собака маленькая.',
+          explain:
+            '«Câinele» — с артиклем, тот самый пёс. «Un câine» значило бы «какой-то пёс», а «casa» это вообще другое слово.',
         },
       ],
     },
@@ -158,6 +176,12 @@ export const CHAPTER_2: CourseChapter = {
           options: ['floaruri', 'flori', 'floare', 'floari'],
           correct: 1,
           explain: 'Тут ещё и гласная в корне поменялась: floare → flori. Такое учат по словам.',
+          forms: {
+            flori: 'цветы',
+            floaruri: 'такой формы нет — «floare» даёт «flori»',
+            floare: 'цветок — один',
+            floari: 'такой формы нет',
+          },
         },
         {
           kind: 'choice',
@@ -166,6 +190,12 @@ export const CHAPTER_2: CourseChapter = {
           options: ['orașe', 'orași', 'orașuri', 'orașele'],
           correct: 0,
           explain: 'oraș — средний род, множественное «orașe».',
+          forms: {
+            'orașe': 'города',
+            'orași': 'такой формы нет — средний род даёт «-e»',
+            'orașuri': 'такой формы нет',
+            'orașele': 'города — те самые, с артиклем',
+          },
         },
         {
           kind: 'transform',
@@ -183,6 +213,8 @@ export const CHAPTER_2: CourseChapter = {
           answer: 'băieți',
           alt: ['doi băieți'],
           ru: 'мальчик → мальчики',
+          explain:
+            'Мужской род во множественном берёт «-i», и в корне «a» переходит в «ie»: băiat → băieți. Два изменения разом.',
         },
         {
           kind: 'rule',
@@ -212,6 +244,14 @@ export const CHAPTER_2: CourseChapter = {
           ru: 'человек → люди',
           options: ['omi', 'omuri', 'oameni', 'ome'],
           correct: 2,
+          explain:
+            '«om» — исключение: во множественном от него почти ничего не остаётся, oameni. Такие слова учат целиком, по правилу их не вывести.',
+          forms: {
+            oameni: 'люди',
+            omi: 'такой формы нет',
+            omuri: 'такой формы нет',
+            ome: 'такой формы нет',
+          },
         },
         {
           kind: 'rule',
@@ -236,12 +276,15 @@ export const CHAPTER_2: CourseChapter = {
           options: ['Sunt multe cărți aici', 'Este o carte aici', 'Sunt multe case aici'],
           correct: 0,
           ru: 'Здесь много книг.',
+          explain: '«cărți» — множественное от «carte». «Case» на слух похоже, но это дома, другое слово.',
         },
         {
           kind: 'type',
           ru: 'два поезда',
           answer: 'două trenuri',
           hint: 'tren — средний род',
+          explain:
+            '«tren» среднего рода: в единственном он ведёт себя как мужской (un tren), а во множественном — как женский. Поэтому «două», а не «doi».',
         },
       ],
     },
@@ -273,6 +316,7 @@ export const CHAPTER_2: CourseChapter = {
           from: 'case',
           answer: 'casele',
           ru: 'дома → те самые дома',
+          explain: 'Во множественном артикль тоже цепляется сзади: женский род берёт «-le». case → casele.',
         },
         {
           kind: 'transform',
@@ -287,6 +331,14 @@ export const CHAPTER_2: CourseChapter = {
           prompt: 'Какая форма значит «те самые книги»?',
           options: ['cărți', 'cărțile', 'cărțiile', 'cartea'],
           correct: 1,
+          explain:
+            'Множественное «cărți» плюс артикль «-le» даёт «cărțile». Одно «i», а не два: «cărțiile» не существует.',
+          forms: {
+            'cărțile': 'книги — те самые',
+            'cărți': 'книги — без артикля',
+            'cărțiile': 'такой формы нет — лишнее «i»',
+            cartea: 'книга — та самая, одна',
+          },
         },
         {
           kind: 'match',
@@ -332,6 +384,12 @@ export const CHAPTER_2: CourseChapter = {
           correct: 0,
           explain:
             'Ловушка на будущее: после предлога «în» артикль обычно пропадает. Подробно — в главе 5.',
+          forms: {
+            parc: 'парк — без артикля, как и положено после предлога',
+            parcul: 'парк — тот самый, но после предлога артикль пропадает',
+            parcuri: 'парки',
+            parcurile: 'парки — те самые',
+          },
         },
         {
           kind: 'listen',
@@ -339,12 +397,16 @@ export const CHAPTER_2: CourseChapter = {
           options: ['Casele sunt mari', 'Casa este mare', 'Cărțile sunt mari'],
           correct: 0,
           ru: 'Дома большие.',
+          explain:
+            '«Casele» — множественное с артиклем, и глагол тоже во множественном: sunt. У «casa este» было бы единственное.',
         },
         {
           kind: 'type',
           ru: 'те самые люди',
           answer: 'oamenii',
           hint: 'oameni + артикль мужского рода',
+          explain:
+            '«oameni» плюс артикль «-i» даёт «oamenii» — с двумя «i» на конце. Выглядит странно, но пишется именно так.',
         },
         {
           kind: 'transform',
@@ -352,6 +414,7 @@ export const CHAPTER_2: CourseChapter = {
           from: 'cartea',
           answer: 'cărțile',
           ru: 'та самая книга → те самые книги',
+          explain: 'Меняется всё сразу: корень (carte → cărți) и артикль (-a → -le).',
         },
       ],
     },
@@ -384,6 +447,12 @@ export const CHAPTER_2: CourseChapter = {
           options: ['doi', 'două', 'un', 'o'],
           correct: 1,
           explain: 'casă — женский род → «două».',
+          forms: {
+            'două': 'две — женский и средний род',
+            doi: 'два — мужской род',
+            un: 'один — мужской род',
+            o: 'одна — женский род',
+          },
         },
         {
           kind: 'choice',
@@ -391,6 +460,13 @@ export const CHAPTER_2: CourseChapter = {
           ru: 'два брата',
           options: ['doi', 'două', 'o', 'niște'],
           correct: 0,
+          explain: '«frați» мужского рода — значит «doi». Женский род потребовал бы «două».',
+          forms: {
+            doi: 'два — мужской род',
+            'două': 'две — женский и средний род',
+            o: 'одна — женский род',
+            'niște': 'несколько — без числа',
+          },
         },
         {
           kind: 'rule',
@@ -411,6 +487,14 @@ export const CHAPTER_2: CourseChapter = {
           ru: 'двадцать человек',
           options: ['de', '(ничего)', 'din', 'la'],
           correct: 0,
+          explain:
+            'От двадцати и выше между числом и существительным обязательно «de»: douăzeci de oameni. До двадцати оно не нужно вовсе.',
+          forms: {
+            de: 'нужно от двадцати и выше',
+            '(ничего)': 'так говорят только до двадцати',
+            din: 'из',
+            la: 'к, в',
+          },
         },
         {
           kind: 'choice',
@@ -419,6 +503,12 @@ export const CHAPTER_2: CourseChapter = {
           options: ['de', '(ничего)', 'din', 'niște'],
           correct: 1,
           explain: '15 меньше 20 → «de» не нужно.',
+          forms: {
+            '(ничего)': 'до двадцати «de» не ставят',
+            de: 'нужно от двадцати и выше',
+            din: 'из',
+            'niște': 'несколько',
+          },
         },
         {
           kind: 'match',
@@ -446,12 +536,14 @@ export const CHAPTER_2: CourseChapter = {
           ru: 'У меня две книги.',
           answer: 'Am două cărți',
           bank: ['doi', 'carte'],
+          explain: '«cărți» женского рода — значит «două», а не «doi». И «de» тут не нужно: два меньше двадцати.',
         },
         {
           kind: 'type',
           ru: 'тридцать дней',
           answer: 'treizeci de zile',
           hint: 'больше 20 — не забудь «de»',
+          explain: 'Тридцать больше двадцати — значит «de» обязательно: treizeci de zile.',
         },
         {
           kind: 'spot',
@@ -467,6 +559,7 @@ export const CHAPTER_2: CourseChapter = {
           options: ['Am două surori', 'Am doi frați', 'Am douăzeci de ani'],
           correct: 0,
           ru: 'У меня две сестры.',
+          explain: '«două» — женский род: сёстры. У братьев было бы «doi frați».',
         },
       ],
     },
@@ -494,6 +587,7 @@ export const CHAPTER_2: CourseChapter = {
           from: 'o carte',
           answer: 'cartea',
           ru: 'книга → та самая книга',
+          explain: 'Женский род на «-e»: конечное «-e» меняется на «-ea». carte → cartea.',
         },
         {
           kind: 'transform',
@@ -501,6 +595,8 @@ export const CHAPTER_2: CourseChapter = {
           from: 'trenul',
           answer: 'trenurile',
           ru: 'тот самый поезд → те самые поезда',
+          explain:
+            'Два шага по порядку: сначала множественное (trenuri), потом артикль (-le). Получается trenurile.',
         },
         {
           kind: 'choice',
@@ -508,6 +604,13 @@ export const CHAPTER_2: CourseChapter = {
           ru: 'сорок человек',
           options: ['de', '(ничего)', 'din', 'niște'],
           correct: 0,
+          explain: 'Сорок больше двадцати — «de» обязательно.',
+          forms: {
+            de: 'нужно от двадцати и выше',
+            '(ничего)': 'так говорят только до двадцати',
+            din: 'из',
+            'niște': 'несколько',
+          },
         },
         {
           kind: 'spot',
@@ -515,12 +618,15 @@ export const CHAPTER_2: CourseChapter = {
           wrongIndex: 0,
           fix: '(убрать)',
           ru: 'Дом большой.',
+          explain:
+            '«casa» уже с артиклем — второй артикль перед ней не нужен. Либо «o casă», либо «casa», но не оба сразу.',
         },
         {
           kind: 'build',
           ru: 'У меня две сестры и один брат.',
           answer: 'Am două surori și un frate',
           bank: ['doi', 'o'],
+          explain: 'Две формы числа в одной фразе: «două» для сестёр (женский род) и «un» для брата (мужской).',
         },
         {
           kind: 'choice',
@@ -528,6 +634,13 @@ export const CHAPTER_2: CourseChapter = {
           ru: 'человек → люди',
           options: ['oameni', 'omuri', 'omi', 'omele'],
           correct: 0,
+          explain: '«om → oameni» — исключение, которое встречается каждый день. По правилу такую форму не вывести.',
+          forms: {
+            oameni: 'люди',
+            omuri: 'такой формы нет',
+            omi: 'такой формы нет',
+            omele: 'такой формы нет',
+          },
         },
         {
           kind: 'match',
@@ -543,6 +656,7 @@ export const CHAPTER_2: CourseChapter = {
           kind: 'type',
           ru: 'те самые книги',
           answer: 'cărțile',
+          explain: 'Корень меняется, потом цепляется артикль: carte → cărți → cărțile.',
         },
         {
           kind: 'listen',
@@ -550,6 +664,7 @@ export const CHAPTER_2: CourseChapter = {
           options: ['Am douăzeci de ani', 'Am doi ani', 'Am două cărți'],
           correct: 0,
           ru: 'Мне двадцать лет.',
+          explain: 'Именно «de» на слух отличает «двадцать лет» от «два года»: douăzeci de ani против doi ani.',
         },
         {
           kind: 'choice',
@@ -563,6 +678,8 @@ export const CHAPTER_2: CourseChapter = {
           ru: 'Те самые студенты не дома.',
           answer: 'Studenții nu sunt acasă',
           bank: ['este', 'student'],
+          explain:
+            'Артикль на подлежащем (studenții), а «nu» — перед глаголом. Две разные части фразы, друг другу не мешают.',
         },
         {
           kind: 'transform',

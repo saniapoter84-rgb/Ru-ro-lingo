@@ -41,6 +41,12 @@ export const CHAPTER_1: CourseChapter = {
           options: ['sunt', 'ești', 'este', 'suntem'],
           correct: 0,
           explain: 'eu sunt — «я есть». Форма для «я» совпадает с формой для «они».',
+          forms: {
+            sunt: 'я — и они тоже',
+            'ești': 'ты',
+            este: 'он, она',
+            suntem: 'мы',
+          },
         },
         {
           kind: 'choice',
@@ -49,6 +55,12 @@ export const CHAPTER_1: CourseChapter = {
           options: ['sunt', 'ești', 'este', 'sunteți'],
           correct: 1,
           explain: 'tu ești — «ты есть». Буква «ș» читается как «ш»: «ешть».',
+          forms: {
+            'ești': 'ты',
+            sunt: 'я — и они',
+            este: 'он, она',
+            'sunteți': 'вы',
+          },
         },
         {
           kind: 'build',
@@ -89,6 +101,12 @@ export const CHAPTER_1: CourseChapter = {
           options: ['sunt', 'este', 'suntem', 'sunteți'],
           correct: 2,
           explain: 'noi suntem — «мы есть».',
+          forms: {
+            suntem: 'мы',
+            sunt: 'я — и они',
+            este: 'он, она',
+            'sunteți': 'вы',
+          },
         },
         {
           kind: 'spot',
@@ -104,6 +122,8 @@ export const CHAPTER_1: CourseChapter = {
           options: ['Ei sunt acasă', 'Eu sunt acasă', 'Tu ești acasă'],
           correct: 0,
           ru: 'Они дома.',
+          explain:
+            '«sunt» с местоимением «ei» — это «они». Та же форма без «ei» значила бы «я»: различает их только местоимение.',
         },
         {
           kind: 'rule',
@@ -176,6 +196,10 @@ export const CHAPTER_1: CourseChapter = {
           options: ['un', 'o'],
           correct: 1,
           explain: 'pisică оканчивается на «-ă» → женский род → «o pisică».',
+          forms: {
+            o: 'женский род',
+            un: 'мужской и средний род',
+          },
         },
         {
           kind: 'choice',
@@ -184,6 +208,10 @@ export const CHAPTER_1: CourseChapter = {
           options: ['un', 'o'],
           correct: 0,
           explain: 'telefon — не на «-ă», род не женский → «un telefon».',
+          forms: {
+            un: 'мужской и средний род',
+            o: 'женский род',
+          },
         },
         {
           kind: 'choice',
@@ -192,6 +220,10 @@ export const CHAPTER_1: CourseChapter = {
           options: ['un', 'o'],
           correct: 1,
           explain: 'Окончание «-ă» выдаёт женский род: «o problemă».',
+          forms: {
+            o: 'женский род',
+            un: 'мужской и средний род',
+          },
         },
         {
           kind: 'match',
@@ -238,12 +270,16 @@ export const CHAPTER_1: CourseChapter = {
           options: ['o casă mare', 'un câine mare', 'o masă mare'],
           correct: 0,
           ru: 'большой дом',
+          explain:
+            '«o» на слух — это женский род: casă. У «un câine» звучало бы «un», а «masă» отличается от «casă» одной согласной в начале.',
         },
         {
           kind: 'type',
           ru: 'какая-то книга',
           answer: 'o carte',
           hint: 'carte — книга, женского рода',
+          explain:
+            '«carte» женского рода, значит артикль «o». Род тут не угадывается по смыслу — его учат вместе со словом.',
         },
         {
           kind: 'spot',
@@ -322,6 +358,12 @@ export const CHAPTER_1: CourseChapter = {
           options: ['Ce', 'Unde', 'Cine', 'Cum'],
           correct: 1,
           explain: 'Ответ «дома» — значит спрашивали про место: unde.',
+          forms: {
+            Unde: 'где, куда',
+            Ce: 'что, какой',
+            Cine: 'кто',
+            Cum: 'как',
+          },
         },
         {
           kind: 'choice',
@@ -331,6 +373,12 @@ export const CHAPTER_1: CourseChapter = {
           correct: 0,
           explain:
             'Дословно «cum te cheamă» — «как тебя зовёт(ся)». Это устойчивая фраза, её просто запоминают.',
+          forms: {
+            Cum: 'как',
+            Ce: 'что, какой',
+            Unde: 'где, куда',
+            'De ce': 'почему',
+          },
         },
         {
           kind: 'listen',
@@ -338,6 +386,8 @@ export const CHAPTER_1: CourseChapter = {
           options: ['Ce faci?', 'Cine ești?', 'Unde ești?'],
           correct: 0,
           ru: 'Что делаешь?',
+          explain:
+            '«Ce faci?» — дословно «что делаешь», но работает как «как дела». Одна из самых частых фраз языка.',
         },
         {
           kind: 'type',
@@ -345,6 +395,8 @@ export const CHAPTER_1: CourseChapter = {
           answer: 'Cine este',
           alt: ['Cine e', 'Cine este?', 'Cine e?'],
           hint: 'cine — кто',
+          explain:
+            '«Cine» — кто, «este» — есть. Глагол «быть» обязателен даже в таком коротком вопросе, выбросить его нельзя.',
         },
         {
           kind: 'build',
@@ -392,6 +444,14 @@ export const CHAPTER_1: CourseChapter = {
           ru: 'Я не устал.',
           options: ['nu', 'nici', 'fără', 'ne'],
           correct: 0,
+          explain:
+            'Отрицание — это «nu», и оно всегда стоит перед глаголом. «nici» усиливает отрицание, но само «nu» не заменяет, а «ne» это вообще местоимение «нас».',
+          forms: {
+            nu: 'не — всегда перед глаголом',
+            nici: 'ни — усиливает отрицание, но «nu» не заменяет',
+            'fără': 'без — это предлог, а не отрицание',
+            ne: 'нас, нам — это местоимение',
+          },
         },
         {
           kind: 'transform',
@@ -455,6 +515,7 @@ export const CHAPTER_1: CourseChapter = {
           options: ['Nu știu nimic', 'Știu totul', 'Nu sunt acasă'],
           correct: 0,
           ru: 'Я ничего не знаю.',
+          explain: 'Двойное отрицание, как в русском: «nu» и «nimic» стоят вместе и друг друга не отменяют.',
         },
         {
           kind: 'type',
@@ -462,6 +523,8 @@ export const CHAPTER_1: CourseChapter = {
           answer: 'El nu este niciodată acasă',
           alt: ['El nu e niciodată acasă', 'Nu este niciodată acasă', 'El niciodată nu este acasă'],
           hint: 'niciodată — никогда',
+          explain:
+            'И здесь два отрицательных слова сразу: «nu» перед глаголом и «niciodată» после него. Убирать «nu» нельзя — в отличие от английского.',
         },
         {
           kind: 'choice',
@@ -470,6 +533,12 @@ export const CHAPTER_1: CourseChapter = {
           options: ['nimic', 'nimeni', 'niciodată', 'nicăieri'],
           correct: 1,
           explain: '«nimeni» — про людей (никто), «nimic» — про вещи (ничего).',
+          forms: {
+            nimeni: 'никто',
+            nimic: 'ничего',
+            'niciodată': 'никогда',
+            'nicăieri': 'нигде',
+          },
         },
       ],
     },
@@ -497,6 +566,8 @@ export const CHAPTER_1: CourseChapter = {
           ru: 'Меня зовут Александр.',
           answer: 'Mă cheamă Alexandru',
           bank: ['sunt', 'este'],
+          explain:
+            '«Меня зовут» по-румынски — «mă cheamă», дословно «меня зовёт». Частица «mă» стоит перед глаголом.',
         },
         {
           kind: 'choice',
@@ -505,12 +576,20 @@ export const CHAPTER_1: CourseChapter = {
           options: ['sunt / sunt', 'ești / este', 'sunt / este', 'suntem / sunt'],
           correct: 0,
           explain: 'Оба раза говорим про «я» — значит оба раза «sunt».',
+          forms: {
+            'sunt / sunt': 'я — обе формы про меня',
+            'ești / este': 'ты и он — лица разошлись',
+            'sunt / este': 'я и он — вторая форма не про меня',
+            'suntem / sunt': 'мы и я',
+          },
         },
         {
           kind: 'type',
           ru: 'Я не студент.',
           answer: 'Eu nu sunt student',
           alt: ['Nu sunt student'],
+          explain:
+            '«nu» встаёт перед глаголом, а не перед существительным: «nu sunt student», а не «sunt nu student».',
         },
         {
           kind: 'spot',
@@ -518,6 +597,7 @@ export const CHAPTER_1: CourseChapter = {
           wrongIndex: 1,
           fix: 'ești',
           ru: 'Ты дома?',
+          explain: '«sunt» — это «я». При «tu» нужна форма «ești».',
         },
         {
           kind: 'listen',
@@ -525,6 +605,7 @@ export const CHAPTER_1: CourseChapter = {
           options: ['Cum te cheamă?', 'Ce mai faci?', 'Unde ești?'],
           correct: 0,
           ru: 'Как тебя зовут?',
+          explain: '«Cum te cheamă?» — как тебя зовут. «Ce mai faci?» это «как дела», а «Unde ești?» — «где ты».',
         },
         {
           kind: 'choice',
@@ -533,12 +614,17 @@ export const CHAPTER_1: CourseChapter = {
           options: ['un', 'o'],
           correct: 1,
           explain: 'mașină оканчивается на «-ă» → женский род.',
+          forms: {
+            o: 'женский род',
+            un: 'мужской и средний род',
+          },
         },
         {
           kind: 'build',
           ru: 'Мы не дома.',
           answer: 'Noi nu suntem acasă',
           bank: ['este', 'sunteți'],
+          explain: 'Порядок жёсткий: местоимение, «nu», глагол. «nu» вклинивается именно перед глаголом.',
         },
         {
           kind: 'match',
@@ -557,12 +643,14 @@ export const CHAPTER_1: CourseChapter = {
           answer: 'Voi nu sunteți obosiți',
           alt: ['Nu sunteți obosiți'],
           ru: 'Вы устали. → Вы не устали.',
+          explain: 'В отрицание уходит только глагол: «nu» встаёт перед ним, прилагательное «obosiți» не трогаем.',
         },
         {
           kind: 'type',
           ru: 'Где ты?',
           answer: 'Unde ești',
           alt: ['Unde ești?'],
+          explain: 'Местоимение можно выбросить: окончание «-i» в «ești» уже показывает, что речь о тебе.',
         },
         {
           kind: 'build',
@@ -577,6 +665,13 @@ export const CHAPTER_1: CourseChapter = {
           ru: 'Он никогда не приходит.',
           options: ['nimic', 'nimeni', 'niciodată', 'nu'],
           correct: 2,
+          explain: '«Никогда» — niciodată. И «nu» при этом остаётся: двойное отрицание работает как в русском.',
+          forms: {
+            'niciodată': 'никогда',
+            nimic: 'ничего',
+            nimeni: 'никто',
+            nu: 'не — но оно уже стоит впереди',
+          },
         },
       ],
     },
