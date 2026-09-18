@@ -36,6 +36,14 @@ export const CHAPTER_7: CourseChapter = {
           ru: 'Я хочу пойти домой.',
           options: ['merg', 'mergi', 'meargă', 'mergem'],
           correct: 0,
+          explain:
+            'Вместо инфинитива румынский ставит «să» и спрягает второй глагол тоже. Хочу я — иду тоже я, значит «merg».',
+          forms: {
+            merg: 'я иду',
+            mergi: 'ты идёшь',
+            'meargă': 'он идёт — форма после «să»',
+            mergem: 'мы идём',
+          },
         },
         {
           kind: 'choice',
@@ -44,6 +52,12 @@ export const CHAPTER_7: CourseChapter = {
           options: ['merg', 'mergi', 'meargă', 'mergem'],
           correct: 1,
           explain: 'Первый глагол под «я», второй — под «ты». Так и получается «чтобы ты».',
+          forms: {
+            mergi: 'ты идёшь',
+            merg: 'я иду',
+            'meargă': 'он идёт — форма после «să»',
+            mergem: 'мы идём',
+          },
         },
         {
           kind: 'rule',
@@ -65,6 +79,14 @@ export const CHAPTER_7: CourseChapter = {
           ru: 'Он хочет прийти завтра.',
           options: ['vine', 'vină', 'vin', 'venit'],
           correct: 1,
+          explain:
+            'В третьем лице форма после «să» особая: не «vine», а «vină». Это единственное лицо, где она отличается от настоящего времени.',
+          forms: {
+            'vină': 'он придёт — форма после «să»',
+            vine: 'он приходит — обычное настоящее',
+            vin: 'я прихожу — и они',
+            venit: 'пришёл — причастие',
+          },
         },
         {
           kind: 'match',
@@ -103,6 +125,8 @@ export const CHAPTER_7: CourseChapter = {
           ru: 'Мне нужно идти на работу.',
           answer: 'Trebuie să merg la muncă',
           bank: ['trebuiesc', 'mergi'],
+          explain:
+            '«trebuie» не спрягается вовсе — одна форма на все лица. Кто именно должен, показывает второй глагол: merg.',
         },
         {
           kind: 'spot',
@@ -110,12 +134,14 @@ export const CHAPTER_7: CourseChapter = {
           wrongIndex: 2,
           fix: 'merg',
           ru: 'Я хочу пойти домой.',
+          explain: 'Хочу я — значит и иду я: «să merg». «Merge» это третье лицо настоящего времени.',
         },
         {
           kind: 'type',
           ru: 'Можешь мне помочь?',
           answer: 'Poți să mă ajuți',
           alt: ['Poți să mă ajuți?', 'Puteți să mă ajutați'],
+          explain: 'Оба глагола в форме «ты»: poți и ajuți. А клитика «mă» встаёт между «să» и глаголом.',
         },
         {
           kind: 'listen',
@@ -123,6 +149,8 @@ export const CHAPTER_7: CourseChapter = {
           options: ['Trebuie să plec acum', 'Vreau să vin acum', 'Pot să plec mâine'],
           correct: 0,
           ru: 'Мне надо уходить сейчас.',
+          explain:
+            '«trebuie» — надо. «Vreau» было бы «хочу», а «pot» — «могу»: три разных глагола, но все три требуют «să».',
         },
       ],
     },
@@ -151,6 +179,14 @@ export const CHAPTER_7: CourseChapter = {
           ru: 'Я вижу Иона.',
           options: ['Îl', 'O', 'Mă', 'Le'],
           correct: 0,
+          explain:
+            'Мужской род — клитика «îl». И она стоит ПЕРЕД глаголом, хотя имя уже названо: это и есть удвоение.',
+          forms: {
+            'Îl': 'его — м.р.',
+            O: 'её — ж.р.',
+            'Mă': 'меня',
+            Le: 'им, их — ж.р.',
+          },
         },
         {
           kind: 'choice',
@@ -158,6 +194,14 @@ export const CHAPTER_7: CourseChapter = {
           ru: 'Я тебе помогу, не волнуйся.',
           options: ['Mă', 'Te', 'Îl', 'Ne'],
           correct: 1,
+          explain:
+            'Ловушка: «a ajuta» в румынском требует «кого», а не «кому». Дословно — «я тебя помогу». Русская логика здесь подводит.',
+          forms: {
+            Te: 'тебя',
+            'Mă': 'меня',
+            'Îl': 'его',
+            Ne: 'нас',
+          },
         },
         {
           kind: 'rule',
@@ -188,6 +232,14 @@ export const CHAPTER_7: CourseChapter = {
           ru: 'Мне нравятся книги.',
           options: ['place', 'plac', 'placi', 'plăcem'],
           correct: 1,
+          explain:
+            'В конструкции «мне нравится» подлежащее — то, что нравится. Книг много, значит глагол во множественном: plac.',
+          forms: {
+            plac: 'нравятся — много вещей',
+            place: 'нравится — одна вещь',
+            placi: 'ты нравишься',
+            'plăcem': 'мы нравимся',
+          },
         },
         {
           kind: 'match',
@@ -204,6 +256,8 @@ export const CHAPTER_7: CourseChapter = {
           ru: 'Мне нравится этот город.',
           answer: 'Îmi place orașul ăsta',
           bank: ['plac', 'oraș'],
+          explain:
+            'Город один — значит «place», в единственном. И указательное «ăsta» идёт после существительного с артиклем.',
         },
         {
           kind: 'rule',
@@ -220,6 +274,7 @@ export const CHAPTER_7: CourseChapter = {
           kind: 'type',
           ru: 'Мне нравится.',
           answer: 'Îmi place',
+          explain: 'Два слова — уже полная фраза. «Îmi» показывает, кому нравится, а подлежащее подразумевается.',
         },
         {
           kind: 'spot',
@@ -235,6 +290,7 @@ export const CHAPTER_7: CourseChapter = {
           options: ['Îmi place foarte mult', 'Îți place mult?', 'Nu-mi place'],
           correct: 0,
           ru: 'Мне очень нравится.',
+          explain: '«Îmi» — мне. «Îți place» было бы про тебя, а «nu-mi place» — наоборот, не нравится.',
         },
       ],
     },
@@ -273,6 +329,14 @@ export const CHAPTER_7: CourseChapter = {
           ru: 'Вижу дом.',
           options: ['o casă', 'pe o casă', 'pe casă', 'îl casa'],
           correct: 0,
+          explain:
+            'Дом — предмет, а не человек: ни «pe», ни удвоения местоимения. «Pe» ставят только перед одушевлённым дополнением.',
+          forms: {
+            'o casă': 'дом — предмет, без «pe»',
+            'pe o casă': 'такой формы нет — «pe» только перед человеком',
+            'pe casă': 'на доме — это уже предлог места',
+            'îl casa': 'такой формы нет',
+          },
         },
         {
           kind: 'choice',
@@ -280,6 +344,13 @@ export const CHAPTER_7: CourseChapter = {
           ru: 'Я жду Марию.',
           options: ['pe', 'la', 'în', 'cu'],
           correct: 0,
+          explain: 'Перед человеком-дополнением ставится «pe» — отметка, аналога которой в русском нет вовсе.',
+          forms: {
+            pe: 'перед человеком-дополнением',
+            la: 'к, в — предлог места',
+            'în': 'внутри',
+            cu: 'с кем-то',
+          },
         },
         {
           kind: 'choice',
@@ -288,6 +359,12 @@ export const CHAPTER_7: CourseChapter = {
           options: ['Îl', 'O', 'Îi', 'Le'],
           correct: 1,
           explain: 'Ana — женского рода, единственное число → «o».',
+          forms: {
+            O: 'её — ж.р.',
+            'Îl': 'его — м.р.',
+            'Îi': 'их — м.р.',
+            Le: 'им, их — ж.р.',
+          },
         },
         {
           kind: 'rule',
@@ -305,6 +382,7 @@ export const CHAPTER_7: CourseChapter = {
           ru: 'Я вижу детей.',
           answer: 'Îi văd pe copii',
           bank: ['îl', 'copiii'],
+          explain: 'Множественное мужского рода — клитика «îi», и «pe» на месте: дети одушевлённые.',
         },
         {
           kind: 'spot',
@@ -329,6 +407,7 @@ export const CHAPTER_7: CourseChapter = {
           ru: 'Кого ты ждёшь?',
           answer: 'Pe cine aștepți',
           alt: ['Pe cine aștepți?'],
+          explain: 'Вопрос «кого?» тоже требует «pe»: «pe cine». Без него получилось бы «кто», то есть подлежащее.',
         },
         {
           kind: 'listen',
@@ -336,6 +415,8 @@ export const CHAPTER_7: CourseChapter = {
           options: ['O aștept pe sora mea', 'Îl aștept pe fratele meu', 'Aștept un taxi'],
           correct: 0,
           ru: 'Я жду свою сестру.',
+          explain:
+            '«o» — женский род: сестру. «Îl aștept» было бы про брата, а «aștept un taxi» — про предмет, и там ни «pe», ни клитики.',
         },
         {
           kind: 'choice',
@@ -344,6 +425,12 @@ export const CHAPTER_7: CourseChapter = {
           options: ['autobuzul', 'pe autobuz', 'îl autobuz', 'pe autobuzul'],
           correct: 0,
           explain: 'Автобус — не человек, значит никакого «pe».',
+          forms: {
+            autobuzul: 'автобус — предмет, без «pe»',
+            'pe autobuz': 'такой формы нет — «pe» только перед человеком',
+            'îl autobuz': 'такой формы нет',
+            'pe autobuzul': 'такой формы нет',
+          },
         },
       ],
     },
@@ -372,6 +459,14 @@ export const CHAPTER_7: CourseChapter = {
           ru: 'Как вас зовут?',
           options: ['te', 'vă', 'mă', 'se'],
           correct: 1,
+          explain:
+            'Окончание «-ți» и частица «vă» оба показывают «вы». Это вежливая форма вопроса «как тебя зовут».',
+          forms: {
+            'vă': 'про вас',
+            te: 'про тебя',
+            'mă': 'про меня',
+            se: 'про него, её, их',
+          },
         },
         {
           kind: 'rule',
@@ -391,6 +486,14 @@ export const CHAPTER_7: CourseChapter = {
           ru: 'Я бы хотел кофе, пожалуйста.',
           options: ['Aș', 'Ai', 'Ar', 'Am'],
           correct: 0,
+          explain:
+            'Условное наклонение смягчает просьбу. Разница между «vreau» и «aș vrea» примерно как между «дай кофе» и «мне бы кофе».',
+          forms: {
+            'Aș': 'я бы',
+            Ai: 'ты бы',
+            Ar: 'он бы, она бы',
+            Am: 'мы бы',
+          },
         },
         {
           kind: 'rule',
@@ -408,6 +511,7 @@ export const CHAPTER_7: CourseChapter = {
           ru: 'Я бы хотел стакан воды, пожалуйста.',
           answer: 'Aș vrea un pahar de apă vă rog',
           bank: ['vreau', 'te'],
+          explain: '«un pahar de apă» — стакан воды: между мерой и содержимым ставится «de».',
         },
         {
           kind: 'rule',
@@ -435,6 +539,7 @@ export const CHAPTER_7: CourseChapter = {
           kind: 'type',
           ru: 'Я бы хотел кофе.',
           answer: 'Aș vrea o cafea',
+          explain: 'После частицы «aș» идёт инфинитив без «a»: vrea, а не «a vrea» и не «vreau».',
         },
         {
           kind: 'choice',
@@ -443,6 +548,12 @@ export const CHAPTER_7: CourseChapter = {
           options: ['fi', 'este', 'fie', 'fost'],
           correct: 0,
           explain: 'После «ar» идёт инфинитив без «a»: «ar fi».',
+          forms: {
+            fi: 'быть — инфинитив, нужен после «ar»',
+            este: 'он есть — спрягаемая форма, после «ar» не ставится',
+            fie: 'был — форма после «să», а не после «ar»',
+            fost: 'был — причастие',
+          },
         },
         {
           kind: 'listen',
@@ -454,6 +565,8 @@ export const CHAPTER_7: CourseChapter = {
           ],
           correct: 0,
           ru: 'Я бы хотел стакан воды, пожалуйста.',
+          explain:
+            '«Aș vrea» — вежливое «я бы хотел». «Vreau» звучит прямее, а «îmi pare rău» это вообще извинение.',
         },
         {
           kind: 'spot',
@@ -485,12 +598,21 @@ export const CHAPTER_7: CourseChapter = {
           ru: 'Я хочу пойти домой.',
           options: ['merg', 'mergi', 'meargă', 'mers'],
           correct: 0,
+          explain:
+            'Оба глагола в одном лице: хочу я — иду тоже я. «Mers» это причастие, после «să» оно не ставится.',
+          forms: {
+            merg: 'я иду',
+            mergi: 'ты идёшь',
+            'meargă': 'он идёт — форма после «să»',
+            mers: 'ходил — причастие, после «să» не бывает',
+          },
         },
         {
           kind: 'build',
           ru: 'Я бы хотел кофе, пожалуйста.',
           answer: 'Aș vrea o cafea vă rog',
           bank: ['vreau', 'te'],
+          explain: '«vă rog» — вежливое «пожалуйста», дословно «прошу вас». С «aș vrea» они ходят парой.',
         },
         {
           kind: 'choice',
@@ -498,6 +620,13 @@ export const CHAPTER_7: CourseChapter = {
           ru: 'Я жду Марию.',
           options: ['Îl', 'O', 'Îi', 'Le'],
           correct: 1,
+          explain: 'Мария — женский род, значит клитика «o». И «pe» перед именем обязательно.',
+          forms: {
+            O: 'её — ж.р.',
+            'Îl': 'его — м.р.',
+            'Îi': 'их — м.р.',
+            Le: 'им, их — ж.р.',
+          },
         },
         {
           kind: 'spot',
@@ -505,11 +634,13 @@ export const CHAPTER_7: CourseChapter = {
           wrongIndex: 2,
           fix: 'mașina',
           ru: 'Я езжу на работу на машине.',
+          explain: 'Транспорт с «cu» — исключение: артикль остаётся. «Cu mașina», а не «cu mașină».',
         },
         {
           kind: 'type',
           ru: 'Мне нужно уходить.',
           answer: 'Trebuie să plec',
+          explain: '«trebuie să plec» — и «trebuie» не меняется, всё лицо несёт «plec».',
         },
         {
           kind: 'choice',
@@ -517,6 +648,13 @@ export const CHAPTER_7: CourseChapter = {
           ru: 'Вчера я ходил в театр с друзьями.',
           options: ['merg', 'am mers', 'o să merg', 'mers'],
           correct: 1,
+          explain: 'Маркер «ieri» требует прошедшего: am mers.',
+          forms: {
+            'am mers': 'я сходил',
+            merg: 'я иду',
+            'o să merg': 'я пойду',
+            mers: 'ходил — причастие, само по себе не работает',
+          },
         },
         {
           kind: 'transform',
@@ -524,12 +662,14 @@ export const CHAPTER_7: CourseChapter = {
           from: 'cartea mea bună',
           answer: 'cărțile mele bune',
           ru: 'моя хорошая книга → мои хорошие книги',
+          explain: 'Во множественное уходит вся цепочка: cartea → cărțile, mea → mele, bună → bune.',
         },
         {
           kind: 'build',
           ru: 'Мне нравится этот город очень.',
           answer: 'Îmi place orașul ăsta foarte mult',
           bank: ['plac', 'oraș'],
+          explain: '«foarte mult» — очень сильно. Ставится в конце, после того, что нравится.',
         },
         {
           kind: 'choice',
@@ -537,6 +677,13 @@ export const CHAPTER_7: CourseChapter = {
           ru: 'Он придёт завтра.',
           options: ['vine', 'vină', 'venit', 'vin'],
           correct: 1,
+          explain: 'После «o să» в третьем лице идёт особая форма: vină, а не vine.',
+          forms: {
+            'vină': 'он придёт — форма после «să»',
+            vine: 'он приходит — обычное настоящее',
+            venit: 'пришёл — причастие',
+            vin: 'я прихожу — и они',
+          },
         },
         {
           kind: 'listen',
@@ -548,6 +695,8 @@ export const CHAPTER_7: CourseChapter = {
           ],
           correct: 0,
           ru: 'Мне жаль, я не могу прийти.',
+          explain:
+            '«Îmi pare rău» — мне жаль. «Aș vrea să vin» было бы «я бы хотел прийти», а «trebuie să plec» — «мне надо идти».',
         },
         {
           kind: 'match',
@@ -568,12 +717,14 @@ export const CHAPTER_7: CourseChapter = {
             'Poți să mă ajuți, te rog?',
             'Puteți să mă ajutați vă rog?',
           ],
+          explain: 'Вежливое «вы»: оба глагола с окончанием «-ți» — puteți и ajutați.',
         },
         {
           kind: 'build',
           ru: 'Вчера я был дома и читал книгу.',
           answer: 'Ieri am fost acasă și am citit o carte',
           bank: ['sunt', 'citesc'],
+          explain: 'Два прошедших подряд, и каждое со своим вспомогательным: «am fost» и «am citit».',
         },
         {
           kind: 'choice',
@@ -581,6 +732,14 @@ export const CHAPTER_7: CourseChapter = {
           ru: 'Жду автобус.',
           options: ['autobuzul', 'pe autobuz', 'pe autobuzul', 'îl autobuz'],
           correct: 0,
+          explain:
+            'Автобус — предмет: ни «pe», ни удвоения местоимения. Сравни с «o aștept pe Maria» — там человек.',
+          forms: {
+            autobuzul: 'автобус — предмет, без «pe»',
+            'pe autobuz': 'такой формы нет — «pe» только перед человеком',
+            'pe autobuzul': 'такой формы нет',
+            'îl autobuz': 'такой формы нет',
+          },
         },
       ],
     },

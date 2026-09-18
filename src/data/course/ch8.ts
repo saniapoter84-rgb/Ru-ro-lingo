@@ -56,6 +56,12 @@ export const CHAPTER_8: CourseChapter = {
           options: ['eram', 'am fost', 'sunt', 'voi fi'],
           correct: 0,
           explain: '«Был маленьким» — это состояние, которое длилось. Значит imperfect: eram.',
+          forms: {
+            eram: 'я был — длилось годами',
+            'am fost': 'я побывал — один раз и закончилось',
+            sunt: 'я есть — настоящее',
+            'voi fi': 'я буду — будущее',
+          },
         },
         {
           kind: 'choice',
@@ -64,6 +70,12 @@ export const CHAPTER_8: CourseChapter = {
           options: ['mergeam', 'am fost', 'eram', 'merg'],
           correct: 1,
           explain: 'Один законченный поход — perfect compus. Imperfect означал бы «ходил регулярно».',
+          forms: {
+            'am fost': 'я сходил — один раз, законченно',
+            mergeam: 'я ходил — регулярно, бывало',
+            eram: 'я находился — состояние',
+            merg: 'я иду — настоящее',
+          },
         },
         {
           kind: 'transform',
@@ -123,6 +135,8 @@ export const CHAPTER_8: CourseChapter = {
             'Ребёнком я хочу рисовать.',
           ],
           correct: 0,
+          explain:
+            '«eram» и «plăcea» — оба imperfect: длилось годами. Второй вариант был бы «am desenat», один раз и с результатом.',
         },
         {
           kind: 'type',
@@ -164,6 +178,14 @@ export const CHAPTER_8: CourseChapter = {
           ru: 'Я бы хотел чай, пожалуйста.',
           options: ['Aș', 'Ai', 'Ar', 'Am'],
           correct: 0,
+          explain:
+            'Условное наклонение: «aș» плюс инфинитив без «a». В кафе разница с «vreau» примерно как между «мне бы чаю» и «дай чаю».',
+          forms: {
+            'Aș': 'я бы',
+            Ai: 'ты бы',
+            Ar: 'он бы, она бы, они бы',
+            Am: 'мы бы',
+          },
         },
         {
           kind: 'choice',
@@ -171,6 +193,13 @@ export const CHAPTER_8: CourseChapter = {
           ru: 'Ты не мог бы повторить?',
           options: ['Aș', 'Ai', 'Ar', 'Ați'],
           correct: 1,
+          explain: 'Просьба обращена к тебе, значит «ai». Дальше снова «să» и спрягаемый глагол: repeți.',
+          forms: {
+            Ai: 'ты бы',
+            'Aș': 'я бы',
+            Ar: 'он бы, они бы',
+            'Ați': 'вы бы',
+          },
         },
         {
           kind: 'rule',
@@ -197,6 +226,8 @@ export const CHAPTER_8: CourseChapter = {
           answer: 'Aș vrea să vorbesc cu tine',
           alt: ['as vrea sa vorbesc cu tine'],
           ru: 'Я бы хотел с тобой поговорить.',
+          explain:
+            'Спрягаемая форма превращается в инфинитив, а лицо переезжает на частицу: vreau → aș vrea. Вторая половина фразы не меняется.',
         },
         {
           kind: 'spot',
@@ -226,6 +257,8 @@ export const CHAPTER_8: CourseChapter = {
             'У вас есть столик на двоих?',
           ],
           correct: 0,
+          explain:
+            '«Aș vrea» — я бы хотел, условное. Второй вариант был бы прошедшим («am rezervat»), третий — вопросом.',
         },
         {
           kind: 'type',
@@ -233,6 +266,7 @@ export const CHAPTER_8: CourseChapter = {
           answer: 'Ai putea să vorbești mai rar',
           alt: ['ai putea sa vorbesti mai rar', 'ai putea vorbi mai rar'],
           hint: 'медленнее (о речи) — mai rar',
+          explain: '«mai rar» — помедленнее. Сравнение делает «mai», само слово не меняется.',
         },
       ],
     },
@@ -277,6 +311,12 @@ export const CHAPTER_8: CourseChapter = {
           options: ['care', 'pe care', 'ce', 'cine'],
           correct: 0,
           explain: 'Человек сам работает — он подлежащее, значит просто care.',
+          forms: {
+            care: 'который — сам делает действие',
+            'pe care': 'которого — прямое дополнение',
+            ce: 'что — не для людей в этой роли',
+            cine: 'кто — вопросительное, не связка',
+          },
         },
         {
           kind: 'choice',
@@ -285,18 +325,28 @@ export const CHAPTER_8: CourseChapter = {
           options: ['care', 'pe care', 'cu care', 'în care'],
           correct: 1,
           explain: 'Посмотрел что? Фильм — прямое дополнение, поэтому pe care.',
+          forms: {
+            'pe care': 'которого, который — прямое дополнение',
+            care: 'который — подлежащее',
+            'cu care': 'с которым',
+            'în care': 'в котором',
+          },
         },
         {
           kind: 'build',
           ru: 'Дом, в котором мы живём, старый.',
           answer: 'Casa în care locuim este veche',
           bank: ['pe care', 'cu care'],
+          explain:
+            'Предлог встаёт ПЕРЕД «care», а не после, как в русском «в котором». И «veche» — женский род: дом тут женского рода.',
         },
         {
           kind: 'build',
           ru: 'Девушка, с которой я говорил, — врач.',
           answer: 'Fata cu care am vorbit este medic',
           bank: ['pe care', 'în care'],
+          explain:
+            'Говорил с кем — значит «cu care». Само «care» не меняется никогда, меняется то, что стоит впереди.',
         },
         {
           kind: 'spot',
@@ -326,6 +376,7 @@ export const CHAPTER_8: CourseChapter = {
             'Я пришёл к другу в больницу.',
           ],
           correct: 0,
+          explain: '«cu care» — с которым. Просто «care» было бы «который пришёл», без «со мной».',
         },
         {
           kind: 'type',
@@ -337,6 +388,7 @@ export const CHAPTER_8: CourseChapter = {
             'asta e orasul in care m-am nascut',
           ],
           hint: 'родиться — a se naște, «я родился» — m-am născut',
+          explain: '«m-am născut» — возвратный глагол в прошедшем: клитика «m-» уходит вперёд всей конструкции.',
         },
       ],
     },
@@ -370,6 +422,12 @@ export const CHAPTER_8: CourseChapter = {
           options: ['va', 'vei', 'vom', 'vor'],
           correct: 0,
           explain: 'Дождь — это «оно», третье лицо: va.',
+          forms: {
+            va: 'он, она — безличное «будет»',
+            vei: 'ты',
+            vom: 'мы',
+            vor: 'они',
+          },
         },
         {
           kind: 'choice',
@@ -377,6 +435,13 @@ export const CHAPTER_8: CourseChapter = {
           ru: 'Мы придём в семь.',
           options: ['voi', 'vei', 'vom', 'vor'],
           correct: 2,
+          explain: 'Книжное будущее: вспомогательный по лицу плюс чистый инфинитив, без «a» и без «să».',
+          forms: {
+            vom: 'мы',
+            voi: 'я',
+            vei: 'ты',
+            vor: 'они',
+          },
         },
         {
           kind: 'transform',
@@ -404,12 +469,16 @@ export const CHAPTER_8: CourseChapter = {
           ru: 'Думаю, завтра будет холодно.',
           answer: 'Cred că mâine o să fie frig',
           bank: ['este', 'a fost'],
+          explain:
+            'После «cred» обязательно «că». А «o să fie» — будущее от «a fi»: форма после «să» у него особая.',
         },
         {
           kind: 'build',
           ru: 'Наверное, он забыл про встречу.',
           answer: 'Probabil că a uitat de întâlnire',
           bank: ['uită', 'o să uite'],
+          explain:
+            'После «probabil» ставят «că», а после «poate» — нет. И «a uitat de» — забыл про: предлог «de», а не «despre».',
         },
         {
           kind: 'spot',
@@ -439,12 +508,14 @@ export const CHAPTER_8: CourseChapter = {
             'Надеюсь, сегодня будет тепло.',
           ],
           correct: 0,
+          explain: '«va fi» — книжное будущее, «viitoare» — следующая. Прошлая неделя была бы «trecută».',
         },
         {
           kind: 'type',
           ru: 'Может быть, я приду попозже.',
           answer: 'Poate o să vin mai târziu',
           alt: ['poate o sa vin mai tarziu', 'poate vin mai târziu', 'poate vin mai tarziu'],
+          explain: '«poate» идёт без «că», сразу за ним конструкция будущего.',
         },
       ],
     },
@@ -474,6 +545,8 @@ export const CHAPTER_8: CourseChapter = {
           ru: 'Когда я был студентом, я работал в кафе.',
           answer: 'Când eram student lucram într-o cafenea',
           bank: ['am fost', 'am lucrat'],
+          explain:
+            'Оба глагола в imperfect: длинный отрезок жизни, а не одно событие. «Într-o» — слитное «în» плюс «o».',
         },
         {
           kind: 'choice',
@@ -482,12 +555,20 @@ export const CHAPTER_8: CourseChapter = {
           options: ['am fost', 'eram', 'sunt', 'voi fi'],
           correct: 0,
           explain: 'Три конкретных раза — счётное законченное действие, perfect compus.',
+          forms: {
+            'am fost': 'я побывал — три законченных раза',
+            eram: 'я находился — состояние, без счёта раз',
+            sunt: 'я есть — настоящее',
+            'voi fi': 'я буду — будущее',
+          },
         },
         {
           kind: 'build',
           ru: 'Я бы хотел найти работу, которая мне нравится.',
           answer: 'Aș vrea să găsesc o muncă care îmi place',
           bank: ['pe care', 'vreau'],
+          explain:
+            'Три конструкции разом: условное «aș vrea», «să» со спрягаемым глаголом и придаточное с «care». «Care» тут подлежащее — работа сама нравится.',
         },
         {
           kind: 'spot',
@@ -503,6 +584,7 @@ export const CHAPTER_8: CourseChapter = {
           answer: 'Orașul în care am crescut este foarte mic',
           alt: ['orasul in care am crescut este foarte mic', 'orașul în care am crescut e foarte mic'],
           hint: 'вырасти — a crește',
+          explain: '«în care» — в котором. Предлог выбирается по глаголу придаточного: вырос где.',
         },
         {
           kind: 'transform',
@@ -510,6 +592,8 @@ export const CHAPTER_8: CourseChapter = {
           from: 'am mers',
           answer: 'mergeam',
           ru: 'сходили → ходили',
+          explain:
+            'Perfect compus говорит про один законченный поход, imperfect — про регулярность. У «мы» в imperfect форма совпадает с «я»: mergeam.',
         },
         {
           kind: 'listen',
@@ -520,12 +604,15 @@ export const CHAPTER_8: CourseChapter = {
             'Я живу в Клуже и езжу в горы.',
           ],
           correct: 0,
+          explain:
+            'Оба глагола в imperfect — значит жил и ездил регулярно. Второй вариант потребовал бы perfect compus: «am ajuns», «am mers».',
         },
         {
           kind: 'build',
           ru: 'Думаю, в следующем году я перееду в Бухарест.',
           answer: 'Cred că anul viitor o să mă mut la București',
           bank: ['m-am mutat', 'mutam'],
+          explain: '«mă mut» — возвратный глагол: частица идёт после «o să», прямо перед глаголом.',
         },
         {
           kind: 'type',
@@ -533,6 +620,8 @@ export const CHAPTER_8: CourseChapter = {
           answer: 'Aș fi venit dar nu am avut timp',
           alt: ['as fi venit dar nu am avut timp', 'aș fi venit, dar nu am avut timp'],
           hint: 'прошедшее условное: aș fi + причастие',
+          explain:
+            'Прошедшее условное: «aș fi» плюс причастие. Это сожаление о том, чего уже не изменить — я бы пришёл, но не пришёл.',
         },
       ],
     },

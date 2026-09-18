@@ -48,6 +48,14 @@ export const CHAPTER_9: CourseChapter = {
           ru: 'Он сказал мне, что не может прийти.',
           options: ['că', 'dacă', 'ce', 'care'],
           correct: 0,
+          explain:
+            'Пересказ утверждения — «că». И главное: время не сдвинулось. Английский сказал бы «he couldn’t», румынский оставляет «nu poate» — ровно как русский.',
+          forms: {
+            'că': 'что — пересказ утверждения',
+            'dacă': 'ли — пересказ вопроса да/нет',
+            ce: 'что, чего — вопросительное слово',
+            care: 'который',
+          },
         },
         {
           kind: 'choice',
@@ -56,18 +64,26 @@ export const CHAPTER_9: CourseChapter = {
           options: ['că', 'dacă', 'ce', 'cine'],
           correct: 1,
           explain: 'Вопрос «да/нет» → dacă. Это и есть русское «ли».',
+          forms: {
+            'dacă': 'ли — и ещё «если»',
+            'că': 'что — для утверждения',
+            ce: 'что, чего',
+            cine: 'кто',
+          },
         },
         {
           kind: 'build',
           ru: 'Она сказала, что живёт в Бухаресте.',
           answer: 'Ea a spus că locuiește în București',
           bank: ['dacă', 'locuiesc'],
+          explain: 'Время в пересказе не сдвигается: сказала в прошедшем, а «живёт» остаётся в настоящем.',
         },
         {
           kind: 'build',
           ru: 'Я не знаю, когда он придёт.',
           answer: 'Nu știu când vine',
           bank: ['că', 'dacă'],
+          explain: 'Вопросительное слово переезжает в пересказ без изменений, и порядок слов тоже не меняется.',
         },
         {
           kind: 'spot',
@@ -84,6 +100,7 @@ export const CHAPTER_9: CourseChapter = {
           answer: 'A spus că e acasă',
           alt: ['a spus ca e acasa', 'a spus că este acasă', 'a zis că e acasă'],
           ru: 'Он сказал, что он дома.',
+          explain: 'Меняется только лицо: «sunt» → «e». Время остаётся на месте, вопросительных перестроек нет.',
         },
         {
           kind: 'match',
@@ -105,6 +122,8 @@ export const CHAPTER_9: CourseChapter = {
             'У соседки два дня не было света.',
           ],
           correct: 0,
+          explain:
+            '«a spus că» — сказала, что. Вопрос потребовал бы «a întrebat dacă», а «nu a avut lumină» было бы про свет.',
         },
         {
           kind: 'type',
@@ -112,6 +131,7 @@ export const CHAPTER_9: CourseChapter = {
           answer: 'M-a întrebat unde lucrez',
           alt: ['m-a intrebat unde lucrez'],
           hint: 'вопросительное слово сохраняется, порядок слов обычный',
+          explain: 'Вопрос со словом сохраняет своё слово: «unde». «Dacă» нужно только для вопросов да/нет.',
         },
       ],
     },
@@ -156,6 +176,14 @@ export const CHAPTER_9: CourseChapter = {
           ru: 'Здесь продают хороший кофе.',
           options: ['se', 'este', 'sunt', 'a fi'],
           correct: 0,
+          explain:
+            'Деятель неважен — его место занимает «se», а глагол уходит в третье лицо единственного. Получается наше безличное «здесь продают».',
+          forms: {
+            se: 'безлично: продаётся, говорят, нельзя',
+            este: 'он есть',
+            sunt: 'я есть; они есть',
+            'a fi': 'быть — инфинитив',
+          },
         },
         {
           kind: 'choice',
@@ -163,18 +191,29 @@ export const CHAPTER_9: CourseChapter = {
           ru: 'Дверь закрыта.',
           options: ['se', 'este', 'are', 'a'],
           correct: 1,
+          explain:
+            'Здесь важен результат: дверь закрыта. Это пассив — «a fi» плюс причастие, и причастие согласуется с подлежащим, как прилагательное.',
+          forms: {
+            este: 'результат — одна вещь',
+            se: 'безличное',
+            are: 'он имеет',
+            a: 'вспомогательный прошедшего',
+          },
         },
         {
           kind: 'build',
           ru: 'Здесь курить нельзя.',
           answer: 'Aici nu se fumează',
           bank: ['este', 'fumez'],
+          explain: '«nu se fumează» — дословно «здесь не курится». Отдельного слова для запрета в языке нет.',
         },
         {
           kind: 'build',
           ru: 'Магазин открыт до восьми.',
           answer: 'Magazinul este deschis până la opt',
           bank: ['se', 'deschide'],
+          explain:
+            '«deschis» мужского рода, потому что «magazinul» мужского. Причастие в пассиве всегда согласуется.',
         },
         {
           kind: 'rule',
@@ -216,12 +255,15 @@ export const CHAPTER_9: CourseChapter = {
             'Я снимаю квартиру в центре.',
           ],
           correct: 0,
+          explain:
+            '«se închiriază» — сдаётся. «Se vinde» было бы «продаётся», а «închiriez» — «я снимаю», уже про конкретного человека.',
         },
         {
           kind: 'type',
           ru: 'Как это говорится по-румынски?',
           answer: 'Cum se spune asta în română',
           alt: ['cum se spune asta in romana', 'cum se zice asta în română'],
+          explain: '«cum se spune» — самая полезная фраза для изучающего язык. Безличное «se» на месте.',
         },
       ],
     },
@@ -269,6 +311,14 @@ export const CHAPTER_9: CourseChapter = {
           ru: 'После того как я закончил, я вышел на улицу.',
           options: ['După', 'Înainte', 'În timp', 'De'],
           correct: 0,
+          explain:
+            '«după ce» — после того как, и дальше обычное прошедшее. Никаких особых форм эта связка не требует.',
+          forms: {
+            'După': 'после того как — дальше обычное прошедшее',
+            'Înainte': 'перед тем как — требует «să»',
+            'În timp': 'пока — любит imperfect',
+            De: 'с тех пор как: de când',
+          },
         },
         {
           kind: 'choice',
@@ -277,6 +327,12 @@ export const CHAPTER_9: CourseChapter = {
           options: ['că', 'să', 'ce', 'de'],
           correct: 1,
           explain: 'Înainte всегда требует să — это устойчивая пара.',
+          forms: {
+            'să': 'нужно после «înainte»',
+            ce: 'нужно после «după» и «în timp»',
+            'că': 'что — союз',
+            de: 'от, о',
+          },
         },
         {
           kind: 'transform',
@@ -284,6 +340,8 @@ export const CHAPTER_9: CourseChapter = {
           from: 'a lucra',
           answer: 'lucrând',
           ru: 'работать → работая',
+          explain:
+            'Твёрдая основа — значит «-ând». Деепричастие одно на все лица: кто именно, показывает второй глагол.',
         },
         {
           kind: 'transform',
@@ -298,6 +356,8 @@ export const CHAPTER_9: CourseChapter = {
           ru: 'Пока я готовил, зазвонил телефон.',
           answer: 'În timp ce găteam a sunat telefonul',
           bank: ['după ce', 'am gătit'],
+          explain:
+            '«în timp ce» любит imperfect: готовка длилась, звонок случился в одной её точке. Два времени в одной фразе — это норма.',
         },
         {
           kind: 'spot',
@@ -327,12 +387,15 @@ export const CHAPTER_9: CourseChapter = {
             'Пока я работаю, приходи ко мне.',
           ],
           correct: 0,
+          explain: '«după ce» — после того как. «Înainte să» было бы «перед тем как», а «în timp ce» — «пока».',
         },
         {
           kind: 'type',
           ru: 'Перед тем как уйти, позвони мне.',
           answer: 'Înainte să pleci sună-mă',
           alt: ['inainte sa pleci suna-ma', 'înainte să pleci, sună-mă'],
+          explain:
+            'После «înainte să» глагол спрягается по лицу: уходишь ты — «pleci». А в повелительном клитика уходит назад: «sună-mă».',
         },
       ],
     },
@@ -365,6 +428,14 @@ export const CHAPTER_9: CourseChapter = {
           ru: 'Эта книга интереснее той.',
           options: ['mai', 'cel mai', 'la fel de', 'foarte'],
           correct: 0,
+          explain:
+            'Есть «decât» — значит идёт сравнение, а сравнение делает «mai». «Foarte» с «decât» не сочетается вовсе.',
+          forms: {
+            mai: 'более — сравнение',
+            'cel mai': 'самый',
+            'la fel de': 'такой же',
+            foarte: 'очень — усиление, с «decât» не бывает',
+          },
         },
         {
           kind: 'choice',
@@ -372,6 +443,14 @@ export const CHAPTER_9: CourseChapter = {
           ru: 'Это самый большой город в стране.',
           options: ['mai', 'cel mai', 'la fel de', 'prea'],
           correct: 1,
+          explain:
+            'Превосходная степень — «cel» плюс «mai». Одного «mai» мало: вышло бы «город побольше», а не «самый большой».',
+          forms: {
+            'cel mai': 'самый — м.р.',
+            mai: 'более, побольше',
+            'la fel de': 'такой же',
+            prea: 'слишком',
+          },
         },
         {
           kind: 'rule',
@@ -391,12 +470,15 @@ export const CHAPTER_9: CourseChapter = {
           ru: 'Хотя было холодно, мы пошли гулять.',
           answer: 'Deși era frig am mers la plimbare',
           bank: ['deoarece', 'a fost'],
+          explain:
+            '«Deși» — уступка: холод был, но он не помешал. И «era» в imperfect: холод длился, а не случился.',
         },
         {
           kind: 'build',
           ru: 'Эта квартира дороже, зато она в центре.',
           answer: 'Apartamentul ăsta e mai scump în schimb e în centru',
           bank: ['deși', 'cel mai'],
+          explain: '«în schimb» — зато: минус признан и сразу компенсирован. Это связка мысли, а не слов.',
         },
         {
           kind: 'spot',
@@ -426,12 +508,15 @@ export const CHAPTER_9: CourseChapter = {
             'Так как качество лучше, я купил.',
           ],
           correct: 0,
+          explain:
+            '«Deși» — хотя, уступка. «Mai ieftin» было бы «дешевле», а «deoarece» — «так как», причина вместо уступки.',
         },
         {
           kind: 'type',
           ru: 'Здесь дешевле, чем в центре.',
           answer: 'Aici e mai ieftin decât în centru',
           alt: ['aici e mai ieftin decat in centru', 'aici este mai ieftin decât în centru'],
+          explain: '«mai ieftin» — дешевле, «decât» — чем. Само прилагательное при сравнении не меняется.',
         },
       ],
     },
@@ -460,6 +545,8 @@ export const CHAPTER_9: CourseChapter = {
           ru: 'Он сказал, что не сможет прийти, потому что работает.',
           answer: 'A spus că nu poate veni deoarece lucrează',
           bank: ['dacă', 'deși'],
+          explain:
+            'Две связки в одной фразе: «că» пересказывает слова, «deoarece» вводит причину. И времена нигде не сдвигаются.',
         },
         {
           kind: 'choice',
@@ -467,12 +554,22 @@ export const CHAPTER_9: CourseChapter = {
           ru: 'Здесь говорят и по-русски.',
           options: ['se', 'este', 'are', 'a fi'],
           correct: 0,
+          explain:
+            'Безличное «se»: кто говорит — неважно. Глагол при этом в третьем лице единственного, хотя по-русски «говорят» во множественном.',
+          forms: {
+            se: 'безлично: говорят',
+            este: 'он есть',
+            are: 'он имеет',
+            'a fi': 'быть — инфинитив',
+          },
         },
         {
           kind: 'build',
           ru: 'Перед тем как решить, я бы хотел подумать.',
           answer: 'Înainte să decid aș vrea să mă gândesc',
           bank: ['după ce', 'vreau'],
+          explain:
+            'Три конструкции разом: «înainte să» со спрягаемым глаголом, условное «aș vrea» и возвратное «mă gândesc».',
         },
         {
           kind: 'spot',
@@ -480,6 +577,7 @@ export const CHAPTER_9: CourseChapter = {
           wrongIndex: 2,
           fix: 'dacă',
           ru: 'Он спросил, хочу ли я кофе.',
+          explain: 'Это пересказ вопроса, а не утверждения: нужно «dacă» — «ли».',
         },
         {
           kind: 'type',
@@ -490,6 +588,8 @@ export const CHAPTER_9: CourseChapter = {
             'e cea mai interesantă carte pe care am citit-o',
           ],
           hint: 'превосходная степень + придаточное с pe care',
+          explain:
+            '«cea mai» — женский род превосходной степени. А «pe care» плюс клитика «-o» — потому что книгу прочитали, это прямое дополнение.',
         },
         {
           kind: 'transform',
@@ -497,6 +597,8 @@ export const CHAPTER_9: CourseChapter = {
           from: 'a vedea',
           answer: 'văzând',
           ru: 'видеть → видя',
+          explain:
+            'Корень меняется так же, как в причастии: văzut, văzând. От «vedea» в обеих формах остаётся «văz-».',
         },
         {
           kind: 'listen',
@@ -507,18 +609,22 @@ export const CHAPTER_9: CourseChapter = {
             'Этот вариант дороже, поэтому я его не беру.',
           ],
           correct: 0,
+          explain:
+            '«Deși» — хотя: цена признана и всё равно не решает. «Deoarece» дало бы причину, а «de aceea» — следствие.',
         },
         {
           kind: 'build',
           ru: 'Пока я жил там, я каждый день говорил по-румынски.',
           answer: 'În timp ce locuiam acolo vorbeam românește în fiecare zi',
           bank: ['am locuit', 'am vorbit'],
+          explain: '«în timp ce» и оба глагола в imperfect: жил и говорил регулярно, а не один раз.',
         },
         {
           kind: 'type',
           ru: 'Я думаю, что это лучшее решение.',
           answer: 'Cred că asta e cea mai bună soluție',
           alt: ['cred ca asta e cea mai buna solutie', 'cred că aceasta e cea mai bună soluție'],
+          explain: 'После «cred» обязательно «că». «Soluție» женского рода — значит «cea mai bună».',
         },
       ],
     },
