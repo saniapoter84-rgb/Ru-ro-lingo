@@ -125,6 +125,7 @@ export const CHAPTER_2: CourseChapter = {
         {
           kind: 'spot',
           tokens: ['O', 'casa', 'este', 'mare'],
+          fixed: 'Casa este mare',
           wrongIndex: 0,
           fix: '(убрать)',
           ru: 'Дом большой.',
@@ -615,6 +616,7 @@ export const CHAPTER_2: CourseChapter = {
         {
           kind: 'spot',
           tokens: ['Un', 'casa', 'este', 'mare'],
+          fixed: 'Casa este mare',
           wrongIndex: 0,
           fix: '(убрать)',
           ru: 'Дом большой.',

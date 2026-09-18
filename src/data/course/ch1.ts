@@ -284,6 +284,7 @@ export const CHAPTER_1: CourseChapter = {
         {
           kind: 'spot',
           tokens: ['Eu', 'sunt', 'o', 'profesoară'],
+          fixed: 'Eu sunt profesoară',
           wrongIndex: 2,
           fix: '(ничего)',
           ru: 'Я учительница.',

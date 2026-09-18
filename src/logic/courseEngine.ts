@@ -56,11 +56,20 @@ function speechCandidate(step: GrammarStep): string | null {
     case 'transform':
       return step.answer;
     case 'spot':
-      // Часть исправлений — это указание («убрать», «после слова»), а не слово.
-      if (step.fix.startsWith('(')) return null;
+      // Часть исправлений — это указание («убрать», «после слова»), а не
+      // слово: тогда верная фраза выписана целиком в `fixed`.
+      if (step.fix.startsWith('(')) return step.fixed ?? null;
       return step.tokens.map((t, i) => (i === step.wrongIndex ? step.fix : t)).join(' ');
-    case 'choice':
-      return fillGap(step.prompt, step.options[step.correct]);
+    case 'choice': {
+      const answer = step.options[step.correct];
+      // Вариант-указание («ничего») в пропуск не подставляется: верный
+      // ответ здесь в том, что в пропуске не стоит вообще ничего.
+      if (answer.startsWith('(')) return fillGap(step.prompt, '').replace(/\s+/g, ' ');
+      // Вопрос задан по-русски и пропуска в нём нет («какая форма значит…»)
+      // — читать надо сам верный вариант.
+      if (!/_/.test(step.prompt)) return answer;
+      return fillGap(step.prompt, answer);
+    }
     default:
       return null;
   }

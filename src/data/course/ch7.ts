@@ -279,6 +279,7 @@ export const CHAPTER_7: CourseChapter = {
         {
           kind: 'spot',
           tokens: ['Văd', 'îl', 'pe', 'Ion'],
+          fixed: 'Îl văd pe Ion',
           wrongIndex: 0,
           fix: '(поменять местами)',
           ru: 'Я вижу Иона.',

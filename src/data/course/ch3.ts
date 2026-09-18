@@ -367,6 +367,7 @@ export const CHAPTER_3: CourseChapter = {
         {
           kind: 'spot',
           tokens: ['O', 'frumoasă', 'casă'],
+          fixed: 'O casă frumoasă',
           wrongIndex: 1,
           fix: '(после слова)',
           ru: 'красивый дом',

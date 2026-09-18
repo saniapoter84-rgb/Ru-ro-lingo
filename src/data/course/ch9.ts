@@ -483,6 +483,7 @@ export const CHAPTER_9: CourseChapter = {
         {
           kind: 'spot',
           tokens: ['Astăzi', 'e', 'mai', 'bine', 'ca', 'mai', 'ieri'],
+          fixed: 'Astăzi e mai bine ca ieri',
           wrongIndex: 5,
           fix: '(убрать второе «mai»)',
           ru: 'Сегодня лучше, чем вчера.',

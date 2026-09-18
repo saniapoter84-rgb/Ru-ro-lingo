@@ -482,7 +482,8 @@ export const CHAPTER_8: CourseChapter = {
         },
         {
           kind: 'spot',
-          tokens: ['Mâine', 'vom', 'să', 'mergem', 'la', 'munte'],
+          tokens: ['Mâine', 'vom', 'să', 'merge', 'la', 'munte'],
+          fixed: 'Mâine vom merge la munte',
           wrongIndex: 2,
           fix: '(убрать «să»)',
           ru: 'Завтра мы поедем в горы.',
