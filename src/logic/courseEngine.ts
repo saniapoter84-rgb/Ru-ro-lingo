@@ -12,10 +12,44 @@ export function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-/** Слова для «собери фразу»: слова ответа плюс ловушки, всё вперемешку. */
+/**
+ * Варианты ответа в случайном порядке — и где среди них верный.
+ *
+ * В данных верный вариант почти всегда записан первым: так их удобнее
+ * писать и проверять. Но показывать в том же порядке нельзя — человек
+ * быстро замечает, что ответ живёт в первом слоте, и дальше тыкает туда,
+ * не читая. Поэтому порядок перемешивается при каждом показе задания, в
+ * том числе когда оно возвращается после ошибки: запомнить позицию не
+ * получится.
+ */
+export function shuffleOptions(step: { options: string[]; correct: number }): {
+  options: string[];
+  correct: number;
+} {
+  const order = shuffle(step.options.map((_, i) => i));
+  return {
+    options: order.map((i) => step.options[i]),
+    correct: order.indexOf(step.correct),
+  };
+}
+
+/**
+ * Слова для «собери фразу»: слова ответа плюс ловушки, всё вперемешку.
+ *
+ * Первое слово ответа пишется с маленькой буквы. Иначе заглавная буква
+ * выдаёт, с чего начинается фраза, а ловушки — все строчные — отсеиваются
+ * с одного взгляда. Заглавная в начале предложения — это орфография, а не
+ * грамматика; проверка ответа регистр всё равно не различает. Имена внутри
+ * фразы («Alexandru») остаются как есть.
+ */
 export function buildTokenBank(answer: string, extra: string[] = []): string[] {
   const tokens = answer.split(/\s+/).filter(Boolean);
-  return shuffle([...tokens, ...extra]);
+  if (tokens.length > 0) tokens[0] = lowerFirst(tokens[0]);
+  return shuffle([...tokens, ...extra.map(lowerFirst)]);
+}
+
+function lowerFirst(word: string): string {
+  return word.charAt(0).toLocaleLowerCase('ro') + word.slice(1);
 }
 
 /** В тексте есть кириллица — значит это условие задания, а не румынский. */

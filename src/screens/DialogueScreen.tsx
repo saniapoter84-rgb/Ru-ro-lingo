@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, Pressable } from 'react-native';
 import { colors, radius, spacing } from '../theme/colors';
 import { Dialogue } from '../data/dialogues';
@@ -8,6 +8,7 @@ import { SpeakerButton } from '../components/SpeakerButton';
 import { ProgressBar } from '../components/ProgressBar';
 import { Panel, SectionLabel } from '../components/Panel';
 import { speakRomanian } from '../logic/speech';
+import { shuffleOptions } from '../logic/courseEngine';
 
 interface Props {
   dialogue: Dialogue;
@@ -78,7 +79,10 @@ export function DialogueScreen({ dialogue, lang, immersion, onFinish, onExit }: 
     );
   }
 
-  const question = dialogue.questions[questionIndex];
+  const source = dialogue.questions[questionIndex];
+  // Варианты — в случайном порядке: в данных верный обычно первый.
+  const shuffled = useMemo(() => shuffleOptions(source), [source]);
+  const question = { ...source, ...shuffled };
   const answered = picked !== null;
 
   function next() {

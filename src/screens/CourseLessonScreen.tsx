@@ -29,6 +29,7 @@ import {
   ruleForStep,
   matchesAnswer,
   shuffle,
+  shuffleOptions,
   speechTextForStep,
   xpForCorrect,
   XP_LESSON_BONUS,
@@ -253,7 +254,7 @@ export function CourseLessonScreen({
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          <Reveal key={`${currentIndex}-${queue.length}`} offset={14}>
+          <Reveal key={`${currentIndex}-${attempts}`} offset={14}>
             <StepView
               step={step}
               lang={lang}
@@ -454,12 +455,16 @@ function ChoiceView({
   showTapHint,
   onSubmit,
 }: StepProps & { step: ChoiceStep }) {
+  // Порядок вариантов — свой на каждый показ. Экран задания пересоздаётся
+  // при каждом переходе, так что вернувшееся после ошибки задание тоже
+  // перемешается заново.
+  const [{ options, correct }] = useState(() => shuffleOptions(step));
   const [picked, setPicked] = useState<number | null>(null);
 
   function choose(i: number) {
     if (locked) return;
     setPicked(i);
-    onSubmit(i === step.correct, step.options[i]);
+    onSubmit(i === correct, options[i]);
   }
 
   return (
@@ -469,11 +474,11 @@ function ChoiceView({
       <PromptWithGap text={step.prompt} fallback={immersion ? undefined : step.ru} />
       <HiddenRu text={step.ru} lang={lang} immersion={immersion} />
       <View style={styles.options}>
-        {step.options.map((option, i) => (
+        {options.map((option, i) => (
           <OptionRow
             key={i}
             text={option}
-            state={optionState(i, picked, step.correct, locked)}
+            state={optionState(i, picked, correct, locked)}
             onPress={() => choose(i)}
           />
         ))}
@@ -791,6 +796,7 @@ function MatchView({ step, locked, onSubmit }: StepProps & { step: MatchStep }) 
 // --- Аудирование --------------------------------------------------------
 
 function ListenView({ step, lang, immersion, locked, onSubmit }: StepProps & { step: ListenStep }) {
+  const [{ options, correct }] = useState(() => shuffleOptions(step));
   const [picked, setPicked] = useState<number | null>(null);
 
   // Первое проигрывание — само, без нажатия: задание всё-таки на слух.
@@ -801,7 +807,7 @@ function ListenView({ step, lang, immersion, locked, onSubmit }: StepProps & { s
   function choose(i: number) {
     if (locked) return;
     setPicked(i);
-    onSubmit(i === step.correct, step.options[i]);
+    onSubmit(i === correct, options[i]);
   }
 
   return (
@@ -813,11 +819,11 @@ function ListenView({ step, lang, immersion, locked, onSubmit }: StepProps & { s
       </View>
       <HiddenRu text={step.ru} lang={lang} immersion={immersion} />
       <View style={styles.options}>
-        {step.options.map((option, i) => (
+        {options.map((option, i) => (
           <OptionRow
             key={i}
             text={option}
-            state={optionState(i, picked, step.correct, locked)}
+            state={optionState(i, picked, correct, locked)}
             onPress={() => choose(i)}
           />
         ))}

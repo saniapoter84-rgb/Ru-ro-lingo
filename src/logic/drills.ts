@@ -1,5 +1,5 @@
 import { DrillPack } from '../data/drills/types';
-import { GrammarLesson, GrammarStep, RuleStep } from '../data/course/types';
+import { ChoiceStep, GrammarLesson, GrammarStep, RuleStep } from '../data/course/types';
 import { formsTable } from './forms';
 
 /**
@@ -11,8 +11,10 @@ import { formsTable } from './forms';
  * человека. Объяснение ошибки он мог взять только одно на всю тему, а
  * подписи к вариантам — только из общей таблицы форм.
  *
- * Теперь все 37 тем написаны руками, и этот файл ничего не собирает: он
- * отдаёт задания как есть, добавляя к ним карточку правила.
+ * Теперь все темы написаны руками, и этот файл ничего не собирает: он
+ * отдаёт готовые задания, добавляя к ним карточку правила. Единственное,
+ * что здесь решается, — порядок: какие задания попадут в короткое
+ * напоминание и в какой последовательности пойдёт полный блок.
  */
 
 /** Сколько заданий в полном блоке практики после теории. */
@@ -46,16 +48,23 @@ function hash(text: string): number {
  * Примеры для карточки правила берутся из самих заданий темы.
  *
  * Отдельного списка примеров нет намеренно: пусть человек увидит перед
- * практикой ровно те фразы, которые сейчас будет разбирать.
+ * практикой ровно те фразы, которые сейчас будет разбирать. Но не те, что
+ * идут сразу за карточкой: раньше примерами были первые три задания, и
+ * ответы на них читались с карточки за секунду до вопроса. Поэтому сначала
+ * берутся фразы, которых в этом заходе нет вовсе, а если заход — полный
+ * блок и не сыграно ничего не останется, то те, что стоят дальше всего
+ * от карточки.
  */
-function ruleExamples(pack: DrillPack): { ro: string; ru: string }[] {
-  const out: { ro: string; ru: string }[] = [];
-  for (const step of pack.tasks) {
-    if (out.length >= 3) break;
-    if (step.kind !== 'choice' || !step.ru || !step.prompt.includes('___')) continue;
-    out.push({ ro: step.prompt.replace('___', step.options[step.correct]), ru: step.ru });
-  }
-  return out;
+function ruleExamples(pack: DrillPack, played: GrammarStep[]): { ro: string; ru: string }[] {
+  const isExample = (step: GrammarStep): step is ChoiceStep =>
+    step.kind === 'choice' && !!step.ru && step.prompt.includes('___');
+  const playedSet = new Set(played);
+  const fresh = pack.tasks.filter(isExample).filter((step) => !playedSet.has(step));
+  const late = [...played].reverse().filter(isExample);
+  return [...fresh, ...late].slice(0, 3).map((step: ChoiceStep) => ({
+    ro: step.prompt.replace('___', step.options[step.correct]),
+    ru: step.ru ?? '',
+  }));
 }
 
 /**
@@ -65,8 +74,8 @@ function ruleExamples(pack: DrillPack): { ro: string; ru: string }[] {
  * тренажёр, а угадайка. Поэтому блок всегда открывается напоминанием
  * правила, таблицей форм и парой разобранных примеров.
  */
-function ruleCard(pack: DrillPack): RuleStep {
-  const examples = ruleExamples(pack);
+function ruleCard(pack: DrillPack, played: GrammarStep[]): RuleStep {
+  const examples = ruleExamples(pack, played);
   return {
     kind: 'rule',
     title: pack.title,
@@ -79,22 +88,55 @@ function ruleCard(pack: DrillPack): RuleStep {
 
 /** Карточка правила плюс задания темы. */
 export function buildDrillSteps(pack: DrillPack, count: number, salt = ''): GrammarStep[] {
-  return [ruleCard(pack), ...buildDrillTasks(pack, count, salt)];
+  const tasks = buildDrillTasks(pack, count, salt);
+  return [ruleCard(pack, tasks), ...tasks];
 }
 
 /**
  * Только задания, без карточки правила.
  *
- * Полный блок идёт ровно так, как его написали. Короткое напоминание берёт
- * срез со сдвигом — чтобы, возвращаясь к теме через неделю, не утыкаться в
- * одни и те же пять заданий.
+ * Задания темы записаны группами по типу: сначала выбор формы, потом
+ * сборка и ввод, в конце сопоставление, поиск ошибки и аудирование. Это
+ * путь от узнавания к воспроизведению, и ломать его нельзя. А вот порядок
+ * внутри группы ничего не значит, и его перемешиваем: иначе полный блок
+ * при повторном заходе проигрывается слово в слово и запоминается как
+ * последовательность, а не как правило.
+ *
+ * Короткое напоминание берёт задания с равным шагом по всему блоку, со
+ * сдвигом от даты. Раньше это был подряд идущий срез, и в него попадали
+ * пять заданий одного типа: либо один сплошной выбор, либо один сплошной
+ * ввод. Теперь в пяти заданиях есть и то и другое.
  */
-function buildDrillTasks(pack: DrillPack, count: number, salt = ''): GrammarStep[] {
+export function buildDrillTasks(pack: DrillPack, count: number, salt = ''): GrammarStep[] {
   const tasks = pack.tasks;
-  if (count >= tasks.length) return tasks.slice(0, count);
   const random = makeRandom(hash(pack.id + salt));
+  if (count >= tasks.length) return shuffleWithinKinds(tasks, random);
   const offset = Math.floor(random() * tasks.length);
-  return Array.from({ length: count }, (_, i) => tasks[(offset + i) % tasks.length]);
+  const stride = tasks.length / count;
+  return Array.from(
+    { length: count },
+    (_, i) => tasks[Math.floor(offset + i * stride) % tasks.length]
+  );
+}
+
+/** Перемешивает задания, не смешивая соседние группы одного типа. */
+function shuffleWithinKinds(tasks: GrammarStep[], random: () => number): GrammarStep[] {
+  const out: GrammarStep[] = [];
+  let group: GrammarStep[] = [];
+  const flush = () => {
+    for (let i = group.length - 1; i > 0; i--) {
+      const j = Math.floor(random() * (i + 1));
+      [group[i], group[j]] = [group[j], group[i]];
+    }
+    out.push(...group);
+    group = [];
+  };
+  for (const task of tasks) {
+    if (group.length > 0 && group[0].kind !== task.kind) flush();
+    group.push(task);
+  }
+  flush();
+  return out;
 }
 
 /**
